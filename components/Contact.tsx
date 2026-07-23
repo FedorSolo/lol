@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import type { PublicExpedition } from "@/lib/expeditions";
+import type { PublicExpedition } from "@/lib/expeditions-shared";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default function Contact({ expeditions }: { expeditions: PublicExpedition[] }) {

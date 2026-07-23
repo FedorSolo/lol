@@ -11,7 +11,7 @@ import ApplicationProcess from "@/components/ApplicationProcess";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import { getPublishedExpeditions, getPublicDifficultyLevels } from "@/lib/expeditions";
+import { getPublishedExpeditions, getPublicDifficultyLevels } from "@/lib/expeditions-data";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function Home({

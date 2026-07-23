@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Mountain, Gauge, CalendarDays, Users2, ArrowUpRight } from "lucide-react";
-import type { PublicExpedition, PublicDifficultyLevel } from "@/lib/expeditions";
-import { coverImageFor } from "@/lib/expeditions";
+import type { PublicExpedition, PublicDifficultyLevel } from "@/lib/expeditions-shared";
+import { coverImageFor } from "@/lib/expeditions-shared";
 
 export default function Expeditions({
   expeditions,
