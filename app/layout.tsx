@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { PT_Sans_Narrow, Inter, JetBrains_Mono } from "next/font/google";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
 
 // PT Sans Narrow — designed by ParaType (Russian type foundry), native Cyrillic
@@ -25,33 +25,21 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "CUMBRE — Элитные экспедиции в Андах с полной подготовкой",
-  description:
-    "CUMBRE готовит к восхождению 8–10 недель до старта: персональные тренировки, контроль здоровья и лицензированный горный гид. Аконкагуа, Охос-дель-Саладо, Ланин и другие вершины Аргентины.",
-  keywords: [
-    "экспедиции в Андах",
-    "восхождение на Аконкагуа",
-    "горные экспедиции Аргентина",
-    "подготовка к высотным восхождениям",
-    "Охос-дель-Саладо",
-  ],
-  openGraph: {
-    title: "CUMBRE — Элитные экспедиции в Андах",
-    description:
-      "Вершина начинается за 60 дней до экспедиции. Полная физическая подготовка включена.",
-    type: "website",
-    locale: "ru_RU",
-  },
-};
-
-export default function RootLayout({
+// This is the single shared root for BOTH the public, trilingual site
+// (app/[locale]/...) and the Russian-only /admin panel — Next.js allows
+// only one <html>/<body> pair for the whole app directory tree. Locale is
+// resolved from next-intl's request config (set by middleware.ts); /admin
+// requests fall back to the default locale, which is fine since the panel
+// itself isn't translated.
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+
   return (
-    <html lang="ru" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang={locale} className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body>{children}</body>
     </html>
   );
