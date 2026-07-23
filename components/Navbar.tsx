@@ -2,19 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { Menu, X, Mountain } from "lucide-react";
-
-const links = [
-  { href: "#why", label: "Почему мы" },
-  { href: "#expeditions", label: "Экспедиции" },
-  { href: "#timeline", label: "Подготовка" },
-  { href: "#faq", label: "Вопросы" },
-  { href: "#contact", label: "Заявка" },
-];
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
+  const t = useTranslations("nav");
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const links = [
+    { href: "#why", label: t("why") },
+    { href: "#expeditions", label: t("expeditions") },
+    { href: "#timeline", label: t("timeline") },
+    { href: "#faq", label: t("faq") },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -31,7 +33,7 @@ export default function Navbar() {
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2 font-display text-2xl tracking-wide">
           <Mountain className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
-          <span className="text-snow">CUMBRE</span>
+          <span className="text-snow">{t("brand")}</span>
         </a>
 
         <ul className="hidden md:flex items-center gap-9 font-body text-sm text-mist">
@@ -44,20 +46,26 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a
-          href="#contact"
-          className="hidden md:inline-flex items-center border border-glacier-light/60 text-snow text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors"
-        >
-          Подать заявку
-        </a>
+        <div className="hidden md:flex items-center gap-6">
+          <LanguageSwitcher />
+          <a
+            href="#contact"
+            className="inline-flex items-center border border-glacier-light/60 text-snow text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors"
+          >
+            {t("apply")}
+          </a>
+        </div>
 
-        <button
-          className="md:hidden text-snow"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Закрыть меню" : "Открыть меню"}
-        >
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <LanguageSwitcher />
+          <button
+            className="text-snow"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+          >
+            {open ? <X /> : <Menu />}
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>
@@ -83,7 +91,7 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className="inline-block mt-2 border border-glacier-light/60 text-snow px-5 py-2.5"
                 >
-                  Подать заявку
+                  {t("apply")}
                 </a>
               </li>
             </ul>

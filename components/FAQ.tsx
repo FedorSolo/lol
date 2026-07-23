@@ -3,9 +3,16 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
-import { faq } from "@/lib/data";
+import { useTranslations } from "next-intl";
+
+interface Item {
+  q: string;
+  a: string;
+}
 
 export default function FAQ() {
+  const t = useTranslations("faq");
+  const items = t.raw("items") as Item[];
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -13,17 +20,17 @@ export default function FAQ() {
       <div className="max-w-4xl mx-auto px-6 md:px-10">
         <div className="mb-16 text-center">
           <p className="font-mono text-xs tracking-widest2 uppercase text-stone mb-4">
-            Вопросы и ответы
+            {t("eyebrow")}
           </p>
           <h2 className="font-display font-bold uppercase text-4xl sm:text-5xl md:text-6xl leading-[1.02] text-balance">
-            Прежде чем
+            {t("title1")}
             <br />
-            подать заявку
+            {t("title2")}
           </h2>
         </div>
 
         <div className="border-t border-obsidian/10">
-          {faq.map((item, i) => {
+          {items.map((item, i) => {
             const isOpen = open === i;
             return (
               <div key={item.q} className="border-b border-obsidian/10">

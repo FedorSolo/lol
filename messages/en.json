@@ -1,0 +1,331 @@
+{
+  "meta": {
+    "title": "CUMBRE — Elite expeditions in the Andes with full preparation",
+    "description": "CUMBRE prepares you for the summit 8–10 weeks before departure: personal training, health monitoring, and a licensed mountain guide. Aconcagua, Ojos del Salado, Lanín, and other Argentine peaks.",
+    "ogTitle": "CUMBRE — Elite expeditions in the Andes",
+    "ogDescription": "The summit begins 60 days before the expedition. Full physical preparation included."
+  },
+  "nav": {
+    "brand": "CUMBRE",
+    "why": "Why us",
+    "expeditions": "Expeditions",
+    "timeline": "Preparation",
+    "faq": "FAQ",
+    "apply": "Apply"
+  },
+  "hero": {
+    "eyebrow": "Andes Expedition Institute",
+    "line1": "The summit begins",
+    "line2": "60 days before",
+    "line3": "the expedition.",
+    "subtitle": "Elite mountain expeditions in the Argentine Andes, with complete physical preparation included.",
+    "applyButton": "Apply for expedition",
+    "viewButton": "View expeditions"
+  },
+  "philosophy": {
+    "line1": "We don't sell tours.",
+    "line2": "We prepare people for mountains."
+  },
+  "why": {
+    "eyebrow": "Why we're different",
+    "title1": "A guide is the smaller",
+    "title2": "part of what we do",
+    "items": [
+      {
+        "title": "Not just a guide",
+        "text": "We take responsibility for the whole path to the summit, not just the days on the route."
+      },
+      {
+        "title": "Complete preparation",
+        "text": "8–10 weeks of training, monitoring, and progress reviews before you ever see the mountain."
+      },
+      {
+        "title": "Small groups",
+        "text": "Up to 8 people per group — small enough for the coach and guide to know every participant personally."
+      },
+      {
+        "title": "Professional coach",
+        "text": "A personal strength-and-endurance coach guides you through the whole cycle."
+      },
+      {
+        "title": "Licensed mountain guide",
+        "text": "On the route, a guide with an official license and experience climbing this specific peak."
+      },
+      {
+        "title": "Health monitoring",
+        "text": "Heart rate, recovery, and wellbeing are tracked throughout the entire preparation."
+      },
+      {
+        "title": "Personal training",
+        "text": "The plan is built around your current level, not pulled from a generic template."
+      },
+      {
+        "title": "Maximum safety",
+        "text": "The decision to allow you on the mountain is based on data, not on the desire to sell a tour."
+      }
+    ]
+  },
+  "expeditions": {
+    "eyebrow": "Upcoming expeditions",
+    "title1": "Choose your",
+    "title2": "expedition",
+    "empty": "Expeditions will appear here soon.",
+    "altitudeLabel": "Altitude",
+    "difficultyLabel": "Difficulty",
+    "durationLabel": "Days",
+    "seasonLabel": "Season",
+    "spotsLabel": "spots",
+    "detailsButton": "Learn more",
+    "applyButton": "Apply",
+    "filterAll": "All"
+  },
+  "timeline": {
+    "eyebrow": "How preparation works",
+    "title1": "From the first test",
+    "title2": "to the summit",
+    "steps": [
+      {
+        "label": "Week 1",
+        "title": "Fitness assessment",
+        "text": "Testing endurance, strength, and current health status."
+      },
+      {
+        "label": "Weeks 2–3",
+        "title": "Strength base",
+        "text": "Building the foundation: leg strength, core, and functional endurance."
+      },
+      {
+        "label": "Weeks 4–6",
+        "title": "Endurance",
+        "text": "Increasing aerobic volume tailored to the specific mountain's profile."
+      },
+      {
+        "label": "Weeks 7–8",
+        "title": "Mountain-specific",
+        "text": "Simulating altitude loads, working on breathing and pacing."
+      },
+      {
+        "label": "Final",
+        "title": "Gear check",
+        "text": "Reviewing personal equipment with the guide — what to bring, what to buy."
+      },
+      {
+        "label": "Departure",
+        "title": "Argentina",
+        "text": "Group meetup, acclimatization, briefing before setting out."
+      },
+      {
+        "label": "Goal",
+        "title": "Summit",
+        "text": "Setting out on the route, physically and tactically prepared."
+      }
+    ]
+  },
+  "team": {
+    "eyebrow": "Team",
+    "title1": "The people who'll",
+    "title2": "get you to the summit",
+    "members": [
+      {
+        "name": "Ivan Ivanov",
+        "role": "Licensed mountain guide (Argentina)",
+        "bio": "Certified mountain guide with many years of experience. Responsible for the route, tactics, and safety on the mountain.",
+        "statValue": "50+",
+        "statLabel": "summits"
+      },
+      {
+        "name": "Fyodor Sologubov",
+        "role": "Strength and endurance coach",
+        "bio": "Builds personal preparation programs and leads every participant's weekly training right up to departure.",
+        "statValue": "300+",
+        "statLabel": "athletes"
+      }
+    ],
+    "yearsLabel": "years of experience"
+  },
+  "audience": {
+    "eyebrow": "Who this is for",
+    "title1": "Different stories.",
+    "title2": "One result — the summit",
+    "items": [
+      {
+        "title": "Trail runners",
+        "text": "You already have the endurance — we'll teach you to apply it at altitude."
+      },
+      {
+        "title": "Cyclists",
+        "text": "Strong legs and heart — a great base for the mountains."
+      },
+      {
+        "title": "Triathletes",
+        "text": "Training discipline makes you an ideal candidate."
+      },
+      {
+        "title": "Outdoor enthusiasts",
+        "text": "Want a real challenge — we'll prepare you from scratch."
+      },
+      {
+        "title": "First-time mountaineers",
+        "text": "Your first big summit, with full support."
+      },
+      {
+        "title": "Experienced climbers",
+        "text": "Looking for your next altitude — let's talk route and pace."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Selection process",
+    "title1": "Six steps",
+    "title2": "before you fly to Argentina",
+    "steps": [
+      {
+        "title": "Application",
+        "text": "Fill out a short form — it takes two minutes."
+      },
+      {
+        "title": "Video interview",
+        "text": "We discuss your goal, experience, and expectations for the expedition."
+      },
+      {
+        "title": "Fitness assessment",
+        "text": "Endurance and strength tests — in person or remote."
+      },
+      {
+        "title": "Medical approval",
+        "text": "We check for altitude contraindications together with a doctor."
+      },
+      {
+        "title": "Preparation",
+        "text": "8–10 weeks of training, monitoring, and progress reviews."
+      },
+      {
+        "title": "Expedition",
+        "text": "You set out on the route — we support you all the way to the summit."
+      }
+    ],
+    "trustNote": "We may decline an application if safety requirements aren't met by departure. This isn't a formality — it's a guarantee that only properly prepared people go on the route."
+  },
+  "faq": {
+    "eyebrow": "Frequently asked questions",
+    "title1": "Before you",
+    "title2": "apply",
+    "items": [
+      {
+        "q": "Do I need climbing experience to apply?",
+        "a": "No. Some of our participants climb their very first mountain with us. What matters more is your overall fitness level and willingness to complete the eight-week training cycle."
+      },
+      {
+        "q": "How fit do I need to be?",
+        "a": "Regular cardio and strength activity 2–3 times a week at the time of application is enough. We'll build the rest over 8–10 weeks of preparation."
+      },
+      {
+        "q": "What equipment will I need?",
+        "a": "The full list depends on the mountain. We go through it individually during the equipment consultation and let you know what can be rented locally."
+      },
+      {
+        "q": "How exactly does the preparation work?",
+        "a": "A personal plan, 1–3 online training sessions a week, weekly progress reviews, heart-rate and recovery monitoring, and nutrition guidance — all under your coach's supervision."
+      },
+      {
+        "q": "Can beginners join an expedition?",
+        "a": "Yes — that's exactly what the preparation program is for. We don't send unprepared people up the mountain; training brings everyone to the required level before departure."
+      },
+      {
+        "q": "What happens if the weather turns on the route?",
+        "a": "The guide adjusts the schedule and, if needed, adds reserve days. Safety decisions always take priority over the summit plan."
+      },
+      {
+        "q": "What medical conditions are contraindications?",
+        "a": "Severe cardiovascular or pulmonary disease, uncontrolled hypertension, and a number of similar conditions. The final call is made by a doctor during medical approval."
+      },
+      {
+        "q": "How large is the group on the mountain?",
+        "a": "We keep groups small — typically up to 8 participants per guide, so each person's condition can be monitored on the route."
+      },
+      {
+        "q": "What's included in the expedition price?",
+        "a": "Eight weeks of preparation, coach and guide services, climbing permits, group equipment, meals on the route, and support all the way to the summit and back."
+      },
+      {
+        "q": "Are the guides certified?",
+        "a": "Yes, every mountain guide holds an official license and has climbing experience specifically on the peaks they lead groups to."
+      },
+      {
+        "q": "How does WhatsApp support work?",
+        "a": "Throughout preparation you have a direct line to your coach — questions about training, how you're feeling, or gear don't have to wait for a scheduled call."
+      },
+      {
+        "q": "What if I'm not ready in time?",
+        "a": "Your coach sees this coming from the weekly reports and will offer to postpone to the next expedition — sending someone up unprepared isn't in our interest either."
+      },
+      {
+        "q": "Do I need insurance?",
+        "a": "Yes, insurance covering high-altitude climbing is mandatory to participate. We'll help you choose a suitable policy when you apply."
+      },
+      {
+        "q": "How do you prevent altitude sickness?",
+        "a": "A gradual acclimatization schedule, monitoring at altitude, and the guide's judgment on the route — all standard parts of the safety protocol."
+      },
+      {
+        "q": "What does the fitness assessment involve?",
+        "a": "Endurance tests (for example, a step test across heart-rate zones), strength indicators, and a medical consultation if needed."
+      },
+      {
+        "q": "Is there an age limit?",
+        "a": "There's no strict age cutoff — the decision is based on medical approval and fitness assessment, not on the age on your passport."
+      },
+      {
+        "q": "Can an application be declined?",
+        "a": "Yes. If safety requirements aren't met by departure, we may decline or postpone participation — that's a guarantee, not a formality."
+      }
+    ]
+  },
+  "contact": {
+    "eyebrow": "Applications open",
+    "title1": "Apply for",
+    "title2": "an expedition",
+    "subtitle": "We'll reach out within 24 hours to schedule a video interview and plan your preparation for the chosen peak.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "country": "Country",
+    "age": "Age",
+    "phone": "Phone / WhatsApp",
+    "telegram": "Telegram",
+    "email": "Email",
+    "peak": "Desired expedition",
+    "level": "Current activity level",
+    "experience": "Climbing experience",
+    "message": "Message (optional)",
+    "messagePlaceholder": "Tell us about your goal, dates, questions…",
+    "consent": "I consent to the processing of my personal data",
+    "submitButton": "Send application",
+    "successTitle": "Application received",
+    "successText": "We'll contact you by email or WhatsApp within 24 hours to schedule a video interview.",
+    "activityLevels": [
+      "Beginner — I train irregularly",
+      "Amateur — I train 2–3 times a week",
+      "Advanced — regular training, good endurance",
+      "Athlete — competitive level"
+    ],
+    "experienceLevels": [
+      "No climbing experience",
+      "Trekking without technical elements",
+      "Experience climbing up to 5,000 m",
+      "Experience climbing above 5,000 m"
+    ],
+    "whatsapp": "WhatsApp",
+    "hikingExperience": "Mountain trekking experience",
+    "hikingExperiencePlaceholder": "E.g. several treks in mountain ranges",
+    "altitudeExperience": "High-altitude experience (above 5,000 m)",
+    "altitudeExperiencePlaceholder": "If any, note the peak and altitude",
+    "trainingsPerWeek": "How many times a week you train",
+    "sportsPracticed": "What sports you practice",
+    "sportsPracticedPlaceholder": "Running, cycling, gym, swimming…",
+    "medicalNotes": "Any medical limitations?",
+    "medicalNotesPlaceholder": "Leave blank if none"
+  },
+  "footer": {
+    "location": "MENDOZA · ARGENTINA"
+  }
+}
