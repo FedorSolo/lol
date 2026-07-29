@@ -4,15 +4,18 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type { PublicFaqItem } from "@/lib/faq-shared";
 
 interface Item {
   q: string;
   a: string;
 }
 
-export default function FAQ() {
+export default function FAQ({ items: dbItems }: { items: PublicFaqItem[] }) {
   const t = useTranslations("faq");
-  const items = t.raw("items") as Item[];
+  const staticItems = t.raw("items") as Item[];
+  const items: Item[] =
+    dbItems.length > 0 ? dbItems.map((i) => ({ q: i.question, a: i.answer })) : staticItems;
   const [open, setOpen] = useState<number | null>(0);
 
   return (

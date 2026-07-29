@@ -39,9 +39,9 @@ export default async function ExpeditionDetailPage({
 
   if (!expedition) notFound();
 
-  const cover = coverImageFor(
-    slug.split("").reduce((sum, ch) => sum + ch.charCodeAt(0), 0)
-  );
+  const cover =
+    expedition.coverUrl ??
+    coverImageFor(slug.split("").reduce((sum, ch) => sum + ch.charCodeAt(0), 0));
 
   const inclusions = t.raw("placeholder.inclusions") as string[];
   const exclusions = t.raw("placeholder.exclusions") as string[];
@@ -227,14 +227,11 @@ export default async function ExpeditionDetailPage({
       <section className="max-w-5xl mx-auto px-6 md:px-10 py-16">
         <h2 className="font-display font-bold uppercase text-2xl text-snow mb-6">{t("galleryTitle")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[0, 1, 2, 3].map((i) => (
-            <img
-              key={i}
-              src={coverImageFor(i + 1)}
-              alt=""
-              loading="lazy"
-              className="w-full h-40 object-cover"
-            />
+          {(expedition.galleryUrls.length > 0
+            ? expedition.galleryUrls
+            : [coverImageFor(1), coverImageFor(2), coverImageFor(3), coverImageFor(4)]
+          ).map((url, i) => (
+            <img key={url + i} src={url} alt="" loading="lazy" className="w-full h-40 object-cover" />
           ))}
         </div>
       </section>

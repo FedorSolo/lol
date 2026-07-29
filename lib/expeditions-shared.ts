@@ -18,6 +18,7 @@ export interface PublicExpedition {
   groupSizeMax: number | null;
   difficultyLevelId: string | null;
   difficultyName: string | null;
+  coverUrl: string | null;
 }
 
 export interface PublicDifficultyLevel {
