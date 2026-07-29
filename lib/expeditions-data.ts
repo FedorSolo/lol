@@ -1,5 +1,5 @@
 import "server-only";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient, createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
 import type { PublicExpedition, PublicDifficultyLevel } from "./expeditions-shared";
 
@@ -119,7 +119,7 @@ export async function getExpeditionBySlug(
 }
 
 export async function getAllPublishedSlugs(): Promise<string[]> {
-  const supabase = createServerSupabaseClient();
+ const supabase = createAdminSupabaseClient();
   const { data } = await supabase.from("expeditions").select("slug").eq("is_published", true);
   return (data ?? []).map((row) => row.slug);
 }
