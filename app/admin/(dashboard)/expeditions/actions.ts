@@ -71,7 +71,17 @@ export interface ExpeditionFormData {
   best_season: string;
   is_published: boolean;
   sort_order: string;
-  i18n: Record<Locale, { title: string; short_description: string; hero_text: string }>;
+  i18n: Record<
+    Locale,
+    {
+      title: string;
+      short_description: string;
+      hero_text: string;
+      fitness_requirements: string;
+      experience_requirements: string;
+      preparation_text: string;
+    }
+  >;
 }
 
 export async function upsertExpedition(form: ExpeditionFormData) {
@@ -113,6 +123,9 @@ export async function upsertExpedition(form: ExpeditionFormData) {
         title: t.title,
         short_description: t.short_description || null,
         hero_text: t.hero_text || null,
+        fitness_requirements: t.fitness_requirements || null,
+        experience_requirements: t.experience_requirements || null,
+        preparation_text: t.preparation_text || null,
       },
       { onConflict: "expedition_id,locale" }
     );

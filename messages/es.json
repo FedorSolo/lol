@@ -327,5 +327,110 @@
   },
   "footer": {
     "location": "MENDOZA · ARGENTINA"
+  },
+  "expeditionDetail": {
+    "backLink": "Todas las expediciones",
+    "altitudeLabel": "Altitud",
+    "difficultyLabel": "Dificultad",
+    "durationLabel": "Duración",
+    "seasonLabel": "Temporada",
+    "groupSizeLabel": "Grupo",
+    "priceLabel": "Precio",
+    "daysUnit": "días",
+    "peopleUnit": "personas",
+    "inclusionsTitle": "Qué incluye",
+    "exclusionsTitle": "Qué no incluye",
+    "itineraryTitle": "Programa día a día",
+    "routeTitle": "Ruta",
+    "routeText": "La ruta pasa por varios campamentos de altura con ganancia gradual de altitud para la aclimatación. El guía ajusta el ritmo y el cronograma según el estado del grupo y las condiciones climáticas — el horario final se define en el briefing previo a la salida.",
+    "altitudeProfileTitle": "Perfil de altitud",
+    "altitudeProfileNote": "Perfil esquemático de ganancia de altitud por día de ruta — las cifras exactas dependen de la variante de ascenso elegida.",
+    "fitnessTitle": "Requisitos de condición física",
+    "fitnessFallback": "Se define individualmente en la consulta previa a la postulación.",
+    "experienceTitle": "Requisitos de experiencia",
+    "experienceFallback": "Se define individualmente según la montaña y la ruta.",
+    "preparationTitle": "Cómo funciona la preparación",
+    "preparationFallback": "La preparación dura 8–10 semanas e incluye un plan de entrenamiento personal, sesiones online regulares y seguimiento del progreso — los detalles se conversan en la videollamada.",
+    "trainingModesTitle": "Entrenamientos online / presenciales",
+    "trainingModesText": "1–3 entrenamientos online por semana con el coach, más la posibilidad de sesiones presenciales donde estén disponibles. Todos los entrenamientos se registran y se revisan semanalmente.",
+    "medicalControlTitle": "Control médico y físico",
+    "medicalControlText": "Control de frecuencia cardíaca, recuperación y estado general durante toda la preparación, con aprobación médica final antes de partir.",
+    "equipmentTitle": "Equipo",
+    "galleryTitle": "Galería de fotos",
+    "faqTitle": "Preguntas sobre esta expedición",
+    "ctaTitle": "¿Querés subir a esta cumbre?",
+    "ctaButton": "Postular",
+    "notFoundTitle": "Expedición no encontrada",
+    "notFoundText": "Puede que aún no esté publicada o que el enlace esté desactualizado.",
+    "placeholder": {
+      "inclusions": [
+        "Guía de montaña con licencia durante toda la ruta",
+        "8–10 semanas de preparación previa con entrenador",
+        "Permisos de ascenso",
+        "Equipo grupal (carpas, cuerdas, comunicación)",
+        "Alimentación en la ruta",
+        "Traslado desde el punto de encuentro hasta el inicio de la ruta y de regreso"
+      ],
+      "exclusions": [
+        "Vuelo internacional hasta Argentina",
+        "Equipo y ropa personal",
+        "Seguro con cobertura para ascensos en altitud",
+        "Alojamiento antes y después de la expedición"
+      ],
+      "itinerary": [
+        {
+          "title": "Llegada y briefing",
+          "text": "Encuentro del grupo, revisión de equipo, briefing de ruta y seguridad."
+        },
+        {
+          "title": "Subida al campamento base",
+          "text": "Ascenso al campamento base, primera noche en altura."
+        },
+        {
+          "title": "Salida de aclimatación",
+          "text": "Salida corta más arriba en la ruta, regreso a dormir al campamento base."
+        },
+        {
+          "title": "Traslado a campamento intermedio",
+          "text": "Ascenso con carga completa, armado de campamento a la nueva altitud."
+        },
+        {
+          "title": "Día de reserva",
+          "text": "Día previsto para mal tiempo o aclimatación adicional."
+        },
+        {
+          "title": "Ascenso y descenso",
+          "text": "Salida a la cumbre temprano en la mañana, descenso al campamento base el mismo día."
+        }
+      ],
+      "equipment": [
+        "Botas de altura de plástico",
+        "Crampones y piolet",
+        "Campera de pluma y bolsa de dormir para bajas temperaturas",
+        "Bastones de trekking",
+        "Anteojos de sol categoría 4",
+        "Mochila de 60–80 l",
+        "Ropa térmica y de membrana",
+        "Linterna frontal"
+      ],
+      "faq": [
+        {
+          "q": "¿Puedo alquilar equipo en el lugar?",
+          "a": "Sí, parte del equipo técnico (crampones, piolet, casco) se puede alquilar en Mendoza — te ayudamos a organizarlo con anticipación."
+        },
+        {
+          "q": "¿Qué pasa si no llego a la cumbre?",
+          "a": "La seguridad es más importante que la cumbre. El guía puede decidir dar la vuelta en cualquier etapa — participar en la expedición no garantiza el ascenso."
+        },
+        {
+          "q": "¿Cómo se arma el grupo?",
+          "a": "Los grupos son pequeños y se arman por fecha de expedición — la composición exacta se conoce unas semanas antes de partir."
+        },
+        {
+          "q": "¿Necesito visa para Argentina?",
+          "a": "Depende de tu nacionalidad — te confirmamos los requisitos individualmente durante la postulación."
+        }
+      ]
+    }
   }
 }

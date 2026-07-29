@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Mountain, Gauge, CalendarDays, Users2, ArrowUpRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import type { PublicExpedition, PublicDifficultyLevel } from "@/lib/expeditions-shared";
 import { coverImageFor } from "@/lib/expeditions-shared";
 
@@ -132,13 +133,21 @@ export default function Expeditions({
                     </p>
                   )}
 
-                  <a
-                    href="#contact"
-                    className="mt-auto inline-flex items-center justify-center gap-2 border border-white/20 text-snow px-5 py-3 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light hover:bg-glacier-light/5 transition-colors"
-                  >
-                    {t("applyButton")}
-                    <ArrowUpRight className="w-4 h-4" />
-                  </a>
+                  <div className="mt-auto flex gap-3">
+                    <Link
+                      href={`/expeditions/${exp.slug}`}
+                      className="flex-1 inline-flex items-center justify-center gap-2 border border-white/20 text-snow px-5 py-3 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light transition-colors"
+                    >
+                      {t("detailsButton")}
+                    </Link>
+                    <a
+                      href="#contact"
+                      className="flex-1 inline-flex items-center justify-center gap-2 bg-snow text-obsidian px-5 py-3 text-sm tracking-wide hover:bg-glacier-light transition-colors"
+                    >
+                      {t("applyButton")}
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
+                  </div>
                 </div>
               </motion.article>
             ))}
