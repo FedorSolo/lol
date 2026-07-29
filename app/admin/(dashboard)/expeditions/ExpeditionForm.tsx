@@ -16,7 +16,14 @@ interface DifficultyLevel {
   i18n: { locale: string; name: string }[];
 }
 
-const emptyI18n = { title: "", short_description: "", hero_text: "" };
+const emptyI18n = {
+  title: "",
+  short_description: "",
+  hero_text: "",
+  fitness_requirements: "",
+  experience_requirements: "",
+  preparation_text: "",
+};
 
 export default function ExpeditionForm({
   initial,
@@ -24,7 +31,17 @@ export default function ExpeditionForm({
 }: {
   initial?: {
     expedition: Record<string, any>;
-    i18n: Record<Locale, { title: string; short_description: string | null; hero_text: string | null } | null>;
+    i18n: Record<
+      Locale,
+      {
+        title: string;
+        short_description: string | null;
+        hero_text: string | null;
+        fitness_requirements: string | null;
+        experience_requirements: string | null;
+        preparation_text: string | null;
+      } | null
+    >;
   };
   levels: DifficultyLevel[];
 }) {
@@ -53,6 +70,9 @@ export default function ExpeditionForm({
             title: initial.i18n.ru.title,
             short_description: initial.i18n.ru.short_description ?? "",
             hero_text: initial.i18n.ru.hero_text ?? "",
+            fitness_requirements: initial.i18n.ru.fitness_requirements ?? "",
+            experience_requirements: initial.i18n.ru.experience_requirements ?? "",
+            preparation_text: initial.i18n.ru.preparation_text ?? "",
           }
         : { ...emptyI18n },
       es: initial?.i18n.es
@@ -60,6 +80,9 @@ export default function ExpeditionForm({
             title: initial.i18n.es.title,
             short_description: initial.i18n.es.short_description ?? "",
             hero_text: initial.i18n.es.hero_text ?? "",
+            fitness_requirements: initial.i18n.es.fitness_requirements ?? "",
+            experience_requirements: initial.i18n.es.experience_requirements ?? "",
+            preparation_text: initial.i18n.es.preparation_text ?? "",
           }
         : { ...emptyI18n },
       en: initial?.i18n.en
@@ -67,6 +90,9 @@ export default function ExpeditionForm({
             title: initial.i18n.en.title,
             short_description: initial.i18n.en.short_description ?? "",
             hero_text: initial.i18n.en.hero_text ?? "",
+            fitness_requirements: initial.i18n.en.fitness_requirements ?? "",
+            experience_requirements: initial.i18n.en.experience_requirements ?? "",
+            preparation_text: initial.i18n.en.preparation_text ?? "",
           }
         : { ...emptyI18n },
     },
@@ -258,6 +284,33 @@ export default function ExpeditionForm({
               rows={3}
               value={form.i18n[activeLocale].hero_text}
               onChange={(e) => updateI18n(activeLocale, "hero_text", e.target.value)}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Требования к физической подготовке</label>
+            <textarea
+              rows={3}
+              value={form.i18n[activeLocale].fitness_requirements}
+              onChange={(e) => updateI18n(activeLocale, "fitness_requirements", e.target.value)}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Требования к опыту</label>
+            <textarea
+              rows={3}
+              value={form.i18n[activeLocale].experience_requirements}
+              onChange={(e) => updateI18n(activeLocale, "experience_requirements", e.target.value)}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Как проходит подготовка</label>
+            <textarea
+              rows={4}
+              value={form.i18n[activeLocale].preparation_text}
+              onChange={(e) => updateI18n(activeLocale, "preparation_text", e.target.value)}
               className={`${inputClass} resize-none`}
             />
           </div>

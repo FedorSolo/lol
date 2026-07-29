@@ -327,5 +327,110 @@
   },
   "footer": {
     "location": "MENDOZA · ARGENTINA"
+  },
+  "expeditionDetail": {
+    "backLink": "All expeditions",
+    "altitudeLabel": "Altitude",
+    "difficultyLabel": "Difficulty",
+    "durationLabel": "Duration",
+    "seasonLabel": "Season",
+    "groupSizeLabel": "Group size",
+    "priceLabel": "Price",
+    "daysUnit": "days",
+    "peopleUnit": "people",
+    "inclusionsTitle": "What's included",
+    "exclusionsTitle": "What's not included",
+    "itineraryTitle": "Day-by-day itinerary",
+    "routeTitle": "Route",
+    "routeText": "The route passes through several high-altitude camps with gradual elevation gain for acclimatization. The guide adjusts pace and schedule based on the group's condition and weather — the final timetable is confirmed at the pre-departure briefing.",
+    "altitudeProfileTitle": "Altitude profile",
+    "altitudeProfileNote": "A schematic elevation-gain profile by route day — exact figures depend on the chosen ascent variant.",
+    "fitnessTitle": "Fitness requirements",
+    "fitnessFallback": "Determined individually during the consultation before you apply.",
+    "experienceTitle": "Experience requirements",
+    "experienceFallback": "Determined individually based on the mountain and route.",
+    "preparationTitle": "How preparation works",
+    "preparationFallback": "Preparation lasts 8–10 weeks and includes a personal training plan, regular online sessions, and progress monitoring — details are discussed during the video interview.",
+    "trainingModesTitle": "Online / in-person training",
+    "trainingModesText": "1–3 online training sessions a week with your coach, plus in-person sessions where available. Every session is logged and reviewed weekly.",
+    "medicalControlTitle": "Medical and fitness monitoring",
+    "medicalControlText": "Heart rate, recovery, and overall condition are monitored throughout preparation, with final medical approval before departure.",
+    "equipmentTitle": "Equipment",
+    "galleryTitle": "Photo gallery",
+    "faqTitle": "Questions about this expedition",
+    "ctaTitle": "Want to climb this peak?",
+    "ctaButton": "Apply",
+    "notFoundTitle": "Expedition not found",
+    "notFoundText": "It may not be published yet, or the link may be outdated.",
+    "placeholder": {
+      "inclusions": [
+        "A licensed mountain guide for the whole route",
+        "8–10 weeks of pre-expedition preparation with a coach",
+        "Climbing permits",
+        "Group equipment (tents, ropes, communication gear)",
+        "Meals on the route",
+        "Transfer from the group meeting point to the trailhead and back"
+      ],
+      "exclusions": [
+        "International flights to Argentina",
+        "Personal gear and clothing",
+        "Insurance covering high-altitude climbing",
+        "Accommodation before and after the expedition"
+      ],
+      "itinerary": [
+        {
+          "title": "Arrival and briefing",
+          "text": "Group meetup, gear check, route and safety briefing."
+        },
+        {
+          "title": "Hike to base camp",
+          "text": "Ascent to base camp, first night at altitude."
+        },
+        {
+          "title": "Acclimatization outing",
+          "text": "A short push higher on the route, returning to sleep at base camp."
+        },
+        {
+          "title": "Move to intermediate camp",
+          "text": "Full-load ascent, setting up camp at the new altitude."
+        },
+        {
+          "title": "Reserve day",
+          "text": "A day held in reserve for bad weather or extra acclimatization."
+        },
+        {
+          "title": "Summit push and descent",
+          "text": "Early-morning summit push, descending to base camp the same day."
+        }
+      ],
+      "equipment": [
+        "Plastic high-altitude boots",
+        "Crampons and ice axe",
+        "Down jacket and a sleeping bag rated for low temperatures",
+        "Trekking poles",
+        "Category 4 sunglasses",
+        "60–80 L backpack",
+        "Thermal and membrane clothing",
+        "Headlamp"
+      ],
+      "faq": [
+        {
+          "q": "Can I rent equipment locally?",
+          "a": "Yes, some technical gear (crampons, ice axe, helmet) can be rented in Mendoza — we help arrange it in advance."
+        },
+        {
+          "q": "What if I don't reach the summit?",
+          "a": "Safety matters more than the summit. The guide can call a turnaround at any stage — joining the expedition doesn't guarantee a successful climb."
+        },
+        {
+          "q": "How is the group formed?",
+          "a": "Groups are small and formed by expedition date — the exact lineup is known a few weeks before departure."
+        },
+        {
+          "q": "Do I need a visa for Argentina?",
+          "a": "It depends on your nationality — we'll confirm the requirements individually during your application."
+        }
+      ]
+    }
   }
 }

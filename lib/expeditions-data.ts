@@ -57,6 +57,73 @@ export async function getPublishedExpeditions(locale: Locale): Promise<PublicExp
   });
 }
 
+export interface FullPublicExpedition extends PublicExpedition {
+  heroText: string | null;
+  fitnessRequirements: string | null;
+  experienceRequirements: string | null;
+  preparationText: string | null;
+}
+
+export async function getExpeditionBySlug(
+  slug: string,
+  locale: Locale
+): Promise<FullPublicExpedition | null> {
+  const supabase = createServerSupabaseClient();
+
+  const { data: exp } = await supabase
+    .from("expeditions")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
+
+  if (!exp) return null;
+
+  const { data: t } = await supabase
+    .from("expedition_i18n")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .eq("locale", locale)
+    .maybeSingle();
+
+  let levelName: string | null = null;
+  if (exp.difficulty_level_id) {
+    const { data: level } = await supabase
+      .from("difficulty_level_i18n")
+      .select("*")
+      .eq("level_id", exp.difficulty_level_id)
+      .eq("locale", locale)
+      .maybeSingle();
+    levelName = level?.name ?? null;
+  }
+
+  return {
+    id: exp.id,
+    slug: exp.slug,
+    title: t?.title ?? exp.slug,
+    shortDescription: t?.short_description ?? null,
+    country: exp.country,
+    altitudeM: exp.altitude_m,
+    durationDays: exp.duration_days,
+    bestSeason: exp.best_season,
+    priceFrom: exp.price_from,
+    currency: exp.currency,
+    groupSizeMax: exp.group_size_max,
+    difficultyLevelId: exp.difficulty_level_id,
+    difficultyName: levelName,
+    heroText: t?.hero_text ?? null,
+    fitnessRequirements: t?.fitness_requirements ?? null,
+    experienceRequirements: t?.experience_requirements ?? null,
+    preparationText: t?.preparation_text ?? null,
+  };
+}
+
+export async function getAllPublishedSlugs(): Promise<string[]> {
+  const supabase = createServerSupabaseClient();
+  const { data } = await supabase.from("expeditions").select("slug").eq("is_published", true);
+  return (data ?? []).map((row) => row.slug);
+}
+
 export async function getPublicDifficultyLevels(locale: Locale): Promise<PublicDifficultyLevel[]> {
   const supabase = createServerSupabaseClient();
 
