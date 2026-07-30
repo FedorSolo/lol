@@ -35,9 +35,16 @@ export async function getPublishedExpeditions(locale: Locale): Promise<PublicExp
           .eq("locale", locale)
       : { data: [] as { level_id: string; name: string }[] };
 
+  const { data: coverPhotos } = await supabase
+    .from("expedition_photos")
+    .select("*")
+    .in("expedition_id", ids)
+    .eq("is_cover", true);
+
   return expeditions.map((exp) => {
     const t = i18n?.find((row) => row.expedition_id === exp.id);
     const level = levelNames?.find((row) => row.level_id === exp.difficulty_level_id);
+    const cover = coverPhotos?.find((row) => row.expedition_id === exp.id);
 
     return {
       id: exp.id,
@@ -53,11 +60,13 @@ export async function getPublishedExpeditions(locale: Locale): Promise<PublicExp
       groupSizeMax: exp.group_size_max,
       difficultyLevelId: exp.difficulty_level_id,
       difficultyName: level?.name ?? null,
+      coverUrl: cover?.storage_path ?? null,
     };
   });
 }
 
 export interface FullPublicExpedition extends PublicExpedition {
+  galleryUrls: string[];
   heroText: string | null;
   fitnessRequirements: string | null;
   experienceRequirements: string | null;
@@ -97,6 +106,19 @@ export async function getExpeditionBySlug(
     levelName = level?.name ?? null;
   }
 
+  const { data: cover } = await supabase
+    .from("expedition_photos")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .eq("is_cover", true)
+    .maybeSingle();
+
+  const { data: gallery } = await supabase
+    .from("expedition_photos")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .order("sort_order");
+
   return {
     id: exp.id,
     slug: exp.slug,
@@ -111,6 +133,8 @@ export async function getExpeditionBySlug(
     groupSizeMax: exp.group_size_max,
     difficultyLevelId: exp.difficulty_level_id,
     difficultyName: levelName,
+    coverUrl: cover?.storage_path ?? null,
+    galleryUrls: (gallery ?? []).map((p) => p.storage_path),
     heroText: t?.hero_text ?? null,
     fitnessRequirements: t?.fitness_requirements ?? null,
     experienceRequirements: t?.experience_requirements ?? null,
@@ -119,7 +143,12 @@ export async function getExpeditionBySlug(
 }
 
 export async function getAllPublishedSlugs(): Promise<string[]> {
- const supabase = createAdminSupabaseClient();
+  // Uses the admin (cookie-free) client on purpose: this runs inside
+  // generateStaticParams at BUILD time, before any request exists, so
+  // cookies() (used by createServerSupabaseClient) throws
+  // "cookies was called outside a request scope". The data itself is
+  // public (published expedition slugs), so bypassing RLS here is safe.
+  const supabase = createAdminSupabaseClient();
   const { data } = await supabase.from("expeditions").select("slug").eq("is_published", true);
   return (data ?? []).map((row) => row.slug);
 }

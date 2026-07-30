@@ -79,7 +79,7 @@ export default function Expeditions({
               >
                 <div className="relative h-64 overflow-hidden">
                   <img
-                    src={coverImageFor(i)}
+                    src={exp.coverUrl ?? coverImageFor(i)}
                     alt={exp.title}
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"

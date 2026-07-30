@@ -12,6 +12,8 @@ import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { getPublishedExpeditions, getPublicDifficultyLevels } from "@/lib/expeditions-data";
+import { getPublicTeamMembers } from "@/lib/team-data";
+import { getPublicFaq } from "@/lib/faq-data";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function Home({
@@ -22,9 +24,11 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [expeditions, levels] = await Promise.all([
+  const [expeditions, levels, teamMembers, faqItems] = await Promise.all([
     getPublishedExpeditions(locale as Locale),
     getPublicDifficultyLevels(locale as Locale),
+    getPublicTeamMembers(locale as Locale),
+    getPublicFaq(locale as Locale),
   ]);
 
   return (
@@ -35,10 +39,10 @@ export default async function Home({
       <WhyDifferent />
       <Expeditions expeditions={expeditions} levels={levels} />
       <Timeline />
-      <Team />
+      <Team members={teamMembers} />
       <Audience />
       <ApplicationProcess />
-      <FAQ />
+      <FAQ items={faqItems} />
       <Contact expeditions={expeditions} />
       <Footer />
     </main>
