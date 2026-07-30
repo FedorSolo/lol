@@ -64,6 +64,40 @@
         "title": "Seguridad máxima",
         "text": "La decisión de subir a la montaña se basa en datos, no en el interés de vender un tour."
       }
+    ],
+    "comparisonTitle": "Agencia habitual",
+    "comparisonTitleUs": "CUMBRE",
+    "comparisonRows": [
+      {
+        "label": "Preparación antes del viaje",
+        "generic": "No incluida",
+        "us": "8–10 semanas incluidas"
+      },
+      {
+        "label": "Tamaño del grupo",
+        "generic": "10–20+ personas",
+        "us": "Hasta 8 personas"
+      },
+      {
+        "label": "Guía en la ruta",
+        "generic": "Acompañante",
+        "us": "Guía de montaña con licencia"
+      },
+      {
+        "label": "Control de salud",
+        "generic": "Inexistente",
+        "us": "Frecuencia cardíaca y recuperación semanal"
+      },
+      {
+        "label": "Entrenador personal",
+        "generic": "No incluido",
+        "us": "Durante todo el ciclo"
+      },
+      {
+        "label": "Decisión de subir a la montaña",
+        "generic": "Un formalismo",
+        "us": "Basada en datos"
+      }
     ]
   },
   "expeditions": {

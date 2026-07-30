@@ -47,14 +47,26 @@ export async function getHomepageContent(locale: Locale): Promise<HomepageConten
     (raw.home_philosophy as PhilosophyContent) ??
     ({ line1: tPhilosophy("line1"), line2: tPhilosophy("line2") } satisfies PhilosophyContent);
 
-  const why =
-    (raw.home_why as WhyContent) ??
-    ({
-      eyebrow: tWhy("eyebrow"),
-      title1: tWhy("title1"),
-      title2: tWhy("title2"),
-      items: tWhy.raw("items"),
-    } satisfies WhyContent);
+  const whySaved = raw.home_why as WhyContent | undefined;
+  const why: WhyContent = whySaved
+    ? {
+        ...whySaved,
+        // Comparison fields shipped after some sites may have already
+        // saved a custom "why" block — backfill from translations if
+        // the saved value predates them, rather than showing nothing.
+        comparisonTitle: whySaved.comparisonTitle ?? tWhy("comparisonTitle"),
+        comparisonTitleUs: whySaved.comparisonTitleUs ?? tWhy("comparisonTitleUs"),
+        comparisonRows: whySaved.comparisonRows ?? tWhy.raw("comparisonRows"),
+      }
+    : {
+        eyebrow: tWhy("eyebrow"),
+        title1: tWhy("title1"),
+        title2: tWhy("title2"),
+        items: tWhy.raw("items"),
+        comparisonTitle: tWhy("comparisonTitle"),
+        comparisonTitleUs: tWhy("comparisonTitleUs"),
+        comparisonRows: tWhy.raw("comparisonRows"),
+      };
 
   const timeline =
     (raw.home_timeline as TimelineContent) ??
