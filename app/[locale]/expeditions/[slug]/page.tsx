@@ -87,9 +87,18 @@ export default async function ExpeditionDetailPage({
     expedition.coverUrl ??
     coverImageFor(slug.split("").reduce((sum, ch) => sum + ch.charCodeAt(0), 0));
 
-  const inclusions = t.raw("placeholder.inclusions") as string[];
-  const exclusions = t.raw("placeholder.exclusions") as string[];
-  const itinerary = t.raw("placeholder.itinerary") as { title: string; text: string }[];
+  const inclusions =
+    expedition.inclusions.length > 0
+      ? expedition.inclusions
+      : (t.raw("placeholder.inclusions") as string[]);
+  const exclusions =
+    expedition.exclusions.length > 0
+      ? expedition.exclusions
+      : (t.raw("placeholder.exclusions") as string[]);
+  const itinerary =
+    expedition.itinerary.length > 0
+      ? expedition.itinerary.map((d) => ({ title: d.title, text: d.description ?? "" }))
+      : (t.raw("placeholder.itinerary") as { title: string; text: string }[]);
   const equipment = t.raw("placeholder.equipment") as string[];
   const faq = t.raw("placeholder.faq") as { q: string; a: string }[];
 

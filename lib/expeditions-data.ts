@@ -73,6 +73,9 @@ export interface FullPublicExpedition extends PublicExpedition {
   preparationText: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
+  itinerary: { dayNumber: number; title: string; description: string | null }[];
+  inclusions: string[];
+  exclusions: string[];
 }
 
 export async function getExpeditionBySlug(
@@ -121,6 +124,69 @@ export async function getExpeditionBySlug(
     .eq("expedition_id", exp.id)
     .order("sort_order");
 
+  const { data: itineraryDays } = await supabase
+    .from("expedition_itinerary_days")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .order("day_number");
+
+  const { data: itineraryI18n } = itineraryDays?.length
+    ? await supabase
+        .from("expedition_itinerary_i18n")
+        .select("*")
+        .in(
+          "day_id",
+          itineraryDays.map((d) => d.id)
+        )
+        .eq("locale", locale)
+    : { data: [] as { day_id: string; title: string; description: string | null }[] };
+
+  const itinerary = (itineraryDays ?? [])
+    .map((day) => {
+      const t = itineraryI18n?.find((row) => row.day_id === day.id);
+      if (!t) return null;
+      return { dayNumber: day.day_number, title: t.title, description: t.description };
+    })
+    .filter((d): d is { dayNumber: number; title: string; description: string | null } => d !== null);
+
+  const { data: inclusionRows } = await supabase
+    .from("expedition_inclusions")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .order("sort_order");
+  const { data: inclusionI18n } = inclusionRows?.length
+    ? await supabase
+        .from("expedition_inclusions_i18n")
+        .select("*")
+        .in(
+          "inclusion_id",
+          inclusionRows.map((r) => r.id)
+        )
+        .eq("locale", locale)
+    : { data: [] as { inclusion_id: string; text: string }[] };
+  const inclusions = (inclusionRows ?? [])
+    .map((row) => inclusionI18n?.find((t) => t.inclusion_id === row.id)?.text)
+    .filter((t): t is string => Boolean(t));
+
+  const { data: exclusionRows } = await supabase
+    .from("expedition_exclusions")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .order("sort_order");
+  const { data: exclusionI18n } = exclusionRows?.length
+    ? await supabase
+        .from("expedition_exclusions_i18n")
+        .select("*")
+        .in(
+          "exclusion_id",
+          exclusionRows.map((r) => r.id)
+        )
+        .eq("locale", locale)
+    : { data: [] as { exclusion_id: string; text: string }[] };
+  const exclusions = (exclusionRows ?? [])
+    .map((row) => exclusionI18n?.find((t) => t.exclusion_id === row.id)?.text)
+    .filter((t): t is string => Boolean(t));
+
   return {
     id: exp.id,
     slug: exp.slug,
@@ -143,6 +209,9 @@ export async function getExpeditionBySlug(
     preparationText: t?.preparation_text ?? null,
     metaTitle: t?.meta_title ?? null,
     metaDescription: t?.meta_description ?? null,
+    itinerary,
+    inclusions,
+    exclusions,
   };
 }
 
