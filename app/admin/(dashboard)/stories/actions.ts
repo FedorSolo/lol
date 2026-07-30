@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
 import type { ActionResult, ActionResultWithData } from "../action-result";
+import { slugify } from "@/lib/slugify";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -46,8 +47,11 @@ export async function saveStory(
 ): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
+  const anyTitle = form.i18n.ru.title || form.i18n.es.title || form.i18n.en.title;
+  const normalizedSlug = slugify(form.slug) || slugify(anyTitle) || `story-${Date.now()}`;
+
   const payload = {
-    slug: form.slug,
+    slug: normalizedSlug,
     year: form.year ? Number(form.year) : null,
     expedition_id: form.expedition_id || null,
     cover_storage_path: form.cover_storage_path,

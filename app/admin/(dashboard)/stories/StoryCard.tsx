@@ -11,6 +11,7 @@ import {
   setStoryCover,
   type StoryFormData,
 } from "./actions";
+import { slugify } from "@/lib/slugify";
 import type { Locale } from "@/lib/supabase/database.types";
 
 const LOCALES: { code: Locale; label: string }[] = [
@@ -18,27 +19,6 @@ const LOCALES: { code: Locale; label: string }[] = [
   { code: "es", label: "ES" },
   { code: "en", label: "EN" },
 ];
-
-// Good-enough Cyrillic -> Latin transliteration for auto-generating a slug
-// from the title when the person leaves the slug field blank.
-const TRANSLIT: Record<string, string> = {
-  а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z",
-  и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r",
-  с: "s", т: "t", у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sch",
-  ъ: "", ы: "y", ь: "", э: "e", ю: "yu", я: "ya",
-};
-
-function slugify(text: string): string {
-  const transliterated = text
-    .toLowerCase()
-    .split("")
-    .map((ch) => TRANSLIT[ch] ?? ch)
-    .join("");
-  return transliterated
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
-}
 
 export interface StoryPhotoRow {
   id: string;

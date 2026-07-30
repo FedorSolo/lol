@@ -138,7 +138,9 @@ export default function ExpeditionForm({
     <form onSubmit={handleSubmit} className="max-w-3xl">
       <section className="grid sm:grid-cols-2 gap-5 mb-10">
         <div>
-          <label className={labelClass}>Slug (одинаковый для всех языков)</label>
+          <label className={labelClass}>
+            Slug (одинаковый для всех языков — латиница, автоматически приведётся к безопасному виду)
+          </label>
           <input
             required
             value={form.slug}

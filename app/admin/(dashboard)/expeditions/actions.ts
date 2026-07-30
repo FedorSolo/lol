@@ -4,6 +4,14 @@ import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
 import type { ActionResult, ActionResultWithData } from "../action-result";
+import { slugify } from "@/lib/slugify";
+
+function friendlySlugError(message: string): string {
+  if (message.includes("expeditions_slug_key") || message.includes("duplicate key")) {
+    return "Такой slug уже используется другой экспедицией — придумайте уникальный.";
+  }
+  return message;
+}
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -91,8 +99,11 @@ export async function upsertExpedition(
 ): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
+  const anyTitle = form.i18n.ru.title || form.i18n.es.title || form.i18n.en.title;
+  const normalizedSlug = slugify(form.slug) || slugify(anyTitle) || `expedition-${Date.now()}`;
+
   const payload = {
-    slug: form.slug,
+    slug: normalizedSlug,
     difficulty_level_id: form.difficulty_level_id || null,
     country: form.country || null,
     altitude_m: form.altitude_m ? Number(form.altitude_m) : null,
@@ -110,10 +121,10 @@ export async function upsertExpedition(
 
   if (expeditionId) {
     const { error } = await supabase.from("expeditions").update(payload).eq("id", expeditionId);
-    if (error) return { ok: false, error: error.message };
+    if (error) return { ok: false, error: friendlySlugError(error.message) };
   } else {
     const { data, error } = await supabase.from("expeditions").insert(payload).select("id").single();
-    if (error) return { ok: false, error: error.message };
+    if (error) return { ok: false, error: friendlySlugError(error.message) };
     expeditionId = data.id;
   }
 
