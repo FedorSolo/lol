@@ -14,6 +14,11 @@ export async function getSiteThemeAdmin(): Promise<SiteTheme> {
     accentColor: data.accent_color,
     fontDisplay: data.font_display,
     fontBody: data.font_body,
+    contactEmail: data.contact_email ?? "",
+    contactPhone: data.contact_phone ?? "",
+    whatsappNumber: data.whatsapp_number ?? "",
+    instagramUrl: data.instagram_url ?? "",
+    facebookUrl: data.facebook_url ?? "",
   };
 }
 
@@ -26,6 +31,11 @@ export async function saveSiteTheme(theme: SiteTheme): Promise<ActionResult> {
       accent_color: theme.accentColor,
       font_display: theme.fontDisplay,
       font_body: theme.fontBody,
+      contact_email: theme.contactEmail,
+      contact_phone: theme.contactPhone,
+      whatsapp_number: theme.whatsappNumber,
+      instagram_url: theme.instagramUrl,
+      facebook_url: theme.facebookUrl,
     })
     .eq("id", true);
 
@@ -37,5 +47,14 @@ export async function saveSiteTheme(theme: SiteTheme): Promise<ActionResult> {
 }
 
 export async function resetSiteTheme(): Promise<ActionResult> {
-  return saveSiteTheme(DEFAULT_THEME);
+  // Only resets background/accent/fonts — contact info is a separate
+  // concern and shouldn't be wiped by "reset design to defaults".
+  const current = await getSiteThemeAdmin();
+  return saveSiteTheme({
+    ...current,
+    backgroundColor: DEFAULT_THEME.backgroundColor,
+    accentColor: DEFAULT_THEME.accentColor,
+    fontDisplay: DEFAULT_THEME.fontDisplay,
+    fontBody: DEFAULT_THEME.fontBody,
+  });
 }

@@ -13,6 +13,11 @@ export async function getSiteTheme(): Promise<SiteTheme> {
       accentColor: data.accent_color,
       fontDisplay: data.font_display,
       fontBody: data.font_body,
+      contactEmail: data.contact_email ?? "",
+      contactPhone: data.contact_phone ?? "",
+      whatsappNumber: data.whatsapp_number ?? "",
+      instagramUrl: data.instagram_url ?? "",
+      facebookUrl: data.facebook_url ?? "",
     };
   } catch {
     // Table might not exist yet if the 0002_site_theme.sql migration

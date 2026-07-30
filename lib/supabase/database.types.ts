@@ -328,6 +328,11 @@ export interface Database {
           accent_color: string;
           font_display: string;
           font_body: string;
+          contact_email: string;
+          contact_phone: string;
+          whatsapp_number: string;
+          instagram_url: string;
+          facebook_url: string;
           updated_at: string;
         };
         Insert: {
@@ -336,6 +341,11 @@ export interface Database {
           accent_color?: string;
           font_display?: string;
           font_body?: string;
+          contact_email?: string;
+          contact_phone?: string;
+          whatsapp_number?: string;
+          instagram_url?: string;
+          facebook_url?: string;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["site_theme"]["Insert"]>;
