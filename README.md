@@ -55,3 +55,53 @@ npm run start
   сейчас это просто визуальная имитация без бэкенда.
 - Проставить реальные ссылки на Instagram/WhatsApp/Telegram в `components/Footer.tsx`.
 - Заменить видео и фото на лицензированные материалы компании.
+
+## Тестирование
+
+### Unit-тесты (Vitest)
+
+Проверяют чистые функции без обращения к сети/Supabase — `lib/slugify.ts`,
+`lib/theme-fonts.ts`, `lib/site-url.ts`, `lib/expeditions-shared.ts`.
+
+```bash
+npm run test:unit          # разовый прогон
+npm run test:unit:watch    # в режиме наблюдения
+```
+
+### E2E-тесты (Playwright)
+
+Проверяют реальные сценарии в браузере — требуют рабочего Supabase-проекта с
+опубликованной хотя бы одной экспедицией (см. `.env.local`).
+
+```bash
+npx playwright install     # один раз — скачать браузеры
+npm run test:e2e           # headless-прогон (сам поднимет npm run dev)
+npm run test:e2e:ui        # интерактивный UI-режим Playwright
+```
+
+Тесты в `tests/e2e/`:
+- `homepage.spec.ts` — редирект `/` → `/ru`, hero, переключатель языка, навигация
+- `expeditions.spec.ts` — карточки экспедиций, детальная страница, фильтр по сложности, галерея
+- `application-form.spec.ts` — валидация формы заявки (реальная отправка — опционально,
+  см. ниже)
+- `admin-auth.spec.ts` — редирект неавторизованных на `/admin/login`, ошибка при неверном
+  пароле (успешный вход — опционально, см. ниже)
+
+Два теста по умолчанию пропускаются, так как требуют реальных данных/секретов:
+
+```bash
+# Реальная отправка заявки в Supabase (запускайте только на тестовой базе!)
+E2E_SUBMIT_APPLICATION=true npm run test:e2e
+
+# Успешный вход в админку реальными данными
+E2E_ADMIN_EMAIL=you@example.com E2E_ADMIN_PASSWORD=yourpassword npm run test:e2e
+```
+
+### Playwright MCP
+
+В репозитории есть `.mcp.json` — если открыть проект в **Claude Code**, Claude сможет сам
+управлять браузером (открывать страницы, кликать, делать скриншоты) через
+[Playwright MCP](https://github.com/microsoft/playwright-mcp) без необходимости писать
+тестовый код руками — полезно для быстрой отладки «покажи, что не так с этой страницей».
+Ничего дополнительно устанавливать не нужно — конфиг подхватывается автоматически при
+следующем запуске Claude Code в этой папке.
