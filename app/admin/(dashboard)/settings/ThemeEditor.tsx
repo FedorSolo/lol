@@ -29,7 +29,7 @@ export default function ThemeEditor({ initial }: { initial: SiteTheme }) {
   }
 
   async function handleReset() {
-    if (!confirm("Сбросить фон, цвет и шрифты к значениям по умолчанию?")) return;
+    if (!confirm("Сбросить фон, цвет и шрифты к значениям по умолчанию? Контакты не изменятся.")) return;
     setSaving(true);
     const result = await resetSiteTheme();
     setSaving(false);
@@ -139,7 +139,7 @@ export default function ThemeEditor({ initial }: { initial: SiteTheme }) {
             className="inline-flex items-center gap-2 text-mist hover:text-red-400 text-sm"
           >
             <RotateCcw className="w-4 h-4" />
-            Сбросить всё
+            Сбросить дизайн
           </button>
         </div>
       </div>
@@ -169,6 +169,62 @@ export default function ThemeEditor({ initial }: { initial: SiteTheme }) {
         <p className="text-xs text-mist mt-3">
           Превью примерное — шрифты в нём подгружаются с Google Fonts и могут появиться не сразу.
         </p>
+      </div>
+
+      <div className="lg:col-span-2 border-t border-white/10 pt-8">
+        <h3 className="font-display text-lg uppercase text-snow tracking-wide mb-1">Контакты</h3>
+        <p className="text-xs text-mist mb-5">
+          Отображаются в подвале сайта на всех страницах и языках. Пустые поля — соответствующая
+          иконка/ссылка просто не показывается.
+        </p>
+
+        <div className="grid sm:grid-cols-2 gap-5 max-w-3xl">
+          <div>
+            <label className={labelClass}>Email</label>
+            <input
+              className={inputClass}
+              placeholder="info@cumbre.com"
+              value={theme.contactEmail}
+              onChange={(e) => setTheme((t) => ({ ...t, contactEmail: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Телефон</label>
+            <input
+              className={inputClass}
+              placeholder="+54 9 261 000-00-00"
+              value={theme.contactPhone}
+              onChange={(e) => setTheme((t) => ({ ...t, contactPhone: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>WhatsApp (номер с кодом страны, без +)</label>
+            <input
+              className={inputClass}
+              placeholder="5492610000000"
+              value={theme.whatsappNumber}
+              onChange={(e) => setTheme((t) => ({ ...t, whatsappNumber: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Instagram (ссылка)</label>
+            <input
+              className={inputClass}
+              placeholder="https://instagram.com/cumbre"
+              value={theme.instagramUrl}
+              onChange={(e) => setTheme((t) => ({ ...t, instagramUrl: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Facebook (ссылка)</label>
+            <input
+              className={inputClass}
+              placeholder="https://facebook.com/cumbre"
+              value={theme.facebookUrl}
+              onChange={(e) => setTheme((t) => ({ ...t, facebookUrl: e.target.value }))}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
