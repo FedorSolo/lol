@@ -11,7 +11,8 @@
     "expeditions": "Expeditions",
     "timeline": "Preparation",
     "faq": "FAQ",
-    "apply": "Apply"
+    "apply": "Apply",
+    "gallery": "Gallery"
   },
   "hero": {
     "eyebrow": "Andes Expedition Institute",
@@ -432,5 +433,13 @@
         }
       ]
     }
+  },
+  "stories": {
+    "pageTitle": "Expedition stories",
+    "pageSubtitle": "Photo stories from past expeditions — from the first camp to the summit.",
+    "empty": "Stories will appear here soon.",
+    "backLink": "All stories",
+    "relatedExpedition": "Expedition",
+    "viewExpedition": "View expedition"
   }
 }

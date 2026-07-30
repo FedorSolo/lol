@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Menu, X, Mountain } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
@@ -12,10 +13,10 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { href: "#why", label: t("why") },
-    { href: "#expeditions", label: t("expeditions") },
-    { href: "#timeline", label: t("timeline") },
-    { href: "#faq", label: t("faq") },
+    { href: "/#why", label: t("why") },
+    { href: "/#expeditions", label: t("expeditions") },
+    { href: "/#timeline", label: t("timeline") },
+    { href: "/#faq", label: t("faq") },
   ];
 
   useEffect(() => {
@@ -31,29 +32,34 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 font-display text-2xl tracking-wide">
+        <Link href="/#top" className="flex items-center gap-2 font-display text-2xl tracking-wide">
           <Mountain className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
           <span className="text-snow">{t("brand")}</span>
-        </a>
+        </Link>
 
         <ul className="hidden md:flex items-center gap-9 font-body text-sm text-mist">
           {links.map((l) => (
             <li key={l.href}>
-              <a href={l.href} className="hover:text-snow transition-colors">
+              <Link href={l.href} className="hover:text-snow transition-colors">
                 {l.label}
-              </a>
+              </Link>
             </li>
           ))}
+          <li>
+            <Link href="/stories" className="hover:text-snow transition-colors">
+              {t("gallery")}
+            </Link>
+          </li>
         </ul>
 
         <div className="hidden md:flex items-center gap-6">
           <LanguageSwitcher />
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="inline-flex items-center border border-glacier-light/60 text-snow text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors"
           >
             {t("apply")}
-          </a>
+          </Link>
         </div>
 
         <div className="flex items-center gap-4 md:hidden">
@@ -80,19 +86,24 @@ export default function Navbar() {
             <ul className="flex flex-col px-6 py-4 gap-4 font-body text-mist">
               {links.map((l) => (
                 <li key={l.href}>
-                  <a href={l.href} onClick={() => setOpen(false)} className="hover:text-snow">
+                  <Link href={l.href} onClick={() => setOpen(false)} className="hover:text-snow">
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
               <li>
-                <a
-                  href="#contact"
+                <Link href="/stories" onClick={() => setOpen(false)} className="hover:text-snow">
+                  {t("gallery")}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#contact"
                   onClick={() => setOpen(false)}
                   className="inline-block mt-2 border border-glacier-light/60 text-snow px-5 py-2.5"
                 >
                   {t("apply")}
-                </a>
+                </Link>
               </li>
             </ul>
           </motion.div>
