@@ -475,5 +475,27 @@
     "backLink": "All stories",
     "relatedExpedition": "Expedition",
     "viewExpedition": "View expedition"
+  },
+  "testimonials": {
+    "eyebrow": "Testimonials",
+    "title1": "What climbers",
+    "title2": "say afterward",
+    "items": [
+      {
+        "quote": "Eight weeks of training, and at altitude I felt more confident than I expected. The guide knew the route by heart, and the coach stayed in touch the whole way.",
+        "author": "Dmitri V.",
+        "role": "Aconcagua, 6,961 m"
+      },
+      {
+        "quote": "I worried I wouldn't be fit enough. The personal plan and weekly check-ins took most of that anxiety away before I even flew out.",
+        "author": "Marina K.",
+        "role": "Ojos del Salado, 6,893 m"
+      },
+      {
+        "quote": "The small group mattered. The guide actually knew how each of us was handling the altitude, not just leading a crowd.",
+        "author": "Alexei P.",
+        "role": "Lanín, 3,747 m"
+      }
+    ]
   }
 }

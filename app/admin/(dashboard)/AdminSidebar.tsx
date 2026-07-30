@@ -34,6 +34,7 @@ const CONTENT_SUB_ROUTES = [
   "/admin/photos",
   "/admin/stories",
   "/admin/team",
+  "/admin/testimonials",
   "/admin/faq",
 ];
 

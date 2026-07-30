@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PenLine, BarChart3, Image as ImageIcon, FileText, Users, HelpCircle } from "lucide-react";
+import { PenLine, BarChart3, Image as ImageIcon, FileText, Users, HelpCircle, Star } from "lucide-react";
 
 const sections = [
   {
@@ -31,6 +31,12 @@ const sections = [
     label: "Команда",
     description: "Гиды и тренеры — фото, роли, биографии",
     icon: Users,
+  },
+  {
+    href: "/admin/testimonials",
+    label: "Отзывы",
+    description: "Отзывы клиентов с фото и оценкой — на главной странице",
+    icon: Star,
   },
   {
     href: "/admin/faq",
