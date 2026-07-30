@@ -2,8 +2,7 @@ import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { getAllPublishedSlugs } from "@/lib/expeditions-data";
 import { getAllPublishedStorySlugs } from "@/lib/stories-data";
-
-const SITE_URL = "https://peakhorizont.vercel.app";
+import { SITE_URL } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [expeditionSlugs, storySlugs] = await Promise.all([

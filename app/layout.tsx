@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { PT_Sans_Narrow, Inter, JetBrains_Mono } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { getSiteTheme } from "@/lib/theme-data";
 import { FONT_DISPLAY_OPTIONS, FONT_BODY_OPTIONS, findFont } from "@/lib/theme-fonts";
+import { SITE_URL } from "@/lib/site-url";
+import JsonLd from "@/components/JsonLd";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+};
 
 // PT Sans Narrow — designed by ParaType (Russian type foundry), native Cyrillic
 // support, narrow proportions that echo topographic-map and altitude signage.
@@ -47,9 +54,20 @@ export default async function RootLayout({
   const bodyFont = findFont(FONT_BODY_OPTIONS, theme.fontBody);
   const customFontLinks = [displayFont, bodyFont].filter((f) => f.googleFontsParam);
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "CUMBRE",
+    url: SITE_URL,
+    ...(theme.contactEmail && { email: theme.contactEmail }),
+    ...(theme.contactPhone && { telephone: theme.contactPhone }),
+    sameAs: [theme.instagramUrl, theme.facebookUrl].filter(Boolean),
+  };
+
   return (
     <html lang={locale} className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <head>
+        <JsonLd data={organizationSchema} />
         {customFontLinks.map((f) => (
           <link
             key={f.key}

@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Link } from "@/i18n/navigation";
 import { getPublicStories } from "@/lib/stories-data";
 import { coverImageFor } from "@/lib/expeditions-shared";
+import { buildHreflangAlternates } from "@/lib/site-url";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export async function generateMetadata({
@@ -22,6 +23,7 @@ export async function generateMetadata({
   return {
     title: `${t("pageTitle")} — ${suffix[locale] ?? suffix.en} | CUMBRE`,
     description: t("pageSubtitle"),
+    alternates: { languages: buildHreflangAlternates("/stories") },
   };
 }
 
