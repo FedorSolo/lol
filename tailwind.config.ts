@@ -8,13 +8,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        obsidian: "#0A0C0F",   // near-black background, cooler than pure black
+        // Editable via /admin/settings (site_theme table) — see globals.css
+        // for the default CSS variable values and app/layout.tsx for how
+        // the admin's saved values get injected at runtime.
+        obsidian: "var(--color-bg)",       // near-black background, cooler than pure black
+        glacier: "var(--color-accent)",    // mountain blue, primary accent
+        "glacier-light": "var(--color-accent-light)",
+        // Not editable — secondary surface/text tones, tuned to work
+        // alongside the default dark background.
         ash: "#15181D",        // dark gray surface
         graphite: "#1F242B",   // elevated dark surface / cards
         stone: "#4A5560",      // secondary text on light
         mist: "#8B96A1",       // muted text on dark
-        glacier: "#3E6C8E",    // mountain blue, primary accent
-        "glacier-light": "#6FA0C2",
         snow: "#F6F8FA",       // off-white background
         frost: "#EDF1F4",      // subtle panel on white
       },

@@ -1,0 +1,41 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { createAdminSupabaseClient } from "@/lib/supabase/server";
+import type { ActionResult } from "../action-result";
+import { DEFAULT_THEME, type SiteTheme } from "@/lib/theme-shared";
+
+export async function getSiteThemeAdmin(): Promise<SiteTheme> {
+  const supabase = createAdminSupabaseClient();
+  const { data } = await supabase.from("site_theme").select("*").eq("id", true).maybeSingle();
+  if (!data) return DEFAULT_THEME;
+  return {
+    backgroundColor: data.background_color,
+    accentColor: data.accent_color,
+    fontDisplay: data.font_display,
+    fontBody: data.font_body,
+  };
+}
+
+export async function saveSiteTheme(theme: SiteTheme): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase
+    .from("site_theme")
+    .update({
+      background_color: theme.backgroundColor,
+      accent_color: theme.accentColor,
+      font_display: theme.fontDisplay,
+      font_body: theme.fontBody,
+    })
+    .eq("id", true);
+
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/admin/settings");
+  revalidatePath("/[locale]", "layout");
+  return { ok: true };
+}
+
+export async function resetSiteTheme(): Promise<ActionResult> {
+  return saveSiteTheme(DEFAULT_THEME);
+}

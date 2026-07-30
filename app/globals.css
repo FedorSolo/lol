@@ -2,18 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Defaults — overridden at runtime by app/layout.tsx from the site_theme
+     table (see /admin/settings) when the admin has customized them. */
+  --color-bg: #0A0C0F;
+  --color-accent: #3E6C8E;
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 60%, white);
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #0A0C0F;
+  background-color: var(--color-bg);
   color: #F6F8FA;
   font-family: var(--font-body);
 }
 
 ::selection {
-  background: #3E6C8E;
+  background: var(--color-accent);
   color: #F6F8FA;
 }
 
@@ -21,14 +29,14 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0A0C0F;
+  background: var(--color-bg);
 }
 ::-webkit-scrollbar-thumb {
   background: #1F242B;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3E6C8E;
+  background: var(--color-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -50,6 +58,6 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #6FA0C2;
+  outline: 2px solid var(--color-accent-light);
   outline-offset: 3px;
 }
