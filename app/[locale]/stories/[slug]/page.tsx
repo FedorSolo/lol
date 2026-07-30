@@ -7,6 +7,8 @@ import { Link } from "@/i18n/navigation";
 import { getStoryBySlug, getAllPublishedStorySlugs } from "@/lib/stories-data";
 import { coverImageFor } from "@/lib/expeditions-shared";
 import PhotoLightboxGallery from "@/components/PhotoLightboxGallery";
+import JsonLd from "@/components/JsonLd";
+import { buildHreflangAlternates, SITE_URL } from "@/lib/site-url";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export async function generateStaticParams() {
@@ -26,6 +28,7 @@ export async function generateMetadata({
   return {
     title: `${story.title}${story.year ? ` ${story.year}` : ""} | CUMBRE`,
     description: story.description ?? undefined,
+    alternates: { languages: buildHreflangAlternates(`/stories/${slug}`) },
     openGraph: {
       title: story.title,
       description: story.description ?? undefined,
@@ -50,8 +53,19 @@ export default async function StoryDetailPage({
 
   const cover = story.coverUrl ?? coverImageFor(slug.split("").reduce((s, c) => s + c.charCodeAt(0), 0));
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "CUMBRE", item: `${SITE_URL}/${locale}` },
+      { "@type": "ListItem", position: 2, name: t("pageTitle"), item: `${SITE_URL}/${locale}/stories` },
+      { "@type": "ListItem", position: 3, name: story.title, item: `${SITE_URL}/${locale}/stories/${slug}` },
+    ],
+  };
+
   return (
     <main className="bg-obsidian">
+      <JsonLd data={breadcrumbSchema} />
       <Navbar />
 
       <section className="relative h-[60vh] min-h-[420px] flex items-end">

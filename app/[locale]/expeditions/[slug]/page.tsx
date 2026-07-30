@@ -15,12 +15,14 @@ import {
   X,
   Route as RouteIcon,
 } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import PhotoLightboxGallery from "@/components/PhotoLightboxGallery";
+import JsonLd from "@/components/JsonLd";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Link } from "@/i18n/navigation";
 import { getExpeditionBySlug, getAllPublishedSlugs } from "@/lib/expeditions-data";
 import { coverImageFor } from "@/lib/expeditions-shared";
+import { buildHreflangAlternates, SITE_URL } from "@/lib/site-url";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export async function generateStaticParams() {
@@ -61,6 +63,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { languages: buildHreflangAlternates(`/expeditions/${slug}`) },
     openGraph: {
       title,
       description,
@@ -111,8 +114,60 @@ export default async function ExpeditionDetailPage({
     { icon: Wallet, label: t("priceLabel"), value: expedition.priceFrom != null ? `${expedition.currency === "USD" ? "$" : expedition.currency} ${expedition.priceFrom.toLocaleString("ru-RU")}` : "—" },
   ];
 
+  const pageUrl = `${SITE_URL}/${locale}/expeditions/${slug}`;
+
+  const touristTripSchema = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    name: expedition.title,
+    description: expedition.shortDescription ?? expedition.heroText ?? undefined,
+    image: expedition.coverUrl ?? cover,
+    url: pageUrl,
+    provider: { "@type": "Organization", name: "CUMBRE", url: SITE_URL },
+    ...(expedition.priceFrom != null && {
+      offers: {
+        "@type": "Offer",
+        price: expedition.priceFrom,
+        priceCurrency: expedition.currency,
+        url: pageUrl,
+        availability: "https://schema.org/InStock",
+      },
+    }),
+    ...(expedition.durationDays && { duration: `P${expedition.durationDays}D` }),
+    itinerary: {
+      "@type": "ItemList",
+      itemListElement: itinerary.map((day, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: day.title,
+      })),
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "CUMBRE", item: `${SITE_URL}/${locale}` },
+      { "@type": "ListItem", position: 2, name: expedition.title, item: pageUrl },
+    ],
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+
   return (
     <main className="bg-obsidian">
+      <JsonLd data={touristTripSchema} />
+      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={faqSchema} />
       <Navbar />
 
       {/* 1-3: Hero photo, title, strong short text */}
