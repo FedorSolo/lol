@@ -3,16 +3,40 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, LogOut, type LucideIcon } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  LayoutDashboard,
+  Mountain,
+  BarChart3,
+  Image as ImageIcon,
+  Users,
+  HelpCircle,
+  FileText,
+  Inbox,
+  Settings,
+  PenLine,
+} from "lucide-react";
 import { signOutAction } from "../auth-actions";
 
-interface NavItem {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-}
+// Icons are React components (functions) — they can't be passed as props
+// from a Server Component to a Client Component (RSC serialization
+// boundary), so the nav config lives here rather than in layout.tsx.
+const nav = [
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/expeditions", label: "Экспедиции", icon: Mountain },
+  { href: "/admin/difficulty-levels", label: "Уровни сложности", icon: BarChart3 },
+  { href: "/admin/content", label: "Тексты главной", icon: PenLine },
+  { href: "/admin/photos", label: "Фотографии", icon: ImageIcon },
+  { href: "/admin/stories", label: "Истории экспедиций", icon: FileText },
+  { href: "/admin/team", label: "Команда", icon: Users },
+  { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/admin/applications", label: "Заявки", icon: Inbox },
+  { href: "/admin/settings", label: "Настройки", icon: Settings },
+];
 
-export default function AdminSidebar({ nav, userEmail }: { nav: NavItem[]; userEmail: string }) {
+export default function AdminSidebar({ userEmail }: { userEmail: string }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
