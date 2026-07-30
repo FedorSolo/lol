@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { Link } from "@/i18n/navigation";
 import { getStoryBySlug, getAllPublishedStorySlugs } from "@/lib/stories-data";
 import { coverImageFor } from "@/lib/expeditions-shared";
+import PhotoLightboxGallery from "@/components/PhotoLightboxGallery";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export async function generateStaticParams() {
@@ -68,11 +69,7 @@ export default async function StoryDetailPage({
 
       {story.photoUrls.length > 0 && (
         <section className="max-w-6xl mx-auto px-6 md:px-10 pb-24">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {story.photoUrls.map((url) => (
-              <img key={url} src={url} alt="" loading="lazy" className="w-full h-64 object-cover" />
-            ))}
-          </div>
+          <PhotoLightboxGallery photos={story.photoUrls} title={story.title} />
         </section>
       )}
 

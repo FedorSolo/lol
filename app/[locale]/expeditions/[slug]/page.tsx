@@ -15,6 +15,7 @@ import {
   Route as RouteIcon,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import PhotoLightboxGallery from "@/components/PhotoLightboxGallery";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getExpeditionBySlug, getAllPublishedSlugs } from "@/lib/expeditions-data";
@@ -226,14 +227,14 @@ export default async function ExpeditionDetailPage({
       {/* 21: gallery */}
       <section className="max-w-5xl mx-auto px-6 md:px-10 py-16">
         <h2 className="font-display font-bold uppercase text-2xl text-snow mb-6">{t("galleryTitle")}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {(expedition.galleryUrls.length > 0
-            ? expedition.galleryUrls
-            : [coverImageFor(1), coverImageFor(2), coverImageFor(3), coverImageFor(4)]
-          ).map((url, i) => (
-            <img key={url + i} src={url} alt="" loading="lazy" className="w-full h-40 object-cover" />
-          ))}
-        </div>
+        <PhotoLightboxGallery
+          photos={
+            expedition.galleryUrls.length > 0
+              ? expedition.galleryUrls
+              : [coverImageFor(1), coverImageFor(2), coverImageFor(3), coverImageFor(4)]
+          }
+          title={expedition.title}
+        />
       </section>
 
       {/* 22: FAQ */}
