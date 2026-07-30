@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { ActionResult, ActionResultWithData } from "../action-result";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -28,7 +29,7 @@ export interface FaqFormData {
   i18n: Record<Locale, { question: string; answer: string }>;
 }
 
-export async function saveFaqItem(form: FaqFormData) {
+export async function saveFaqItem(form: FaqFormData): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
   const payload = { sort_order: form.sort_order, is_published: form.is_published, expedition_id: null };
@@ -36,10 +37,10 @@ export async function saveFaqItem(form: FaqFormData) {
   let faqId = form.id;
   if (faqId) {
     const { error } = await supabase.from("faq").update(payload).eq("id", faqId);
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   } else {
     const { data, error } = await supabase.from("faq").insert(payload).select("id").single();
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
     faqId = data.id;
   }
 
@@ -52,17 +53,19 @@ export async function saveFaqItem(form: FaqFormData) {
         { faq_id: faqId, locale, question: t.question, answer: t.answer },
         { onConflict: "faq_id,locale" }
       );
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   }
 
   revalidatePath("/admin/faq");
   revalidatePath("/[locale]", "page");
+  return { ok: true, data: { id: faqId } };
 }
 
-export async function deleteFaqItem(id: string) {
+export async function deleteFaqItem(id: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { error } = await supabase.from("faq").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/faq");
   revalidatePath("/[locale]", "page");
+  return { ok: true };
 }

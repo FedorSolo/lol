@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { ActionResult, ActionResultWithData } from "../action-result";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -28,7 +29,9 @@ export interface TeamMemberFormData {
   i18n: Record<Locale, { name: string; role: string; bio: string }>;
 }
 
-export async function saveTeamMember(form: TeamMemberFormData) {
+export async function saveTeamMember(
+  form: TeamMemberFormData
+): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
   const payload = {
@@ -44,10 +47,10 @@ export async function saveTeamMember(form: TeamMemberFormData) {
 
   if (memberId) {
     const { error } = await supabase.from("team_members").update(payload).eq("id", memberId);
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   } else {
     const { data, error } = await supabase.from("team_members").insert(payload).select("id").single();
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
     memberId = data.id;
   }
 
@@ -60,17 +63,19 @@ export async function saveTeamMember(form: TeamMemberFormData) {
         { member_id: memberId, locale, name: t.name, role: t.role, bio: t.bio || null },
         { onConflict: "member_id,locale" }
       );
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   }
 
   revalidatePath("/admin/team");
   revalidatePath("/[locale]", "page");
+  return { ok: true, data: { id: memberId } };
 }
 
-export async function deleteTeamMember(id: string) {
+export async function deleteTeamMember(id: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { error } = await supabase.from("team_members").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/team");
   revalidatePath("/[locale]", "page");
+  return { ok: true };
 }

@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { ActionResult, ActionResultWithData } from "../action-result";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -84,7 +84,9 @@ export interface ExpeditionFormData {
   >;
 }
 
-export async function upsertExpedition(form: ExpeditionFormData) {
+export async function upsertExpedition(
+  form: ExpeditionFormData
+): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
   const payload = {
@@ -106,10 +108,10 @@ export async function upsertExpedition(form: ExpeditionFormData) {
 
   if (expeditionId) {
     const { error } = await supabase.from("expeditions").update(payload).eq("id", expeditionId);
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   } else {
     const { data, error } = await supabase.from("expeditions").insert(payload).select("id").single();
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
     expeditionId = data.id;
   }
 
@@ -129,16 +131,17 @@ export async function upsertExpedition(form: ExpeditionFormData) {
       },
       { onConflict: "expedition_id,locale" }
     );
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   }
 
   revalidatePath("/admin/expeditions");
-  redirect("/admin/expeditions");
+  return { ok: true, data: { id: expeditionId } };
 }
 
-export async function deleteExpedition(id: string) {
+export async function deleteExpedition(id: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { error } = await supabase.from("expeditions").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/expeditions");
+  return { ok: true };
 }
