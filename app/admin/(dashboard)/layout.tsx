@@ -10,6 +10,7 @@ import {
   Inbox,
   Settings,
   LogOut,
+  PenLine,
 } from "lucide-react";
 import { requireAdmin, signOutAction } from "../auth-actions";
 
@@ -17,6 +18,7 @@ const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/expeditions", label: "Экспедиции", icon: Mountain },
   { href: "/admin/difficulty-levels", label: "Уровни сложности", icon: BarChart3 },
+  { href: "/admin/content", label: "Тексты главной", icon: PenLine },
   { href: "/admin/photos", label: "Фотографии", icon: ImageIcon },
   { href: "/admin/stories", label: "Истории экспедиций", icon: FileText },
   { href: "/admin/team", label: "Команда", icon: Users },

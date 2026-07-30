@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
 import {
   Compass,
   Layers,
@@ -13,9 +12,9 @@ import {
   ShieldCheck,
   LucideIcon,
 } from "lucide-react";
+import type { WhyContent } from "@/lib/site-content-shared";
 
-// Icons are code, not content — order must match the "why.items" array in
-// messages/{locale}.json.
+// Icons are code, not content — order must match the "items" array.
 const ICONS: LucideIcon[] = [
   Compass,
   Layers,
@@ -27,32 +26,24 @@ const ICONS: LucideIcon[] = [
   ShieldCheck,
 ];
 
-interface Item {
-  title: string;
-  text: string;
-}
-
-export default function WhyDifferent() {
-  const t = useTranslations("why");
-  const items = t.raw("items") as Item[];
-
+export default function WhyDifferent({ content }: { content: WhyContent }) {
   return (
     <section id="why" className="bg-obsidian py-28 md:py-36">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-12 gap-10 mb-16">
           <p className="md:col-span-4 font-mono text-xs tracking-widest2 uppercase text-glacier-light">
-            {t("eyebrow")}
+            {content.eyebrow}
           </p>
           <h2 className="md:col-span-8 font-display font-bold uppercase text-4xl sm:text-5xl md:text-6xl leading-[1.02] text-snow text-balance">
-            {t("title1")}
+            {content.title1}
             <br />
-            {t("title2")}
+            {content.title2}
           </h2>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10">
-          {items.map((item, i) => {
-            const Icon = ICONS[i];
+          {content.items.map((item, i) => {
+            const Icon = ICONS[i % ICONS.length];
             return (
               <motion.div
                 key={item.title}

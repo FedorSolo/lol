@@ -2,11 +2,10 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useTranslations } from "next-intl";
 import { ArrowDown } from "lucide-react";
+import type { HeroContent } from "@/lib/site-content-shared";
 
-export default function Hero() {
-  const t = useTranslations("hero");
+export default function Hero({ content }: { content: HeroContent }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -16,7 +15,7 @@ export default function Hero() {
   const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.55, 0.92]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
-  const lines = [t("line1"), t("line2"), t("line3")];
+  const lines = [content.line1, content.line2, content.line3];
 
   return (
     <section id="top" ref={ref} className="relative h-[100svh] min-h-[640px] overflow-hidden">
@@ -50,7 +49,7 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="font-mono text-xs md:text-sm tracking-widest2 text-glacier-light uppercase mb-6"
         >
-          {t("eyebrow")}
+          {content.eyebrow}
         </motion.p>
 
         <h1 className="font-display font-bold uppercase text-5xl sm:text-6xl md:text-8xl leading-[0.95] text-snow text-balance max-w-4xl">
@@ -73,7 +72,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.9 }}
           className="mt-8 max-w-xl text-mist text-base md:text-lg font-body"
         >
-          {t("subtitle")}
+          {content.subtitle}
         </motion.p>
 
         <motion.div
@@ -86,13 +85,13 @@ export default function Hero() {
             href="#contact"
             className="bg-snow text-obsidian px-7 py-3.5 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors"
           >
-            {t("applyButton")}
+            {content.applyButton}
           </a>
           <a
             href="#expeditions"
             className="border border-white/30 text-snow px-7 py-3.5 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light transition-colors"
           >
-            {t("viewButton")}
+            {content.viewButton}
           </a>
         </motion.div>
       </motion.div>

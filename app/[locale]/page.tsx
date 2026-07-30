@@ -14,6 +14,7 @@ import Footer from "@/components/Footer";
 import { getPublishedExpeditions, getPublicDifficultyLevels } from "@/lib/expeditions-data";
 import { getPublicTeamMembers } from "@/lib/team-data";
 import { getPublicFaq } from "@/lib/faq-data";
+import { getHomepageContent } from "@/lib/site-content-data";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function Home({
@@ -24,24 +25,25 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [expeditions, levels, teamMembers, faqItems] = await Promise.all([
+  const [expeditions, levels, teamMembers, faqItems, content] = await Promise.all([
     getPublishedExpeditions(locale as Locale),
     getPublicDifficultyLevels(locale as Locale),
     getPublicTeamMembers(locale as Locale),
     getPublicFaq(locale as Locale),
+    getHomepageContent(locale as Locale),
   ]);
 
   return (
     <main className="bg-obsidian">
       <Navbar />
-      <Hero />
-      <Philosophy />
-      <WhyDifferent />
+      <Hero content={content.hero} />
+      <Philosophy content={content.philosophy} />
+      <WhyDifferent content={content.why} />
       <Expeditions expeditions={expeditions} levels={levels} />
-      <Timeline />
+      <Timeline content={content.timeline} />
       <Team members={teamMembers} />
-      <Audience />
-      <ApplicationProcess />
+      <Audience content={content.audience} />
+      <ApplicationProcess content={content.process} />
       <FAQ items={faqItems} />
       <Contact expeditions={expeditions} />
       <Footer />
