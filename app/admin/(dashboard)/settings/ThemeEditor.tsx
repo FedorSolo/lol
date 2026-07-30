@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Save, RotateCcw } from "lucide-react";
 import { saveSiteTheme, resetSiteTheme } from "./actions";
+import ImageUploadField from "../ImageUploadField";
 import { FONT_DISPLAY_OPTIONS, FONT_BODY_OPTIONS, findFont } from "@/lib/theme-fonts";
-import type { SiteTheme } from "@/lib/theme-shared";
+import { DEFAULT_THEME, type SiteTheme } from "@/lib/theme-shared";
 
 export default function ThemeEditor({ initial }: { initial: SiteTheme }) {
   const [theme, setTheme] = useState(initial);
@@ -222,6 +223,47 @@ export default function ThemeEditor({ initial }: { initial: SiteTheme }) {
               placeholder="https://facebook.com/cumbre"
               value={theme.facebookUrl}
               onChange={(e) => setTheme((t) => ({ ...t, facebookUrl: e.target.value }))}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="lg:col-span-2 border-t border-white/10 pt-8">
+        <h3 className="font-display text-lg uppercase text-snow tracking-wide mb-1">
+          Изображения сайта
+        </h3>
+        <p className="text-xs text-mist mb-5">
+          Общие фото, не привязанные к конкретной экспедиции или истории.
+        </p>
+
+        <div className="flex flex-col gap-6 max-w-2xl">
+          <div>
+            <label className={labelClass}>Заставка (постер) видео на главной</label>
+            <ImageUploadField
+              folder="site"
+              value={theme.heroPosterUrl}
+              onChange={(url) => setTheme((t) => ({ ...t, heroPosterUrl: url || DEFAULT_THEME.heroPosterUrl }))}
+              shape="wide"
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Фото в разделе «Почему мы другие»</label>
+            <ImageUploadField
+              folder="site"
+              value={theme.whyPhotoUrl}
+              onChange={(url) => setTheme((t) => ({ ...t, whyPhotoUrl: url || DEFAULT_THEME.whyPhotoUrl }))}
+              shape="wide"
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Фоновое фото за формой заявки</label>
+            <ImageUploadField
+              folder="site"
+              value={theme.contactPhotoUrl}
+              onChange={(url) =>
+                setTheme((t) => ({ ...t, contactPhotoUrl: url || DEFAULT_THEME.contactPhotoUrl }))
+              }
+              shape="wide"
             />
           </div>
         </div>

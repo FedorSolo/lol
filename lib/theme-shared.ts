@@ -8,6 +8,9 @@ export interface SiteTheme {
   whatsappNumber: string;
   instagramUrl: string;
   facebookUrl: string;
+  heroPosterUrl: string;
+  whyPhotoUrl: string;
+  contactPhotoUrl: string;
 }
 
 export const DEFAULT_THEME: SiteTheme = {
@@ -20,4 +23,10 @@ export const DEFAULT_THEME: SiteTheme = {
   whatsappNumber: "",
   instagramUrl: "",
   facebookUrl: "",
+  heroPosterUrl:
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2400&auto=format&fit=crop",
+  whyPhotoUrl:
+    "https://images.unsplash.com/photo-1522163182402-834f871fd851?q=80&w=1200&auto=format&fit=crop",
+  contactPhotoUrl:
+    "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=2400&auto=format&fit=crop",
 };

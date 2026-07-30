@@ -8,7 +8,13 @@ import { createClient } from "@/lib/supabase/client";
 import type { PublicExpedition } from "@/lib/expeditions-shared";
 import type { Locale } from "@/lib/supabase/database.types";
 
-export default function Contact({ expeditions }: { expeditions: PublicExpedition[] }) {
+export default function Contact({
+  expeditions,
+  backgroundPhotoUrl,
+}: {
+  expeditions: PublicExpedition[];
+  backgroundPhotoUrl: string;
+}) {
   const t = useTranslations("contact");
   const locale = useLocale() as Locale;
   const activityLevels = t.raw("activityLevels") as string[];
@@ -65,7 +71,7 @@ export default function Contact({ expeditions }: { expeditions: PublicExpedition
     <section id="contact" className="relative bg-obsidian py-28 md:py-36 overflow-hidden">
       <div className="absolute inset-0 opacity-25">
         <img
-          src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=2400&auto=format&fit=crop"
+          src={backgroundPhotoUrl}
           alt=""
           loading="lazy"
           className="h-full w-full object-cover"

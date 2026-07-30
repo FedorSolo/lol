@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import type { HeroContent } from "@/lib/site-content-shared";
 
-export default function Hero({ content }: { content: HeroContent }) {
+export default function Hero({ content, posterUrl }: { content: HeroContent; posterUrl: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -26,7 +26,7 @@ export default function Hero({ content }: { content: HeroContent }) {
           muted
           loop
           playsInline
-          poster="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2400&auto=format&fit=crop"
+          poster={posterUrl}
         >
           <source
             src="https://assets.mixkit.co/videos/51689/51689-720.mp4"
