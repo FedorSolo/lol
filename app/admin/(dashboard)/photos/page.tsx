@@ -1,5 +1,6 @@
 import { getExpeditionsList, getExpeditionPhotos } from "./actions";
 import PhotoManager, { type PhotoRow } from "./PhotoManager";
+import BackToContentHub from "../BackToContentHub";
 
 export default async function PhotosPage() {
   const expeditions = await getExpeditionsList();
@@ -11,6 +12,7 @@ export default async function PhotosPage() {
 
   return (
     <div>
+      <BackToContentHub />
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-4">Фотографии</h1>
       <p className="text-mist text-sm max-w-lg mb-8">
         Фото привязываются к конкретной экспедиции. Первая загруженная фотография становится

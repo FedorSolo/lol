@@ -9,14 +9,9 @@ import {
   LogOut,
   LayoutDashboard,
   Mountain,
-  BarChart3,
-  Image as ImageIcon,
-  Users,
-  HelpCircle,
-  FileText,
+  Folder,
   Inbox,
   Settings,
-  PenLine,
 } from "lucide-react";
 import { signOutAction } from "../auth-actions";
 
@@ -26,14 +21,20 @@ import { signOutAction } from "../auth-actions";
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/expeditions", label: "Экспедиции", icon: Mountain },
-  { href: "/admin/difficulty-levels", label: "Уровни сложности", icon: BarChart3 },
-  { href: "/admin/content", label: "Тексты главной", icon: PenLine },
-  { href: "/admin/photos", label: "Фотографии", icon: ImageIcon },
-  { href: "/admin/stories", label: "Истории экспедиций", icon: FileText },
-  { href: "/admin/team", label: "Команда", icon: Users },
-  { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/admin/content-hub", label: "Контент", icon: Folder },
   { href: "/admin/applications", label: "Заявки", icon: Inbox },
   { href: "/admin/settings", label: "Настройки", icon: Settings },
+];
+
+// Pages that live "inside" the Контент hub — used so the hub nav item
+// stays highlighted while editing any of them, not just on the hub itself.
+const CONTENT_SUB_ROUTES = [
+  "/admin/content",
+  "/admin/difficulty-levels",
+  "/admin/photos",
+  "/admin/stories",
+  "/admin/team",
+  "/admin/faq",
 ];
 
 export default function AdminSidebar({ userEmail }: { userEmail: string }) {
@@ -56,7 +57,10 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
       <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
         {nav.map((item) => {
           const Icon = item.icon;
-          const active = pathname === item.href;
+          const active =
+            pathname === item.href ||
+            (item.href === "/admin/content-hub" &&
+              CONTENT_SUB_ROUTES.some((r) => pathname.startsWith(r)));
           return (
             <Link
               key={item.href}

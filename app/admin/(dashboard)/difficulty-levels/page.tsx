@@ -1,6 +1,7 @@
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import LevelsBoard from "./LevelsBoard";
 import type { Locale } from "@/lib/supabase/database.types";
+import BackToContentHub from "../BackToContentHub";
 
 export default async function DifficultyLevelsPage() {
   const supabase = createAdminSupabaseClient();
@@ -20,6 +21,7 @@ export default async function DifficultyLevelsPage() {
 
   return (
     <div>
+      <BackToContentHub />
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-8">
         Уровни сложности
       </h1>

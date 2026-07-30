@@ -2,6 +2,7 @@ import { getFaqItems } from "./actions";
 import FaqBoard from "./FaqBoard";
 import type { FaqFormData } from "./actions";
 import type { Locale } from "@/lib/supabase/database.types";
+import BackToContentHub from "../BackToContentHub";
 
 export default async function FaqPage() {
   const items = await getFaqItems();
@@ -19,6 +20,7 @@ export default async function FaqPage() {
 
   return (
     <div>
+      <BackToContentHub />
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-8">FAQ</h1>
       <FaqBoard items={data} />
     </div>
