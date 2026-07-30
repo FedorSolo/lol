@@ -23,6 +23,8 @@ const emptyI18n = {
   fitness_requirements: "",
   experience_requirements: "",
   preparation_text: "",
+  meta_title: "",
+  meta_description: "",
 };
 
 export default function ExpeditionForm({
@@ -40,6 +42,8 @@ export default function ExpeditionForm({
         fitness_requirements: string | null;
         experience_requirements: string | null;
         preparation_text: string | null;
+        meta_title: string | null;
+        meta_description: string | null;
       } | null
     >;
   };
@@ -73,6 +77,8 @@ export default function ExpeditionForm({
             fitness_requirements: initial.i18n.ru.fitness_requirements ?? "",
             experience_requirements: initial.i18n.ru.experience_requirements ?? "",
             preparation_text: initial.i18n.ru.preparation_text ?? "",
+            meta_title: initial.i18n.ru.meta_title ?? "",
+            meta_description: initial.i18n.ru.meta_description ?? "",
           }
         : { ...emptyI18n },
       es: initial?.i18n.es
@@ -83,6 +89,8 @@ export default function ExpeditionForm({
             fitness_requirements: initial.i18n.es.fitness_requirements ?? "",
             experience_requirements: initial.i18n.es.experience_requirements ?? "",
             preparation_text: initial.i18n.es.preparation_text ?? "",
+            meta_title: initial.i18n.es.meta_title ?? "",
+            meta_description: initial.i18n.es.meta_description ?? "",
           }
         : { ...emptyI18n },
       en: initial?.i18n.en
@@ -93,6 +101,8 @@ export default function ExpeditionForm({
             fitness_requirements: initial.i18n.en.fitness_requirements ?? "",
             experience_requirements: initial.i18n.en.experience_requirements ?? "",
             preparation_text: initial.i18n.en.preparation_text ?? "",
+            meta_title: initial.i18n.en.meta_title ?? "",
+            meta_description: initial.i18n.en.meta_description ?? "",
           }
         : { ...emptyI18n },
     },
@@ -309,6 +319,33 @@ export default function ExpeditionForm({
               rows={4}
               value={form.i18n[activeLocale].preparation_text}
               onChange={(e) => updateI18n(activeLocale, "preparation_text", e.target.value)}
+              className={`${inputClass} resize-none`}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-10 pt-8 border-t border-white/10">
+        <p className="font-mono text-xs tracking-widest2 uppercase text-glacier-light mb-4">
+          SEO ({activeLocale.toUpperCase()})
+        </p>
+        <div className="flex flex-col gap-5">
+          <div>
+            <label className={labelClass}>Meta title (заголовок в поиске, до ~60 символов)</label>
+            <input
+              value={form.i18n[activeLocale].meta_title}
+              onChange={(e) => updateI18n(activeLocale, "meta_title", e.target.value)}
+              placeholder="Восхождение на Аконкагуа — экспедиция с полной подготовкой | CUMBRE"
+              className={inputClass}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Meta description (описание в поиске, до ~160 символов)</label>
+            <textarea
+              rows={2}
+              value={form.i18n[activeLocale].meta_description}
+              onChange={(e) => updateI18n(activeLocale, "meta_description", e.target.value)}
+              placeholder="Экспедиция на Аконкагуа с 8-недельной физической подготовкой, лицензированным горным гидом и контролем здоровья. Узнайте программу и подайте заявку."
               className={`${inputClass} resize-none`}
             />
           </div>

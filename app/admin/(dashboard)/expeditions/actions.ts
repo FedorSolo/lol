@@ -80,6 +80,8 @@ export interface ExpeditionFormData {
       fitness_requirements: string;
       experience_requirements: string;
       preparation_text: string;
+      meta_title: string;
+      meta_description: string;
     }
   >;
 }
@@ -128,6 +130,8 @@ export async function upsertExpedition(
         fitness_requirements: t.fitness_requirements || null,
         experience_requirements: t.experience_requirements || null,
         preparation_text: t.preparation_text || null,
+        meta_title: t.meta_title || null,
+        meta_description: t.meta_description || null,
       },
       { onConflict: "expedition_id,locale" }
     );
