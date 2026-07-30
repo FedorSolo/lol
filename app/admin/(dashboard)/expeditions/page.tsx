@@ -8,7 +8,7 @@ export default async function ExpeditionsListPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <h1 className="font-display text-3xl uppercase text-snow tracking-wide">Экспедиции</h1>
         <Link
           href="/admin/expeditions/new"
@@ -19,7 +19,7 @@ export default async function ExpeditionsListPage() {
         </Link>
       </div>
 
-      <div className="border border-white/10">
+      <div className="border border-white/10 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 text-left text-mist text-xs uppercase tracking-wide">
