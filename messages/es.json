@@ -11,7 +11,8 @@
     "expeditions": "Expediciones",
     "timeline": "Preparación",
     "faq": "Preguntas",
-    "apply": "Postular"
+    "apply": "Postular",
+    "gallery": "Galería"
   },
   "hero": {
     "eyebrow": "Instituto de Expediciones de los Andes",
@@ -432,5 +433,13 @@
         }
       ]
     }
+  },
+  "stories": {
+    "pageTitle": "Historias de expediciones",
+    "pageSubtitle": "Historias fotográficas de expediciones pasadas — desde el primer campamento hasta la cumbre.",
+    "empty": "Pronto habrá historias disponibles aquí.",
+    "backLink": "Todas las historias",
+    "relatedExpedition": "Expedición",
+    "viewExpedition": "Ver expedición"
   }
 }
