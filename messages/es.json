@@ -475,5 +475,27 @@
     "backLink": "Todas las historias",
     "relatedExpedition": "Expedición",
     "viewExpedition": "Ver expedición"
+  },
+  "testimonials": {
+    "eyebrow": "Testimonios",
+    "title1": "Lo que dicen",
+    "title2": "quienes ya subieron",
+    "items": [
+      {
+        "quote": "Ocho semanas de preparación y en altitud me sentí más seguro de lo que esperaba. El guía conocía la ruta de memoria y el entrenador estuvo presente todo el proceso.",
+        "author": "Dmitri V.",
+        "role": "Aconcagua, 6.961 m"
+      },
+      {
+        "quote": "Temía no estar a la altura físicamente. El plan personal y las revisiones semanales bajaron gran parte de la ansiedad antes de viajar.",
+        "author": "Marina K.",
+        "role": "Ojos del Salado, 6.893 m"
+      },
+      {
+        "quote": "Que el grupo fuera pequeño fue clave. El guía realmente sabía cómo llevaba la altitud cada uno, no solo guiaba a un grupo grande.",
+        "author": "Alexéi P.",
+        "role": "Lanín, 3.747 m"
+      }
+    ]
   }
 }
