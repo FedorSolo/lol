@@ -64,6 +64,40 @@
         "title": "Maximum safety",
         "text": "The decision to allow you on the mountain is based on data, not on the desire to sell a tour."
       }
+    ],
+    "comparisonTitle": "Typical agency",
+    "comparisonTitleUs": "CUMBRE",
+    "comparisonRows": [
+      {
+        "label": "Pre-departure preparation",
+        "generic": "Not included",
+        "us": "8–10 weeks included"
+      },
+      {
+        "label": "Group size",
+        "generic": "10–20+ people",
+        "us": "Up to 8 people"
+      },
+      {
+        "label": "Guide on the route",
+        "generic": "An escort",
+        "us": "Licensed mountain guide"
+      },
+      {
+        "label": "Health monitoring",
+        "generic": "None",
+        "us": "Weekly heart rate & recovery"
+      },
+      {
+        "label": "Personal coach",
+        "generic": "Not included",
+        "us": "Throughout the whole cycle"
+      },
+      {
+        "label": "Decision to summit",
+        "generic": "A formality",
+        "us": "Based on data"
+      }
     ]
   },
   "expeditions": {

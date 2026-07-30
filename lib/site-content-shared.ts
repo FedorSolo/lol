@@ -18,11 +18,20 @@ export interface TextItem {
   text: string;
 }
 
+export interface ComparisonRow {
+  label: string;
+  generic: string;
+  us: string;
+}
+
 export interface WhyContent {
   eyebrow: string;
   title1: string;
   title2: string;
   items: TextItem[];
+  comparisonTitle?: string;
+  comparisonTitleUs?: string;
+  comparisonRows?: ComparisonRow[];
 }
 
 export interface TimelineStep {
