@@ -3,6 +3,7 @@ import StoriesBoard from "./StoriesBoard";
 import type { StoryFormData } from "./actions";
 import type { StoryPhotoRow } from "./StoryCard";
 import type { Locale } from "@/lib/supabase/database.types";
+import BackToContentHub from "../BackToContentHub";
 
 export default async function StoriesPage() {
   const [stories, expeditions] = await Promise.all([getStories(), getExpeditionsForPicker()]);
@@ -29,6 +30,7 @@ export default async function StoriesPage() {
 
   return (
     <div>
+      <BackToContentHub />
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-4">
         Истории экспедиций
       </h1>

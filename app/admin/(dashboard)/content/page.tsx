@@ -1,6 +1,7 @@
 import { getHomepageContent } from "@/lib/site-content-data";
 import ContentBlockEditor from "./ContentBlockEditor";
 import type { Locale } from "@/lib/supabase/database.types";
+import BackToContentHub from "../BackToContentHub";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -10,6 +11,7 @@ export default async function ContentPage() {
 
   return (
     <div>
+      <BackToContentHub />
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-2">
         Тексты главной страницы
       </h1>

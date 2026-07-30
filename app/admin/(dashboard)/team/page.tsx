@@ -2,6 +2,7 @@ import { getTeamMembers } from "./actions";
 import TeamBoard from "./TeamBoard";
 import type { Locale } from "@/lib/supabase/database.types";
 import type { TeamMemberFormData } from "./actions";
+import BackToContentHub from "../BackToContentHub";
 
 export default async function TeamPage() {
   const members = await getTeamMembers();
@@ -23,6 +24,7 @@ export default async function TeamPage() {
 
   return (
     <div>
+      <BackToContentHub />
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-8">Команда</h1>
       <TeamBoard members={data} />
     </div>
