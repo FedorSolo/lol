@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   LayoutDashboard,
   Mountain,
@@ -9,10 +8,10 @@ import {
   FileText,
   Inbox,
   Settings,
-  LogOut,
   PenLine,
 } from "lucide-react";
-import { requireAdmin, signOutAction } from "../auth-actions";
+import { requireAdmin } from "../auth-actions";
+import AdminSidebar from "./AdminSidebar";
 
 const nav = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -35,43 +34,11 @@ export default async function AdminDashboardLayout({
   const user = await requireAdmin();
 
   return (
-    <div className="min-h-screen bg-obsidian flex">
-      <aside className="w-64 shrink-0 border-r border-white/10 flex flex-col">
-        <div className="px-6 py-6 border-b border-white/10">
-          <span className="font-display text-xl text-snow tracking-wide">CUMBRE ADMIN</span>
-        </div>
-
-        <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
-          {nav.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-3 px-3 py-2.5 text-sm text-mist hover:text-snow hover:bg-ash rounded-md transition-colors"
-              >
-                <Icon className="w-4 h-4" strokeWidth={1.5} />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="px-3 py-4 border-t border-white/10">
-          <p className="px-3 text-xs text-mist truncate mb-2">{user.email}</p>
-          <form action={signOutAction}>
-            <button
-              type="submit"
-              className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-mist hover:text-snow hover:bg-ash rounded-md transition-colors"
-            >
-              <LogOut className="w-4 h-4" strokeWidth={1.5} />
-              Выйти
-            </button>
-          </form>
-        </div>
-      </aside>
-
-      <main className="flex-1 px-10 py-10 max-w-6xl">{children}</main>
+    <div className="min-h-screen bg-obsidian flex flex-col md:flex-row">
+      <AdminSidebar nav={nav} userEmail={user.email ?? ""} />
+      <main className="flex-1 px-5 py-8 md:px-10 md:py-10 max-w-6xl w-full overflow-x-hidden">
+        {children}
+      </main>
     </div>
   );
 }
