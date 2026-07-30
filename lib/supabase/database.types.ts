@@ -321,6 +321,26 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["site_settings_i18n"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      site_theme: {
+        Row: {
+          id: boolean;
+          background_color: string;
+          accent_color: string;
+          font_display: string;
+          font_body: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: boolean;
+          background_color?: string;
+          accent_color?: string;
+          font_display?: string;
+          font_body?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["site_theme"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
