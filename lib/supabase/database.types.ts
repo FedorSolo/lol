@@ -333,6 +333,9 @@ export interface Database {
           whatsapp_number: string;
           instagram_url: string;
           facebook_url: string;
+          hero_poster_url: string;
+          why_photo_url: string;
+          contact_photo_url: string;
           updated_at: string;
         };
         Insert: {
@@ -346,6 +349,9 @@ export interface Database {
           whatsapp_number?: string;
           instagram_url?: string;
           facebook_url?: string;
+          hero_poster_url?: string;
+          why_photo_url?: string;
+          contact_photo_url?: string;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["site_theme"]["Insert"]>;

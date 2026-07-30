@@ -19,6 +19,9 @@ export async function getSiteThemeAdmin(): Promise<SiteTheme> {
     whatsappNumber: data.whatsapp_number ?? "",
     instagramUrl: data.instagram_url ?? "",
     facebookUrl: data.facebook_url ?? "",
+    heroPosterUrl: data.hero_poster_url ?? DEFAULT_THEME.heroPosterUrl,
+    whyPhotoUrl: data.why_photo_url ?? DEFAULT_THEME.whyPhotoUrl,
+    contactPhotoUrl: data.contact_photo_url ?? DEFAULT_THEME.contactPhotoUrl,
   };
 }
 
@@ -36,6 +39,9 @@ export async function saveSiteTheme(theme: SiteTheme): Promise<ActionResult> {
       whatsapp_number: theme.whatsappNumber,
       instagram_url: theme.instagramUrl,
       facebook_url: theme.facebookUrl,
+      hero_poster_url: theme.heroPosterUrl,
+      why_photo_url: theme.whyPhotoUrl,
+      contact_photo_url: theme.contactPhotoUrl,
     })
     .eq("id", true);
 
@@ -43,12 +49,13 @@ export async function saveSiteTheme(theme: SiteTheme): Promise<ActionResult> {
 
   revalidatePath("/admin/settings");
   revalidatePath("/[locale]", "layout");
+  revalidatePath("/[locale]", "page");
   return { ok: true };
 }
 
 export async function resetSiteTheme(): Promise<ActionResult> {
-  // Only resets background/accent/fonts — contact info is a separate
-  // concern and shouldn't be wiped by "reset design to defaults".
+  // Only resets background/accent/fonts — contact info and site images
+  // are separate concerns and shouldn't be wiped by "reset design".
   const current = await getSiteThemeAdmin();
   return saveSiteTheme({
     ...current,

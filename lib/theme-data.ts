@@ -18,6 +18,9 @@ export async function getSiteTheme(): Promise<SiteTheme> {
       whatsappNumber: data.whatsapp_number ?? "",
       instagramUrl: data.instagram_url ?? "",
       facebookUrl: data.facebook_url ?? "",
+      heroPosterUrl: data.hero_poster_url ?? DEFAULT_THEME.heroPosterUrl,
+      whyPhotoUrl: data.why_photo_url ?? DEFAULT_THEME.whyPhotoUrl,
+      contactPhotoUrl: data.contact_photo_url ?? DEFAULT_THEME.contactPhotoUrl,
     };
   } catch {
     // Table might not exist yet if the 0002_site_theme.sql migration

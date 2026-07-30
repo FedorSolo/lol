@@ -16,6 +16,7 @@ import { getPublishedExpeditions, getPublicDifficultyLevels } from "@/lib/expedi
 import { getPublicTeamMembers } from "@/lib/team-data";
 import { getPublicFaq } from "@/lib/faq-data";
 import { getHomepageContent } from "@/lib/site-content-data";
+import { getSiteTheme } from "@/lib/theme-data";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function Home({
@@ -26,13 +27,14 @@ export default async function Home({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [expeditions, levels, teamMembers, faqItems, content, tFaq] = await Promise.all([
+  const [expeditions, levels, teamMembers, faqItems, content, tFaq, theme] = await Promise.all([
     getPublishedExpeditions(locale as Locale),
     getPublicDifficultyLevels(locale as Locale),
     getPublicTeamMembers(locale as Locale),
     getPublicFaq(locale as Locale),
     getHomepageContent(locale as Locale),
     getTranslations({ locale, namespace: "faq" }),
+    getSiteTheme(),
   ]);
 
   // Same real-data-or-fallback logic as components/FAQ.tsx, so the
@@ -56,16 +58,16 @@ export default async function Home({
     <main className="bg-obsidian">
       <JsonLd data={faqSchema} />
       <Navbar />
-      <Hero content={content.hero} />
+      <Hero content={content.hero} posterUrl={theme.heroPosterUrl} />
       <Philosophy content={content.philosophy} />
-      <WhyDifferent content={content.why} />
+      <WhyDifferent content={content.why} photoUrl={theme.whyPhotoUrl} />
       <Expeditions expeditions={expeditions} levels={levels} />
       <Timeline content={content.timeline} />
       <Team members={teamMembers} />
       <Audience content={content.audience} />
       <ApplicationProcess content={content.process} />
       <FAQ items={faqItems} />
-      <Contact expeditions={expeditions} />
+      <Contact expeditions={expeditions} backgroundPhotoUrl={theme.contactPhotoUrl} />
       <Footer />
     </main>
   );

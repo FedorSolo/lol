@@ -28,12 +28,13 @@ const ICONS: LucideIcon[] = [
   ShieldCheck,
 ];
 
-// Reusing an already-verified image URL from the expedition cover-photo
-// fallback set, rather than introducing an unverified new one.
-const HEADER_PHOTO =
-  "https://images.unsplash.com/photo-1522163182402-834f871fd851?q=80&w=1200&auto=format&fit=crop";
-
-export default function WhyDifferent({ content }: { content: WhyContent }) {
+export default function WhyDifferent({
+  content,
+  photoUrl,
+}: {
+  content: WhyContent;
+  photoUrl: string;
+}) {
   return (
     <section id="why" className="bg-obsidian py-28 md:py-36">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -56,7 +57,7 @@ export default function WhyDifferent({ content }: { content: WhyContent }) {
             className="md:col-span-5 h-56 md:h-72 overflow-hidden border border-white/10"
           >
             <img
-              src={HEADER_PHOTO}
+              src={photoUrl}
               alt=""
               loading="lazy"
               className="w-full h-full object-cover"
