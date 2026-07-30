@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
@@ -25,6 +26,48 @@ import type { Locale } from "@/lib/supabase/database.types";
 export async function generateStaticParams() {
   const slugs = await getAllPublishedSlugs();
   return slugs.map((slug) => ({ slug }));
+}
+
+const FALLBACK_TITLE: Record<Locale, (t: string) => string> = {
+  ru: (t) => `${t} — восхождение с полной подготовкой | CUMBRE`,
+  es: (t) => `${t} — ascenso con preparación completa | CUMBRE`,
+  en: (t) => `${t} — climb with full preparation | CUMBRE`,
+};
+
+const FALLBACK_DESCRIPTION: Record<Locale, (t: string, alt: string) => string> = {
+  ru: (t, alt) =>
+    `Экспедиция на ${t}${alt ? ` (${alt})` : ""}: 8–10 недель физической подготовки, лицензированный горный гид, контроль здоровья и малые группы. Программа, требования и заявка на сайте CUMBRE.`,
+  es: (t, alt) =>
+    `Expedición a ${t}${alt ? ` (${alt})` : ""}: 8–10 semanas de preparación física, guía de montaña con licencia, control médico y grupos pequeños. Programa, requisitos y postulación en CUMBRE.`,
+  en: (t, alt) =>
+    `${t} expedition${alt ? ` (${alt})` : ""}: 8–10 weeks of physical preparation, a licensed mountain guide, medical monitoring, and small groups. Program, requirements, and application at CUMBRE.`,
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const expedition = await getExpeditionBySlug(slug, locale as Locale);
+  if (!expedition) return {};
+
+  const l = locale as Locale;
+  const title = expedition.metaTitle || FALLBACK_TITLE[l](expedition.title);
+  const description =
+    expedition.metaDescription ||
+    FALLBACK_DESCRIPTION[l](expedition.title, expedition.altitudeM ? `${expedition.altitudeM} м` : "");
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: expedition.coverUrl ? [expedition.coverUrl] : undefined,
+      type: "website",
+    },
+  };
 }
 
 export default async function ExpeditionDetailPage({

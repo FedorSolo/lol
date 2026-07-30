@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Navbar from "@/components/Navbar";
@@ -11,6 +12,27 @@ import type { Locale } from "@/lib/supabase/database.types";
 export async function generateStaticParams() {
   const slugs = await getAllPublishedStorySlugs();
   return slugs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const story = await getStoryBySlug(slug, locale as Locale);
+  if (!story) return {};
+
+  return {
+    title: `${story.title}${story.year ? ` ${story.year}` : ""} | CUMBRE`,
+    description: story.description ?? undefined,
+    openGraph: {
+      title: story.title,
+      description: story.description ?? undefined,
+      images: story.coverUrl ? [story.coverUrl] : undefined,
+      type: "article",
+    },
+  };
 }
 
 export default async function StoryDetailPage({

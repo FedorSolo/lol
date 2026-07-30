@@ -71,6 +71,8 @@ export interface FullPublicExpedition extends PublicExpedition {
   fitnessRequirements: string | null;
   experienceRequirements: string | null;
   preparationText: string | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
 }
 
 export async function getExpeditionBySlug(
@@ -139,6 +141,8 @@ export async function getExpeditionBySlug(
     fitnessRequirements: t?.fitness_requirements ?? null,
     experienceRequirements: t?.experience_requirements ?? null,
     preparationText: t?.preparation_text ?? null,
+    metaTitle: t?.meta_title ?? null,
+    metaDescription: t?.meta_description ?? null,
   };
 }
 

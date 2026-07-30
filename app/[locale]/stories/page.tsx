@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -5,6 +6,24 @@ import { Link } from "@/i18n/navigation";
 import { getPublicStories } from "@/lib/stories-data";
 import { coverImageFor } from "@/lib/expeditions-shared";
 import type { Locale } from "@/lib/supabase/database.types";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "stories" });
+  const suffix: Record<string, string> = {
+    ru: "фото восхождений на Аконкагуа и другие вершины Анд",
+    es: "fotos de ascensos al Aconcagua y otras cumbres de los Andes",
+    en: "photos from Aconcagua climbs and other Andes summits",
+  };
+  return {
+    title: `${t("pageTitle")} — ${suffix[locale] ?? suffix.en} | CUMBRE`,
+    description: t("pageSubtitle"),
+  };
+}
 
 export default async function StoriesPage({
   params,
