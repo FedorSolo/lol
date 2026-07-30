@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
+import type { ActionResult } from "../action-result";
 
 export async function getExpeditionsList() {
   const supabase = createAdminSupabaseClient();
@@ -28,7 +29,7 @@ export async function getExpeditionPhotos(expeditionId: string) {
   return data ?? [];
 }
 
-export async function addExpeditionPhoto(expeditionId: string, url: string) {
+export async function addExpeditionPhoto(expeditionId: string, url: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { count } = await supabase
     .from("expedition_photos")
@@ -41,30 +42,33 @@ export async function addExpeditionPhoto(expeditionId: string, url: string) {
     is_cover: (count ?? 0) === 0, // first photo becomes the cover automatically
     sort_order: count ?? 0,
   });
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/admin/photos");
   revalidatePath("/[locale]", "page");
   revalidatePath("/[locale]/expeditions/[slug]", "page");
+  return { ok: true };
 }
 
-export async function setCoverPhoto(expeditionId: string, photoId: string) {
+export async function setCoverPhoto(expeditionId: string, photoId: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   await supabase.from("expedition_photos").update({ is_cover: false }).eq("expedition_id", expeditionId);
   const { error } = await supabase.from("expedition_photos").update({ is_cover: true }).eq("id", photoId);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/admin/photos");
   revalidatePath("/[locale]", "page");
   revalidatePath("/[locale]/expeditions/[slug]", "page");
+  return { ok: true };
 }
 
-export async function deleteExpeditionPhoto(photoId: string) {
+export async function deleteExpeditionPhoto(photoId: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { error } = await supabase.from("expedition_photos").delete().eq("id", photoId);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
 
   revalidatePath("/admin/photos");
   revalidatePath("/[locale]", "page");
   revalidatePath("/[locale]/expeditions/[slug]", "page");
+  return { ok: true };
 }

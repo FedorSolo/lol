@@ -110,16 +110,14 @@ export default function ExpeditionForm({
     e.preventDefault();
     setSaving(true);
     setErrorMsg(null);
-    try {
-      await upsertExpedition(form);
-    } catch (err) {
-      // redirect() from the server action throws internally on success —
-      // only genuine errors reach here.
-      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
-        setErrorMsg(err.message);
-        setSaving(false);
-      }
+    const result = await upsertExpedition(form);
+    if (!result.ok) {
+      setErrorMsg(result.error);
+      setSaving(false);
+      return;
     }
+    router.push("/admin/expeditions");
+    router.refresh();
   }
 
   const inputClass =

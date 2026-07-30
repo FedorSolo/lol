@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { ActionResult, ActionResultWithData } from "../action-result";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -11,7 +12,7 @@ export async function saveDifficultyLevel(input: {
   slug: string;
   sort_order: number;
   i18n: Record<Locale, { name: string; description: string }>;
-}) {
+}): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
   let levelId = input.id;
@@ -21,14 +22,14 @@ export async function saveDifficultyLevel(input: {
       .from("difficulty_levels")
       .update({ slug: input.slug, sort_order: input.sort_order })
       .eq("id", levelId);
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   } else {
     const { data, error } = await supabase
       .from("difficulty_levels")
       .insert({ slug: input.slug, sort_order: input.sort_order })
       .select("id")
       .single();
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
     levelId = data.id;
   }
 
@@ -41,15 +42,17 @@ export async function saveDifficultyLevel(input: {
         { level_id: levelId, locale, name: t.name, description: t.description || null },
         { onConflict: "level_id,locale" }
       );
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   }
 
   revalidatePath("/admin/difficulty-levels");
+  return { ok: true, data: { id: levelId } };
 }
 
-export async function deleteDifficultyLevel(id: string) {
+export async function deleteDifficultyLevel(id: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { error } = await supabase.from("difficulty_levels").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/difficulty-levels");
+  return { ok: true };
 }

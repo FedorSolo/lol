@@ -22,21 +22,28 @@ export default function LevelCard({ level, onSaved }: { level: LevelData; onSave
   const [form, setForm] = useState(level);
   const [locale, setLocale] = useState<Locale>("ru");
   const [saving, setSaving] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   async function handleSave() {
     setSaving(true);
-    try {
-      await saveDifficultyLevel(form);
-      onSaved?.();
-    } finally {
-      setSaving(false);
+    setErrorMsg(null);
+    const result = await saveDifficultyLevel(form);
+    setSaving(false);
+    if (!result.ok) {
+      setErrorMsg(result.error);
+      return;
     }
+    onSaved?.();
   }
 
   async function handleDelete() {
     if (!form.id) return;
     if (!confirm("Удалить уровень сложности?")) return;
-    await deleteDifficultyLevel(form.id);
+    const result = await deleteDifficultyLevel(form.id);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
     onSaved?.();
   }
 
@@ -103,6 +110,8 @@ export default function LevelCard({ level, onSaved }: { level: LevelData; onSave
           }
         />
       </div>
+
+      {errorMsg && <p className="text-xs text-red-400 mb-3">{errorMsg}</p>}
 
       <div className="flex items-center gap-3">
         <button

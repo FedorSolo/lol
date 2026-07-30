@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { ActionResult, ActionResultWithData } from "../action-result";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
@@ -40,7 +41,9 @@ export interface StoryFormData {
   i18n: Record<Locale, { title: string; description: string }>;
 }
 
-export async function saveStory(form: StoryFormData) {
+export async function saveStory(
+  form: StoryFormData
+): Promise<ActionResultWithData<{ id: string }>> {
   const supabase = createAdminSupabaseClient();
 
   const payload = {
@@ -55,10 +58,10 @@ export async function saveStory(form: StoryFormData) {
   let storyId = form.id;
   if (storyId) {
     const { error } = await supabase.from("gallery_stories").update(payload).eq("id", storyId);
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: friendlyStoryError(error.message) };
   } else {
     const { data, error } = await supabase.from("gallery_stories").insert(payload).select("id").single();
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: friendlyStoryError(error.message) };
     storyId = data.id;
   }
 
@@ -71,23 +74,31 @@ export async function saveStory(form: StoryFormData) {
         { story_id: storyId, locale, title: t.title, description: t.description || null },
         { onConflict: "story_id,locale" }
       );
-    if (error) throw new Error(error.message);
+    if (error) return { ok: false, error: error.message };
   }
 
   revalidatePath("/admin/stories");
   revalidatePath("/[locale]/stories", "page");
-  return storyId;
+  return { ok: true, data: { id: storyId } };
 }
 
-export async function deleteStory(id: string) {
+function friendlyStoryError(message: string): string {
+  if (message.includes("gallery_stories_slug_key") || message.includes("duplicate key")) {
+    return "Такой slug уже используется другой историей — придумайте уникальный (например, добавьте год: aconcagua-2026).";
+  }
+  return message;
+}
+
+export async function deleteStory(id: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { error } = await supabase.from("gallery_stories").delete().eq("id", id);
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/stories");
   revalidatePath("/[locale]/stories", "page");
+  return { ok: true };
 }
 
-export async function addStoryPhoto(storyId: string, url: string) {
+export async function addStoryPhoto(storyId: string, url: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   const { count } = await supabase
     .from("gallery_story_photos")
@@ -99,15 +110,35 @@ export async function addStoryPhoto(storyId: string, url: string) {
     storage_path: url,
     sort_order: count ?? 0,
   });
-  if (error) throw new Error(error.message);
+  if (error) return { ok: false, error: error.message };
+
+  // First photo becomes the cover automatically, same as expedition photos.
+  if ((count ?? 0) === 0) {
+    await supabase.from("gallery_stories").update({ cover_storage_path: url }).eq("id", storyId);
+  }
+
   revalidatePath("/admin/stories");
   revalidatePath("/[locale]/stories", "page");
+  return { ok: true };
 }
 
-export async function deleteStoryPhoto(photoId: string) {
+export async function setStoryCover(storyId: string, url: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
-  const { error } = await supabase.from("gallery_story_photos").delete().eq("id", photoId);
-  if (error) throw new Error(error.message);
+  const { error } = await supabase
+    .from("gallery_stories")
+    .update({ cover_storage_path: url })
+    .eq("id", storyId);
+  if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/stories");
   revalidatePath("/[locale]/stories", "page");
+  return { ok: true };
+}
+
+export async function deleteStoryPhoto(photoId: string): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase.from("gallery_story_photos").delete().eq("id", photoId);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/admin/stories");
+  revalidatePath("/[locale]/stories", "page");
+  return { ok: true };
 }

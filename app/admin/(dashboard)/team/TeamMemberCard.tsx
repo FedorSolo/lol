@@ -31,20 +31,23 @@ export default function TeamMemberCard({
   async function handleSave() {
     setSaving(true);
     setErrorMsg(null);
-    try {
-      await saveTeamMember(form);
-      onSaved();
-    } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : "Ошибка сохранения");
-    } finally {
-      setSaving(false);
+    const result = await saveTeamMember(form);
+    setSaving(false);
+    if (!result.ok) {
+      setErrorMsg(result.error);
+      return;
     }
+    onSaved();
   }
 
   async function handleDelete() {
     if (!form.id) return;
     if (!confirm("Удалить участника команды?")) return;
-    await deleteTeamMember(form.id);
+    const result = await deleteTeamMember(form.id);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
     onSaved();
   }
 

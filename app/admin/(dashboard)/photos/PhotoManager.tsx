@@ -42,7 +42,11 @@ export default function PhotoManager({
 
   async function handleUpload(url: string | null) {
     if (!url || !selectedId) return;
-    await addExpeditionPhoto(selectedId, url);
+    const result = await addExpeditionPhoto(selectedId, url);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
     // Optimistic-ish: just refetch this expedition's photos from server state
     // by re-adding locally; full accuracy comes back on next page load.
     const newPhoto: PhotoRow = {
@@ -57,7 +61,11 @@ export default function PhotoManager({
 
   function handleSetCover(photoId: string) {
     startTransition(async () => {
-      await setCoverPhoto(selectedId, photoId);
+      const result = await setCoverPhoto(selectedId, photoId);
+      if (!result.ok) {
+        alert(result.error);
+        return;
+      }
       refreshLocal(
         selectedId,
         photos.map((p) => ({ ...p, is_cover: p.id === photoId }))
@@ -67,7 +75,11 @@ export default function PhotoManager({
 
   function handleDelete(photoId: string) {
     startTransition(async () => {
-      await deleteExpeditionPhoto(photoId);
+      const result = await deleteExpeditionPhoto(photoId);
+      if (!result.ok) {
+        alert(result.error);
+        return;
+      }
       refreshLocal(selectedId, photos.filter((p) => p.id !== photoId));
     });
   }

@@ -24,20 +24,23 @@ export default function FaqItemCard({ item, onSaved }: { item: FaqFormData; onSa
   async function handleSave() {
     setSaving(true);
     setErrorMsg(null);
-    try {
-      await saveFaqItem(form);
-      onSaved();
-    } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : "Ошибка сохранения");
-    } finally {
-      setSaving(false);
+    const result = await saveFaqItem(form);
+    setSaving(false);
+    if (!result.ok) {
+      setErrorMsg(result.error);
+      return;
     }
+    onSaved();
   }
 
   async function handleDelete() {
     if (!form.id) return;
     if (!confirm("Удалить вопрос?")) return;
-    await deleteFaqItem(form.id);
+    const result = await deleteFaqItem(form.id);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
     onSaved();
   }
 

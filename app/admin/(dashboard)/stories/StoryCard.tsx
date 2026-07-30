@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Trash2, Save, X } from "lucide-react";
+import { Trash2, Save, X, Star } from "lucide-react";
 import ImageUploadField from "../ImageUploadField";
 import {
   saveStory,
   deleteStory,
   addStoryPhoto,
   deleteStoryPhoto,
+  setStoryCover,
   type StoryFormData,
 } from "./actions";
 import type { Locale } from "@/lib/supabase/database.types";
@@ -17,6 +18,27 @@ const LOCALES: { code: Locale; label: string }[] = [
   { code: "es", label: "ES" },
   { code: "en", label: "EN" },
 ];
+
+// Good-enough Cyrillic -> Latin transliteration for auto-generating a slug
+// from the title when the person leaves the slug field blank.
+const TRANSLIT: Record<string, string> = {
+  а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z",
+  и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r",
+  с: "s", т: "t", у: "u", ф: "f", х: "h", ц: "ts", ч: "ch", ш: "sh", щ: "sch",
+  ъ: "", ы: "y", ь: "", э: "e", ю: "yu", я: "ya",
+};
+
+function slugify(text: string): string {
+  const transliterated = text
+    .toLowerCase()
+    .split("")
+    .map((ch) => TRANSLIT[ch] ?? ch)
+    .join("");
+  return transliterated
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
 
 export interface StoryPhotoRow {
   id: string;
@@ -53,95 +75,118 @@ export default function StoryCard({
   async function handleSave() {
     setSaving(true);
     setErrorMsg(null);
-    try {
-      const id = await saveStory(form);
-      setForm((f) => ({ ...f, id }));
-      onSaved();
-    } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : "Ошибка сохранения");
-    } finally {
-      setSaving(false);
+
+    const anyTitle = form.i18n.ru.title || form.i18n.es.title || form.i18n.en.title;
+    const finalSlug = form.slug.trim() || slugify(anyTitle || `story-${Date.now()}`);
+    const submission = { ...form, slug: finalSlug };
+
+    const result = await saveStory(submission);
+    setSaving(false);
+
+    if (!result.ok) {
+      setErrorMsg(result.error);
+      return;
     }
+
+    setForm({ ...submission, id: result.data.id });
+    onSaved();
   }
 
   async function handleDelete() {
     if (!form.id) return;
     if (!confirm("Удалить историю?")) return;
-    await deleteStory(form.id);
+    const result = await deleteStory(form.id);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
     onSaved();
   }
 
   async function handleAddPhoto(url: string | null) {
     if (!url || !form.id) return;
-    await addStoryPhoto(form.id, url);
+    const result = await addStoryPhoto(form.id, url);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
+    const isFirst = photos.length === 0;
     setPhotos((p) => [...p, { id: `temp-${Date.now()}`, storage_path: url }]);
+    if (isFirst) setForm((f) => ({ ...f, cover_storage_path: url }));
+  }
+
+  function handleSetCover(url: string) {
+    if (!form.id) return;
+    startTransition(async () => {
+      const result = await setStoryCover(form.id!, url);
+      if (!result.ok) {
+        alert(result.error);
+        return;
+      }
+      setForm((f) => ({ ...f, cover_storage_path: url }));
+    });
   }
 
   function handleDeletePhoto(photoId: string) {
     startTransition(async () => {
-      await deleteStoryPhoto(photoId);
+      const result = await deleteStoryPhoto(photoId);
+      if (!result.ok) {
+        alert(result.error);
+        return;
+      }
       setPhotos((p) => p.filter((ph) => ph.id !== photoId));
     });
   }
 
   return (
     <div className="border border-white/10 p-6">
-      <div className="flex flex-wrap items-start gap-6 mb-6">
-        <ImageUploadField
-          folder="stories"
-          value={form.cover_storage_path}
-          onChange={(url) => setForm((f) => ({ ...f, cover_storage_path: url }))}
-          shape="wide"
-        />
-
-        <div className="flex-1 min-w-[240px] grid sm:grid-cols-3 gap-4">
-          <div>
-            <label className={labelClass}>Slug</label>
-            <input
-              className={inputClass}
-              value={form.slug}
-              onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
-              placeholder="aconcagua-2026"
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Год</label>
-            <input
-              type="number"
-              className={inputClass}
-              value={form.year}
-              onChange={(e) => setForm((f) => ({ ...f, year: e.target.value }))}
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Экспедиция</label>
-            <select
-              className={inputClass}
-              value={form.expedition_id}
-              onChange={(e) => setForm((f) => ({ ...f, expedition_id: e.target.value }))}
-            >
-              <option value="" className="bg-obsidian">— не выбрано —</option>
-              {expeditions.map((exp) => (
-                <option key={exp.id} value={exp.id} className="bg-obsidian">
-                  {exp.title}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 pt-1">
+      <div className="grid sm:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label className={labelClass}>Slug (необязательно — сгенерируем из названия)</label>
           <input
-            type="checkbox"
-            id={`pub-${form.id ?? "new"}`}
-            checked={form.is_published}
-            onChange={(e) => setForm((f) => ({ ...f, is_published: e.target.checked }))}
-            className="w-4 h-4"
+            className={inputClass}
+            value={form.slug}
+            onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
+            placeholder="aconcagua-2026"
           />
-          <label htmlFor={`pub-${form.id ?? "new"}`} className="text-sm text-snow">
-            Опубликована
-          </label>
         </div>
+        <div>
+          <label className={labelClass}>Год</label>
+          <input
+            type="number"
+            className={inputClass}
+            value={form.year}
+            onChange={(e) => setForm((f) => ({ ...f, year: e.target.value }))}
+          />
+        </div>
+        <div>
+          <label className={labelClass}>Экспедиция</label>
+          <select
+            className={inputClass}
+            value={form.expedition_id}
+            onChange={(e) => setForm((f) => ({ ...f, expedition_id: e.target.value }))}
+          >
+            <option value="" className="bg-obsidian">— не выбрано —</option>
+            {expeditions.map((exp) => (
+              <option key={exp.id} value={exp.id} className="bg-obsidian">
+                {exp.title}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 mb-6">
+        <input
+          type="checkbox"
+          id={`pub-${form.id ?? "new"}`}
+          checked={form.is_published}
+          onChange={(e) => setForm((f) => ({ ...f, is_published: e.target.checked }))}
+          className="w-4 h-4"
+        />
+        <label htmlFor={`pub-${form.id ?? "new"}`} className="text-sm text-snow">
+          Опубликована
+        </label>
       </div>
 
       <div className="flex gap-1 mb-4 border-b border-white/10">
@@ -184,32 +229,9 @@ export default function StoryCard({
         />
       </div>
 
-      {form.id ? (
-        <div className="mb-6">
-          <label className={labelClass}>Фотографии истории</label>
-          <div className="flex flex-wrap gap-3 mt-2">
-            {photos.map((photo) => (
-              <div key={photo.id} className="relative w-20 h-20 group">
-                <img src={photo.storage_path} alt="" className="w-full h-full object-cover" />
-                <button
-                  onClick={() => handleDeletePhoto(photo.id)}
-                  disabled={pending}
-                  className="absolute -top-2 -right-2 bg-obsidian border border-white/20 text-snow p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            ))}
-            <ImageUploadField folder="stories" value={null} onChange={handleAddPhoto} />
-          </div>
-        </div>
-      ) : (
-        <p className="text-xs text-mist mb-6">Сохраните историю, чтобы добавить к ней фотографии.</p>
-      )}
+      {errorMsg && <p className="text-xs text-red-400 mb-4">{errorMsg}</p>}
 
-      {errorMsg && <p className="text-xs text-red-400 mb-3">{errorMsg}</p>}
-
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 mb-8">
         <button
           onClick={handleSave}
           disabled={saving}
@@ -224,6 +246,50 @@ export default function StoryCard({
           </button>
         )}
       </div>
+
+      {form.id ? (
+        <div>
+          <label className={labelClass}>
+            Фотографии истории — нажмите на звёздочку, чтобы сделать фото обложкой
+          </label>
+          <div className="flex flex-wrap gap-3 mt-2">
+            {photos.map((photo) => {
+              const isCover = form.cover_storage_path === photo.storage_path;
+              return (
+                <div key={photo.id} className="relative w-24 h-24 group">
+                  <img src={photo.storage_path} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-obsidian/0 group-hover:bg-obsidian/60 transition-colors flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                    <button
+                      onClick={() => handleSetCover(photo.storage_path)}
+                      disabled={pending}
+                      title="Сделать обложкой"
+                      className={`p-1.5 border ${isCover ? "border-glacier-light text-glacier-light" : "border-white/40 text-snow"}`}
+                    >
+                      <Star className="w-3.5 h-3.5" fill={isCover ? "currentColor" : "none"} />
+                    </button>
+                    <button
+                      onClick={() => handleDeletePhoto(photo.id)}
+                      disabled={pending}
+                      title="Удалить"
+                      className="p-1.5 border border-white/40 text-snow hover:border-red-400 hover:text-red-400"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  {isCover && (
+                    <span className="absolute top-1 left-1 bg-glacier-light text-obsidian text-[9px] uppercase px-1.5 py-0.5">
+                      Обложка
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+            <ImageUploadField folder="stories" value={null} onChange={handleAddPhoto} />
+          </div>
+        </div>
+      ) : (
+        <p className="text-xs text-mist">Сохраните историю, чтобы добавить к ней фотографии.</p>
+      )}
     </div>
   );
 }

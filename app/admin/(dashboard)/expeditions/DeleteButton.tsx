@@ -9,8 +9,9 @@ export default function DeleteButton({ id }: { id: string }) {
 
   function handleDelete() {
     if (!confirm("Удалить экспедицию безвозвратно?")) return;
-    startTransition(() => {
-      deleteExpedition(id);
+    startTransition(async () => {
+      const result = await deleteExpedition(id);
+      if (!result.ok) alert(result.error);
     });
   }
 
