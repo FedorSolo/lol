@@ -516,6 +516,38 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["client_training_videos"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      training_sessions: {
+        Row: {
+          id: string;
+          client_id: string;
+          session_date: string;
+          title: string;
+          session_type: string;
+          duration_minutes: number | null;
+          distance_km: number | null;
+          elevation_gain_m: number | null;
+          description: string | null;
+          is_completed: boolean;
+          garmin_link: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          client_id: string;
+          session_date: string;
+          title: string;
+          session_type?: string;
+          duration_minutes?: number | null;
+          distance_km?: number | null;
+          elevation_gain_m?: number | null;
+          description?: string | null;
+          is_completed?: boolean;
+          garmin_link?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["training_sessions"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
       expedition_updates: {
         Row: {
           id: string;
