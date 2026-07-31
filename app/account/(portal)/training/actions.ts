@@ -4,6 +4,23 @@ import { revalidatePath } from "next/cache";
 import { createServerSupabaseClient, createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { ActionResult } from "@/lib/action-result";
 
+export async function updateGarminLink(id: string, url: string): Promise<ActionResult> {
+  const supabase = createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "Не авторизован" };
+
+  const { error } = await supabase
+    .from("training_sessions")
+    .update({ garmin_link: url || null })
+    .eq("id", id)
+    .eq("client_id", user.id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/account/training");
+  return { ok: true };
+}
+
 export async function toggleSessionCompleted(id: string, completed: boolean): Promise<ActionResult> {
   const supabase = createServerSupabaseClient();
   const {
