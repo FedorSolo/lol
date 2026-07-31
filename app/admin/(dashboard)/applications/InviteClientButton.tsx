@@ -1,23 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import { UserPlus, Copy, X, CheckCircle2, Mail, AlertTriangle } from "lucide-react";
-import { inviteClient } from "./actions";
+import { UserPlus, Copy, X, CheckCircle2, Mail, AlertTriangle, RotateCw } from "lucide-react";
+import { inviteClient, resendClientInvite } from "./actions";
 
-export default function InviteClientButton({ applicationId }: { applicationId: string }) {
+type Credentials = {
+  email: string;
+  password: string;
+  emailSent: boolean;
+  emailError?: string;
+};
+
+export default function InviteClientButton({
+  applicationId,
+  email,
+  alreadyInvited,
+}: {
+  applicationId: string;
+  email: string;
+  alreadyInvited: boolean;
+}) {
   const [loading, setLoading] = useState(false);
-  const [credentials, setCredentials] = useState<{
-    email: string;
-    password: string;
-    emailSent: boolean;
-    emailError?: string;
-  } | null>(null);
+  const [credentials, setCredentials] = useState<Credentials | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  async function handleInvite() {
+  async function handleClick() {
     setLoading(true);
     setErrorMsg(null);
-    const result = await inviteClient(applicationId);
+    const result = alreadyInvited ? await resendClientInvite(email) : await inviteClient(applicationId);
     setLoading(false);
     if (!result.ok) {
       setErrorMsg(result.error);
@@ -36,12 +46,23 @@ export default function InviteClientButton({ applicationId }: { applicationId: s
   return (
     <>
       <button
-        onClick={handleInvite}
+        onClick={handleClick}
         disabled={loading}
-        className="inline-flex items-center gap-1.5 text-xs text-glacier-light hover:underline disabled:opacity-50"
+        className={`inline-flex items-center gap-1.5 text-xs disabled:opacity-50 ${
+          alreadyInvited ? "text-mist hover:text-snow" : "text-glacier-light hover:underline"
+        }`}
       >
-        <UserPlus className="w-3.5 h-3.5" />
-        {loading ? "Создаём…" : "Пригласить клиента"}
+        {alreadyInvited ? (
+          <>
+            <RotateCw className="w-3.5 h-3.5" />
+            {loading ? "Отправляем…" : "✓ Приглашён · отправить письмо ещё раз"}
+          </>
+        ) : (
+          <>
+            <UserPlus className="w-3.5 h-3.5" />
+            {loading ? "Создаём…" : "Пригласить клиента"}
+          </>
+        )}
       </button>
       {errorMsg && <p className="text-xs text-red-400 mt-1">{errorMsg}</p>}
 
@@ -55,7 +76,9 @@ export default function InviteClientButton({ applicationId }: { applicationId: s
               <X className="w-4 h-4" />
             </button>
             <CheckCircle2 className="w-8 h-8 text-glacier-light mb-4" strokeWidth={1.5} />
-            <h3 className="font-display text-lg uppercase text-snow mb-2">Клиент приглашён</h3>
+            <h3 className="font-display text-lg uppercase text-snow mb-2">
+              {alreadyInvited ? "Пароль обновлён" : "Клиент приглашён"}
+            </h3>
 
             {credentials.emailSent ? (
               <p className="text-glacier-light text-xs mb-4 flex items-center gap-1.5">
@@ -73,6 +96,7 @@ export default function InviteClientButton({ applicationId }: { applicationId: s
             <p className="text-mist text-xs mb-4">
               Данные показываются только один раз — на всякий случай скопируйте их тоже.
             </p>
+
             <div className="border border-white/10 p-3 mb-4 text-sm">
               <div className="text-mist text-xs uppercase mb-1">Логин (email)</div>
               <div className="text-snow mb-3">{credentials.email}</div>

@@ -11,6 +11,7 @@ import {
   Mountain,
   Folder,
   Inbox,
+  UsersRound,
   Settings,
 } from "lucide-react";
 import { signOutAction } from "../auth-actions";
@@ -23,6 +24,7 @@ const nav = [
   { href: "/admin/expeditions", label: "Экспедиции", icon: Mountain },
   { href: "/admin/content-hub", label: "Контент", icon: Folder },
   { href: "/admin/applications", label: "Заявки", icon: Inbox },
+  { href: "/admin/clients", label: "Клиенты", icon: UsersRound },
   { href: "/admin/settings", label: "Настройки", icon: Settings },
 ];
 

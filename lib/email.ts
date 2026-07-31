@@ -9,7 +9,10 @@ const FROM_ADDRESS = "CUMBRE <onboarding@resend.dev>";
 
 function getResendClient(): Resend | null {
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) {
+    console.error("[email] RESEND_API_KEY is not set in this environment");
+    return null;
+  }
   return new Resend(apiKey);
 }
 
@@ -60,6 +63,7 @@ export async function sendClientInviteEmail({
   `;
 
   try {
+    console.log(`[email] Attempting to send invite email to ${to} from ${FROM_ADDRESS}`);
     const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to,
@@ -68,10 +72,13 @@ export async function sendClientInviteEmail({
     });
 
     if (result.error) {
+      console.error("[email] Resend returned an error:", JSON.stringify(result.error));
       return { sent: false, error: result.error.message };
     }
+    console.log(`[email] Sent successfully, Resend id: ${result.data?.id}`);
     return { sent: true };
   } catch (err) {
+    console.error("[email] Threw an exception while sending:", err);
     return { sent: false, error: err instanceof Error ? err.message : "Неизвестная ошибка отправки" };
   }
 }
