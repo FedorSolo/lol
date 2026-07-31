@@ -54,6 +54,59 @@ export async function updateClient(id: string, data: ClientEditData): Promise<Ac
   return { ok: true };
 }
 
+export async function getClientDetail(id: string) {
+  const supabase = createAdminSupabaseClient();
+  const [{ data: profile }, { data: questionnaire }, { data: videos }] = await Promise.all([
+    supabase.from("client_profiles").select("*").eq("id", id).maybeSingle(),
+    supabase.from("client_questionnaire_responses").select("*").eq("client_id", id).maybeSingle(),
+    supabase
+      .from("client_training_videos")
+      .select("*")
+      .eq("client_id", id)
+      .order("uploaded_at", { ascending: false }),
+  ]);
+
+  if (!profile) return null;
+
+  let expeditionTitle: string | null = null;
+  if (profile.expedition_id) {
+    const { data: t } = await supabase
+      .from("expedition_i18n")
+      .select("*")
+      .eq("expedition_id", profile.expedition_id)
+      .eq("locale", "ru")
+      .maybeSingle();
+    expeditionTitle = t?.title ?? null;
+  }
+
+  const videosWithUrls = (videos ?? []).map((v) => ({
+    ...v,
+    url: supabase.storage.from("media").getPublicUrl(v.storage_path).data.publicUrl,
+  }));
+
+  return { profile, expeditionTitle, questionnaire, videos: videosWithUrls };
+}
+
+export async function saveTrainingPlan(id: string, plan: string): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase
+    .from("client_profiles")
+    .update({ training_plan: plan || null })
+    .eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath(`/admin/clients/${id}`);
+  revalidatePath("/account/training", "page");
+  return { ok: true };
+}
+
+export async function deleteClientVideo(videoId: string, storagePath: string): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase.from("client_training_videos").delete().eq("id", videoId);
+  if (error) return { ok: false, error: error.message };
+  await supabase.storage.from("media").remove([storagePath]);
+  return { ok: true };
+}
+
 export async function deleteClient(id: string): Promise<ActionResult> {
   const supabase = createAdminSupabaseClient();
   // Deletes the auth user, which cascades to client_profiles (FK "on
