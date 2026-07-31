@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
-import type { ActionResult } from "../action-result";
+import type { ActionResult } from "@/lib/action-result";
 import { DEFAULT_THEME, type SiteTheme } from "@/lib/theme-shared";
 
 export async function getSiteThemeAdmin(): Promise<SiteTheme> {

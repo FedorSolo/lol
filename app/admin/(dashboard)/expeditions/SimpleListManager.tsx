@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Trash2, Save } from "lucide-react";
 import type { Locale } from "@/lib/supabase/database.types";
-import type { ActionResult, ActionResultWithData } from "../action-result";
+import type { ActionResult, ActionResultWithData } from "@/lib/action-result";
 
 interface ItemFormData {
   id?: string;

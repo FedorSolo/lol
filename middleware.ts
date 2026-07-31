@@ -6,10 +6,10 @@ import { updateSession } from "@/lib/supabase/middleware";
 const intlMiddleware = createIntlMiddleware(routing);
 
 export default async function middleware(request: NextRequest) {
-  // /admin is a single-locale (Russian) tool for the site owner — it never
-  // gets the /ru /es /en prefix. It only needs the Supabase session cookie
-  // kept fresh so the auth gate in app/admin/(dashboard)/layout.tsx works.
-  if (request.nextUrl.pathname.startsWith("/admin")) {
+  // /admin (Russian-only, single admin user) and /account (Russian-only
+  // client portal) both live outside the /ru /es /en locale routing and
+  // only need their Supabase session cookie kept fresh.
+  if (request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/account")) {
     return updateSession(request);
   }
 
