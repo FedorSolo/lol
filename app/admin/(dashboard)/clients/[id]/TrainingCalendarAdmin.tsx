@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Trash2 } from "lucide-react";
+import { Save, Trash2, Link as LinkIcon } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary } from "@/components/TrainingCalendarGrid";
 import { saveSession, deleteSession, type SessionFormData } from "./sessions-actions";
 
@@ -15,6 +15,7 @@ export interface SessionRow {
   elevation_gain_m: number | null;
   description: string | null;
   is_completed: boolean;
+  garmin_link: string | null;
 }
 
 const SESSION_TYPES = [
@@ -108,6 +109,7 @@ export default function TrainingCalendarAdmin({
       elevation_gain_m: form.elevation_gain_m ? Number(form.elevation_gain_m) : null,
       description: form.description || null,
       is_completed: existing?.is_completed ?? false,
+      garmin_link: existing?.garmin_link ?? null,
     };
     setSessions((prev) => [...prev.filter((s) => s.session_date !== form.session_date), savedSession]);
     setForm((f) => (f ? { ...f, id: result.data.id } : f));
@@ -198,6 +200,18 @@ export default function TrainingCalendarAdmin({
             </div>
 
             {errorMsg && <p className="text-xs text-red-400 mt-3">{errorMsg}</p>}
+
+            {existing?.garmin_link && (
+              <a
+                href={existing.garmin_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-glacier-light hover:underline mt-3"
+              >
+                <LinkIcon className="w-3 h-3" />
+                Клиент прикрепил активность в Garmin Connect
+              </a>
+            )}
 
             <div className="flex items-center gap-3 mt-4">
               <button

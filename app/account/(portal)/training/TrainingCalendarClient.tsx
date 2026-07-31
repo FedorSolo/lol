@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Clock, Ruler, TrendingUp } from "lucide-react";
+import { Check, Clock, Ruler, TrendingUp, Link as LinkIcon, Save } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary, typeLabel } from "@/components/TrainingCalendarGrid";
-import { toggleSessionCompleted } from "./actions";
+import { toggleSessionCompleted, updateGarminLink } from "./actions";
 
 export interface ClientSessionRow {
   id: string;
@@ -15,6 +15,7 @@ export interface ClientSessionRow {
   elevation_gain_m: number | null;
   description: string | null;
   is_completed: boolean;
+  garmin_link: string | null;
 }
 
 export default function TrainingCalendarClient({ sessions: initialSessions }: { sessions: ClientSessionRow[] }) {
@@ -23,6 +24,9 @@ export default function TrainingCalendarClient({ sessions: initialSessions }: { 
   const [view, setView] = useState({ year: today.getFullYear(), month: today.getMonth() });
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [toggling, setToggling] = useState(false);
+  const [garminInput, setGarminInput] = useState("");
+  const [savingLink, setSavingLink] = useState(false);
+  const [linkSavedMsg, setLinkSavedMsg] = useState(false);
 
   const sessionsByDate: Record<string, CalendarSessionSummary> = {};
   for (const s of sessions) {
@@ -35,6 +39,29 @@ export default function TrainingCalendarClient({ sessions: initialSessions }: { 
   }
 
   const selected = selectedDate ? sessions.find((s) => s.session_date === selectedDate) : undefined;
+
+  function handleSelectDate(date: string) {
+    setSelectedDate(date);
+    setLinkSavedMsg(false);
+    const found = sessions.find((s) => s.session_date === date);
+    setGarminInput(found?.garmin_link ?? "");
+  }
+
+  async function handleSaveLink() {
+    if (!selected) return;
+    setSavingLink(true);
+    setLinkSavedMsg(false);
+    const result = await updateGarminLink(selected.id, garminInput.trim());
+    setSavingLink(false);
+    if (!result.ok) {
+      alert(result.error);
+      return;
+    }
+    setSessions((prev) =>
+      prev.map((s) => (s.id === selected.id ? { ...s, garmin_link: garminInput.trim() || null } : s))
+    );
+    setLinkSavedMsg(true);
+  }
 
   async function handleToggle() {
     if (!selected) return;
@@ -56,7 +83,7 @@ export default function TrainingCalendarClient({ sessions: initialSessions }: { 
         month={view.month}
         sessionsByDate={sessionsByDate}
         selectedDate={selectedDate}
-        onSelectDate={setSelectedDate}
+        onSelectDate={handleSelectDate}
         onMonthChange={(year, month) => setView({ year, month })}
       />
 
@@ -104,6 +131,40 @@ export default function TrainingCalendarClient({ sessions: initialSessions }: { 
               <Check className="w-4 h-4" />
               {selected.is_completed ? "Выполнено" : "Отметить выполненным"}
             </button>
+
+            <div className="mt-5 pt-5 border-t border-white/10">
+              <label className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-mist mb-2">
+                <LinkIcon className="w-3.5 h-3.5" />
+                Ссылка на активность в Garmin Connect
+              </label>
+              <div className="flex gap-2">
+                <input
+                  value={garminInput}
+                  onChange={(e) => setGarminInput(e.target.value)}
+                  placeholder="https://connect.garmin.com/modern/activity/..."
+                  className="flex-1 bg-transparent border border-white/20 px-3 py-2 text-snow text-sm focus:border-glacier-light outline-none transition-colors"
+                />
+                <button
+                  onClick={handleSaveLink}
+                  disabled={savingLink}
+                  className="shrink-0 inline-flex items-center gap-1.5 bg-snow text-obsidian px-3 py-2 text-xs hover:bg-glacier-light transition-colors disabled:opacity-60"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              {linkSavedMsg && <p className="text-xs text-glacier-light mt-2">Сохранено</p>}
+              {selected.garmin_link && (
+                <a
+                  href={selected.garmin_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-glacier-light hover:underline mt-2"
+                >
+                  <LinkIcon className="w-3 h-3" />
+                  Открыть активность в Garmin Connect
+                </a>
+              )}
+            </div>
           </div>
         )}
       </div>
