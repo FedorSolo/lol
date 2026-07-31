@@ -1,6 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getExpeditionBySlug } from "@/lib/expeditions-data";
-import { requireClient } from "../auth-actions";
+import { requireClient } from "../../auth-actions";
 import { Mountain, Gauge, CalendarDays, Users2, Check, X } from "lucide-react";
 
 export default async function TripPage() {
