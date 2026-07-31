@@ -17,10 +17,21 @@ export interface ClientSessionRow {
   description: string | null;
   is_completed: boolean;
   garmin_link: string | null;
-  video_url: string | null;
 }
 
-export default function TrainingCalendarClient({ sessions: initialSessions }: { sessions: ClientSessionRow[] }) {
+export interface ExerciseVideo {
+  id: string;
+  exercise_name: string;
+  video_url: string;
+}
+
+export default function TrainingCalendarClient({
+  sessions: initialSessions,
+  videosBySession,
+}: {
+  sessions: ClientSessionRow[];
+  videosBySession: Record<string, ExerciseVideo[]>;
+}) {
   const [sessions, setSessions] = useState(initialSessions);
   const today = new Date();
   const [view, setView] = useState({ year: today.getFullYear(), month: today.getMonth() });
@@ -121,9 +132,14 @@ export default function TrainingCalendarClient({ sessions: initialSessions }: { 
               <p className="text-mist text-sm leading-relaxed whitespace-pre-line mb-5">{selected.description}</p>
             )}
 
-            {selected.video_url && (
-              <div className="mb-5">
-                <YouTubeEmbed url={selected.video_url} title={selected.title} />
+            {(videosBySession[selected.id] ?? []).length > 0 && (
+              <div className="mb-5 flex flex-col gap-4">
+                {(videosBySession[selected.id] ?? []).map((v) => (
+                  <div key={v.id}>
+                    <p className="text-xs text-mist uppercase tracking-wide mb-1.5">{v.exercise_name}</p>
+                    <YouTubeEmbed url={v.video_url} title={v.exercise_name} />
+                  </div>
+                ))}
               </div>
             )}
 

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getClientDetail } from "../actions";
-import { getClientSessions } from "./sessions-actions";
+import { getClientSessions, getExerciseVideosBySessionIds } from "./sessions-actions";
 import { QuestionnaireView, VideosView } from "./ClientDetailSections";
 import TrainingCalendarAdmin from "./TrainingCalendarAdmin";
 
@@ -12,6 +12,8 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
     getClientSessions(params.id),
   ]);
   if (!detail) notFound();
+
+  const videosBySession = await getExerciseVideosBySessionIds(sessions.map((s) => s.id));
 
   const { profile, expeditionTitle, questionnaire, videos } = detail;
 
@@ -30,7 +32,11 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
 
       <section className="mb-12">
         <h2 className="font-display text-lg uppercase text-snow mb-4">Календарь тренировок</h2>
-        <TrainingCalendarAdmin clientId={profile.id} initialSessions={sessions} />
+        <TrainingCalendarAdmin
+          clientId={profile.id}
+          initialSessions={sessions}
+          initialVideosBySession={videosBySession}
+        />
       </section>
 
       <section className="mb-12">

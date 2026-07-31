@@ -550,6 +550,26 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["training_sessions"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      session_exercise_videos: {
+        Row: {
+          id: string;
+          session_id: string;
+          exercise_name: string;
+          video_url: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          session_id: string;
+          exercise_name: string;
+          video_url: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["session_exercise_videos"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
       expedition_updates: {
         Row: {
           id: string;
