@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getExpeditionBySlug } from "@/lib/expeditions-data";
 import { requireClient } from "../../auth-actions";
 import { Mountain, Gauge, CalendarDays, Users2, Check, X } from "lucide-react";
+import EquipmentChecklist from "./EquipmentChecklist";
 
 export default async function TripPage() {
   const profile = await requireClient();
@@ -38,6 +39,20 @@ export default async function TripPage() {
       </div>
     );
   }
+
+  const { data: checkRows } = await supabase
+    .from("client_equipment_checks")
+    .select("*")
+    .eq("client_id", profile.id);
+  const checkedIds = new Set((checkRows ?? []).filter((c) => c.is_checked).map((c) => c.equipment_id));
+
+  const equipmentItems = expedition.equipment.map((e) => ({
+    id: e.id,
+    text: e.text,
+    category: e.category,
+    isRentable: e.isRentable,
+    isChecked: checkedIds.has(e.id),
+  }));
 
   return (
     <div>
@@ -89,6 +104,13 @@ export default async function TripPage() {
               </div>
             ))}
           </div>
+        </section>
+      )}
+
+      {expedition.equipment.length > 0 && (
+        <section className="mb-10">
+          <h2 className="font-display text-lg uppercase text-snow mb-4">Снаряжение</h2>
+          <EquipmentChecklist items={equipmentItems} />
         </section>
       )}
 

@@ -76,6 +76,7 @@ export interface FullPublicExpedition extends PublicExpedition {
   itinerary: { dayNumber: number; title: string; description: string | null }[];
   inclusions: string[];
   exclusions: string[];
+  equipment: { id: string; text: string; category: string; isRentable: boolean }[];
 }
 
 export async function getExpeditionBySlug(
@@ -187,6 +188,29 @@ export async function getExpeditionBySlug(
     .map((row) => exclusionI18n?.find((t) => t.exclusion_id === row.id)?.text)
     .filter((t): t is string => Boolean(t));
 
+  const { data: equipmentRows } = await supabase
+    .from("expedition_equipment")
+    .select("*")
+    .eq("expedition_id", exp.id)
+    .order("sort_order");
+  const { data: equipmentI18n } = equipmentRows?.length
+    ? await supabase
+        .from("expedition_equipment_i18n")
+        .select("*")
+        .in(
+          "equipment_id",
+          equipmentRows.map((r) => r.id)
+        )
+        .eq("locale", locale)
+    : { data: [] as { equipment_id: string; text: string }[] };
+  const equipment = (equipmentRows ?? [])
+    .map((row) => {
+      const text = equipmentI18n?.find((t) => t.equipment_id === row.id)?.text;
+      if (!text) return null;
+      return { id: row.id, text, category: row.category, isRentable: row.is_rentable };
+    })
+    .filter((e): e is { id: string; text: string; category: string; isRentable: boolean } => e !== null);
+
   return {
     id: exp.id,
     slug: exp.slug,
@@ -212,6 +236,7 @@ export async function getExpeditionBySlug(
     itinerary,
     inclusions,
     exclusions,
+    equipment,
   };
 }
 

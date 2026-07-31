@@ -102,7 +102,10 @@ export default async function ExpeditionDetailPage({
     expedition.itinerary.length > 0
       ? expedition.itinerary.map((d) => ({ title: d.title, text: d.description ?? "" }))
       : (t.raw("placeholder.itinerary") as { title: string; text: string }[]);
-  const equipment = t.raw("placeholder.equipment") as string[];
+  const equipment =
+    expedition.equipment.length > 0
+      ? expedition.equipment.map((e) => e.text)
+      : (t.raw("placeholder.equipment") as string[]);
   const faq = t.raw("placeholder.faq") as { q: string; a: string }[];
 
   const stats = [
