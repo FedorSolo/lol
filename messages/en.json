@@ -12,7 +12,8 @@
     "timeline": "Preparation",
     "faq": "FAQ",
     "apply": "Apply",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "Andes Expedition Institute",
@@ -497,5 +498,13 @@
         "role": "Lanín, 3,747 m"
       }
     ]
+  },
+  "blog": {
+    "pageTitle": "Blog",
+    "pageSubtitle": "Preparation, gear, stories from the mountains — from the CUMBRE team.",
+    "empty": "Articles will appear here soon.",
+    "backLink": "All articles",
+    "readMore": "Read article",
+    "byAuthor": "Author"
   }
 }

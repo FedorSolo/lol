@@ -12,7 +12,8 @@
     "timeline": "Preparación",
     "faq": "Preguntas",
     "apply": "Postular",
-    "gallery": "Galería"
+    "gallery": "Galería",
+    "blog": "Blog"
   },
   "hero": {
     "eyebrow": "Instituto de Expediciones de los Andes",
@@ -497,5 +498,13 @@
         "role": "Lanín, 3.747 m"
       }
     ]
+  },
+  "blog": {
+    "pageTitle": "Blog",
+    "pageSubtitle": "Preparación, equipo, historias de montaña — del equipo de CUMBRE.",
+    "empty": "Pronto habrá artículos disponibles aquí.",
+    "backLink": "Todos los artículos",
+    "readMore": "Leer artículo",
+    "byAuthor": "Autor"
   }
 }
