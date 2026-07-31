@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Save, Trash2, Link as LinkIcon } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary } from "@/components/TrainingCalendarGrid";
-import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { saveSession, deleteSession, type SessionFormData } from "./sessions-actions";
+import ExerciseVideosManager from "./ExerciseVideosManager";
+import { saveSession, deleteSession, type SessionFormData, type ExerciseVideoFormData } from "./sessions-actions";
 
 export interface SessionRow {
   id: string;
@@ -17,7 +17,6 @@ export interface SessionRow {
   description: string | null;
   is_completed: boolean;
   garmin_link: string | null;
-  video_url: string | null;
 }
 
 const SESSION_TYPES = [
@@ -39,16 +38,17 @@ function blankForm(clientId: string, date: string): SessionFormData {
     distance_km: "",
     elevation_gain_m: "",
     description: "",
-    video_url: "",
   };
 }
 
 export default function TrainingCalendarAdmin({
   clientId,
   initialSessions,
+  initialVideosBySession,
 }: {
   clientId: string;
   initialSessions: SessionRow[];
+  initialVideosBySession: Record<string, ExerciseVideoFormData[]>;
 }) {
   const [sessions, setSessions] = useState(initialSessions);
   const today = new Date();
@@ -86,7 +86,6 @@ export default function TrainingCalendarAdmin({
             distance_km: found.distance_km?.toString() ?? "",
             elevation_gain_m: found.elevation_gain_m?.toString() ?? "",
             description: found.description ?? "",
-            video_url: found.video_url ?? "",
           }
         : blankForm(clientId, date)
     );
@@ -114,7 +113,6 @@ export default function TrainingCalendarAdmin({
       description: form.description || null,
       is_completed: existing?.is_completed ?? false,
       garmin_link: existing?.garmin_link ?? null,
-      video_url: form.video_url || null,
     };
     setSessions((prev) => [...prev.filter((s) => s.session_date !== form.session_date), savedSession]);
     setForm((f) => (f ? { ...f, id: result.data.id } : f));
@@ -202,20 +200,6 @@ export default function TrainingCalendarAdmin({
                   onChange={(e) => setForm((f) => f && { ...f, description: e.target.value })}
                 />
               </div>
-              <div>
-                <label className={labelClass}>Видео с примером упражнения (ссылка на YouTube)</label>
-                <input
-                  className={inputClass}
-                  value={form.video_url}
-                  onChange={(e) => setForm((f) => f && { ...f, video_url: e.target.value })}
-                  placeholder="https://www.youtube.com/watch?v=..."
-                />
-                {form.video_url && (
-                  <div className="mt-2">
-                    <YouTubeEmbed url={form.video_url} title={form.title || "Пример упражнения"} />
-                  </div>
-                )}
-              </div>
             </div>
 
             {errorMsg && <p className="text-xs text-red-400 mt-3">{errorMsg}</p>}
@@ -248,6 +232,21 @@ export default function TrainingCalendarAdmin({
                 </button>
               )}
             </div>
+
+            {form.id ? (
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <label className={labelClass}>Видео с примерами упражнений</label>
+                <ExerciseVideosManager
+                  key={form.id}
+                  sessionId={form.id}
+                  initialVideos={initialVideosBySession[form.id] ?? []}
+                />
+              </div>
+            ) : (
+              <p className="text-xs text-mist mt-6 pt-6 border-t border-white/10">
+                Сохраните тренировку, чтобы добавить к ней видео упражнений.
+              </p>
+            )}
           </div>
         )}
       </div>

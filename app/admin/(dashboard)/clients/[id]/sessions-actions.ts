@@ -14,6 +14,25 @@ export async function getClientSessions(clientId: string) {
   return data ?? [];
 }
 
+export async function getExerciseVideosBySessionIds(
+  sessionIds: string[]
+): Promise<Record<string, ExerciseVideoFormData[]>> {
+  if (sessionIds.length === 0) return {};
+  const supabase = createAdminSupabaseClient();
+  const { data } = await supabase
+    .from("session_exercise_videos")
+    .select("*")
+    .in("session_id", sessionIds)
+    .order("sort_order");
+
+  const grouped: Record<string, ExerciseVideoFormData[]> = {};
+  for (const row of data ?? []) {
+    if (!grouped[row.session_id]) grouped[row.session_id] = [];
+    grouped[row.session_id]!.push(row);
+  }
+  return grouped;
+}
+
 export interface SessionFormData {
   id?: string;
   client_id: string;
@@ -24,7 +43,6 @@ export interface SessionFormData {
   distance_km: string;
   elevation_gain_m: string;
   description: string;
-  video_url: string;
 }
 
 export async function saveSession(
@@ -41,7 +59,6 @@ export async function saveSession(
     distance_km: form.distance_km ? Number(form.distance_km) : null,
     elevation_gain_m: form.elevation_gain_m ? Number(form.elevation_gain_m) : null,
     description: form.description || null,
-    video_url: form.video_url || null,
   };
 
   let id = form.id;
@@ -61,6 +78,62 @@ export async function saveSession(
   revalidatePath(`/admin/clients/${form.client_id}`);
   revalidatePath("/account/training", "page");
   return { ok: true, data: { id } };
+}
+
+export async function getExerciseVideos(sessionId: string) {
+  const supabase = createAdminSupabaseClient();
+  const { data } = await supabase
+    .from("session_exercise_videos")
+    .select("*")
+    .eq("session_id", sessionId)
+    .order("sort_order");
+  return data ?? [];
+}
+
+export interface ExerciseVideoFormData {
+  id?: string;
+  session_id: string;
+  exercise_name: string;
+  video_url: string;
+  sort_order: number;
+}
+
+export async function saveExerciseVideo(
+  form: ExerciseVideoFormData
+): Promise<ActionResultWithData<{ id: string }>> {
+  const supabase = createAdminSupabaseClient();
+
+  const payload = {
+    session_id: form.session_id,
+    exercise_name: form.exercise_name,
+    video_url: form.video_url,
+    sort_order: form.sort_order,
+  };
+
+  let id = form.id;
+  if (id) {
+    const { error } = await supabase.from("session_exercise_videos").update(payload).eq("id", id);
+    if (error) return { ok: false, error: error.message };
+  } else {
+    const { data, error } = await supabase
+      .from("session_exercise_videos")
+      .insert(payload)
+      .select("id")
+      .single();
+    if (error) return { ok: false, error: error.message };
+    id = data.id;
+  }
+
+  revalidatePath("/account/training", "page");
+  return { ok: true, data: { id } };
+}
+
+export async function deleteExerciseVideo(id: string): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase.from("session_exercise_videos").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/account/training", "page");
+  return { ok: true };
 }
 
 export async function deleteSession(id: string, clientId: string): Promise<ActionResult> {

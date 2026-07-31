@@ -34,6 +34,26 @@ export default async function TrainingPage() {
     supabase.from("training_sessions").select("*").eq("client_id", profile.id).order("session_date"),
   ]);
 
+  const sessionIds = (sessionRows ?? []).map((s) => s.id);
+  const { data: exerciseVideoRows } =
+    sessionIds.length > 0
+      ? await supabase
+          .from("session_exercise_videos")
+          .select("*")
+          .in("session_id", sessionIds)
+          .order("sort_order")
+      : { data: [] as { session_id: string; id: string; exercise_name: string; video_url: string }[] };
+
+  const videosBySession: Record<string, { id: string; exercise_name: string; video_url: string }[]> = {};
+  for (const row of exerciseVideoRows ?? []) {
+    if (!videosBySession[row.session_id]) videosBySession[row.session_id] = [];
+    videosBySession[row.session_id]!.push({
+      id: row.id,
+      exercise_name: row.exercise_name,
+      video_url: row.video_url,
+    });
+  }
+
   const questionnaireData: QuestionnaireData = questionnaire
     ? {
         emergency_contact_name: questionnaire.emergency_contact_name ?? "",
@@ -66,7 +86,7 @@ export default async function TrainingPage() {
 
       <section className="mb-12">
         <h2 className="font-display text-lg uppercase text-snow mb-4">Календарь тренировок</h2>
-        <TrainingCalendarClient sessions={sessionRows ?? []} />
+        <TrainingCalendarClient sessions={sessionRows ?? []} videosBySession={videosBySession} />
       </section>
 
       <section className="mb-12">
