@@ -5,6 +5,7 @@ import {
   getInclusions,
   getExclusions,
   getExpeditionUpdates,
+  getEquipment,
   saveInclusion,
   deleteInclusion,
   saveExclusion,
@@ -14,17 +15,20 @@ import ExpeditionForm from "../ExpeditionForm";
 import ItineraryManager from "../ItineraryManager";
 import SimpleListManager from "../SimpleListManager";
 import UpdatesManager from "../UpdatesManager";
+import EquipmentManager from "../EquipmentManager";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function EditExpeditionPage({ params }: { params: { id: string } }) {
-  const [levels, data, itineraryRows, inclusionRows, exclusionRows, updateRows] = await Promise.all([
-    getDifficultyLevels(),
-    getExpeditionById(params.id),
-    getItineraryDays(params.id),
-    getInclusions(params.id),
-    getExclusions(params.id),
-    getExpeditionUpdates(params.id),
-  ]);
+  const [levels, data, itineraryRows, inclusionRows, exclusionRows, updateRows, equipmentRows] =
+    await Promise.all([
+      getDifficultyLevels(),
+      getExpeditionById(params.id),
+      getItineraryDays(params.id),
+      getInclusions(params.id),
+      getExclusions(params.id),
+      getExpeditionUpdates(params.id),
+      getEquipment(params.id),
+    ]);
 
   if (!data) notFound();
 
@@ -72,6 +76,19 @@ export default async function EditExpeditionPage({ params }: { params: { id: str
     sort_order: row.sort_order,
   }));
 
+  const equipment = equipmentRows.map((row) => ({
+    id: row.id,
+    expedition_id: row.expedition_id,
+    category: row.category,
+    is_rentable: row.is_rentable,
+    sort_order: row.sort_order,
+    i18n: {
+      ru: { text: row.i18n.find((r) => r.locale === "ru")?.text ?? "" },
+      es: { text: row.i18n.find((r) => r.locale === "es")?.text ?? "" },
+      en: { text: row.i18n.find((r) => r.locale === "en")?.text ?? "" },
+    } as Record<Locale, { text: string }>,
+  }));
+
   return (
     <div>
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-8">
@@ -112,6 +129,14 @@ export default async function EditExpeditionPage({ params }: { params: { id: str
           save={saveExclusion}
           remove={deleteExclusion}
         />
+      </div>
+      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
+        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-2">Снаряжение</h2>
+        <p className="text-mist text-sm mb-5">
+          Показывается на публичной странице экспедиции, а клиентам в личном кабинете — как чек-лист
+          с галочками.
+        </p>
+        <EquipmentManager expeditionId={params.id} initialItems={equipment} />
       </div>
       <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
         <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-2">

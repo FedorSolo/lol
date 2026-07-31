@@ -570,6 +570,36 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["session_exercise_videos"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      expedition_equipment: {
+        Row: {
+          id: string;
+          expedition_id: string;
+          category: string;
+          is_rentable: boolean;
+          sort_order: number;
+        };
+        Insert: {
+          id?: string;
+          expedition_id: string;
+          category?: string;
+          is_rentable?: boolean;
+          sort_order?: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["expedition_equipment"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
+      expedition_equipment_i18n: {
+        Row: { equipment_id: string; locale: Locale; text: string };
+        Insert: { equipment_id: string; locale: Locale; text: string };
+        Update: Partial<Database["public"]["Tables"]["expedition_equipment_i18n"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
+      client_equipment_checks: {
+        Row: { client_id: string; equipment_id: string; is_checked: boolean };
+        Insert: { client_id: string; equipment_id: string; is_checked?: boolean };
+        Update: Partial<Database["public"]["Tables"]["client_equipment_checks"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
       expedition_updates: {
         Row: {
           id: string;

@@ -150,6 +150,80 @@ export async function deleteExpeditionUpdate(id: string): Promise<ActionResult> 
   return { ok: true };
 }
 
+// ---------- Equipment (снаряжение) ----------
+
+export async function getEquipment(expeditionId: string) {
+  const supabase = createAdminSupabaseClient();
+  const { data: rows } = await supabase
+    .from("expedition_equipment")
+    .select("*")
+    .eq("expedition_id", expeditionId)
+    .order("sort_order");
+  const { data: i18n } = await supabase.from("expedition_equipment_i18n").select("*");
+
+  return (rows ?? []).map((row) => ({
+    ...row,
+    i18n: (i18n ?? []).filter((r) => r.equipment_id === row.id),
+  }));
+}
+
+export interface EquipmentFormData {
+  id?: string;
+  expedition_id: string;
+  category: string;
+  is_rentable: boolean;
+  sort_order: number;
+  i18n: Record<Locale, { text: string }>;
+}
+
+export async function saveEquipment(
+  form: EquipmentFormData
+): Promise<ActionResultWithData<{ id: string }>> {
+  const supabase = createAdminSupabaseClient();
+
+  let rowId = form.id;
+  if (rowId) {
+    const { error } = await supabase
+      .from("expedition_equipment")
+      .update({ category: form.category, is_rentable: form.is_rentable, sort_order: form.sort_order })
+      .eq("id", rowId);
+    if (error) return { ok: false, error: error.message };
+  } else {
+    const { data, error } = await supabase
+      .from("expedition_equipment")
+      .insert({
+        expedition_id: form.expedition_id,
+        category: form.category,
+        is_rentable: form.is_rentable,
+        sort_order: form.sort_order,
+      })
+      .select("id")
+      .single();
+    if (error) return { ok: false, error: error.message };
+    rowId = data.id;
+  }
+
+  for (const locale of LOCALES) {
+    const t = form.i18n[locale];
+    if (!t?.text) continue;
+    const { error } = await supabase
+      .from("expedition_equipment_i18n")
+      .upsert({ equipment_id: rowId, locale, text: t.text }, { onConflict: "equipment_id,locale" });
+    if (error) return { ok: false, error: error.message };
+  }
+
+  revalidateExpedition();
+  return { ok: true, data: { id: rowId } };
+}
+
+export async function deleteEquipment(id: string): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase.from("expedition_equipment").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidateExpedition();
+  return { ok: true };
+}
+
 export async function getInclusions(expeditionId: string) {
   const supabase = createAdminSupabaseClient();
   const { data: rows } = await supabase
