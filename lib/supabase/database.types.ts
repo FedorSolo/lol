@@ -440,6 +440,28 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["articles_i18n"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      client_profiles: {
+        Row: {
+          id: string;
+          email: string;
+          full_name: string;
+          phone: string | null;
+          expedition_id: string | null;
+          application_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          email: string;
+          full_name: string;
+          phone?: string | null;
+          expedition_id?: string | null;
+          application_id?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["client_profiles"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

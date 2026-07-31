@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { Locale } from "@/lib/supabase/database.types";
-import type { ActionResult, ActionResultWithData } from "../action-result";
+import type { ActionResult, ActionResultWithData } from "@/lib/action-result";
 
 const LOCALES: Locale[] = ["ru", "es", "en"];
 

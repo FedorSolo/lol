@@ -30,8 +30,9 @@ export default function StatusSelect({ id, status }: { id: string; status: Appli
       defaultValue={status}
       disabled={isPending}
       onChange={(e) =>
-        startTransition(() => {
-          updateApplicationStatus(id, e.target.value as ApplicationStatus);
+        startTransition(async () => {
+          const result = await updateApplicationStatus(id, e.target.value as ApplicationStatus);
+          if (!result.ok) alert(result.error);
         })
       }
       className={`bg-transparent border border-white/20 px-2 py-1.5 text-xs outline-none focus:border-glacier-light ${STATUS_COLORS[status]}`}
