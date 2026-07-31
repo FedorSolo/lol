@@ -3,6 +3,7 @@ import { requireClient } from "../../auth-actions";
 import QuestionnaireForm from "./QuestionnaireForm";
 import VideoUploader from "./VideoUploader";
 import VideoList, { type VideoItem } from "./VideoList";
+import TrainingCalendarClient from "./TrainingCalendarClient";
 import type { QuestionnaireData } from "./actions";
 
 const EMPTY_QUESTIONNAIRE: QuestionnaireData = {
@@ -23,13 +24,14 @@ export default async function TrainingPage() {
   const profile = await requireClient();
   const supabase = createServerSupabaseClient();
 
-  const [{ data: questionnaire }, { data: videoRows }] = await Promise.all([
+  const [{ data: questionnaire }, { data: videoRows }, { data: sessionRows }] = await Promise.all([
     supabase.from("client_questionnaire_responses").select("*").eq("client_id", profile.id).maybeSingle(),
     supabase
       .from("client_training_videos")
       .select("*")
       .eq("client_id", profile.id)
       .order("uploaded_at", { ascending: false }),
+    supabase.from("training_sessions").select("*").eq("client_id", profile.id).order("session_date"),
   ]);
 
   const questionnaireData: QuestionnaireData = questionnaire
@@ -59,17 +61,13 @@ export default async function TrainingPage() {
     <div>
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-2">Тренировки</h1>
       <p className="text-mist text-sm mb-10">
-        Опросник для команды, план подготовки и видео с ваших тренировок.
+        Календарь подготовки, опросник для команды и видео с ваших тренировок.
       </p>
 
-      {profile.training_plan && (
-        <section className="mb-12">
-          <h2 className="font-display text-lg uppercase text-snow mb-4">План тренировок</h2>
-          <div className="border border-white/10 p-6 text-mist text-sm leading-relaxed whitespace-pre-line">
-            {profile.training_plan}
-          </div>
-        </section>
-      )}
+      <section className="mb-12">
+        <h2 className="font-display text-lg uppercase text-snow mb-4">Календарь тренировок</h2>
+        <TrainingCalendarClient sessions={sessionRows ?? []} />
+      </section>
 
       <section className="mb-12">
         <h2 className="font-display text-lg uppercase text-snow mb-4">Опросник</h2>

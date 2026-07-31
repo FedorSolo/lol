@@ -2,10 +2,15 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getClientDetail } from "../actions";
-import { QuestionnaireView, TrainingPlanEditor, VideosView } from "./ClientDetailSections";
+import { getClientSessions } from "./sessions-actions";
+import { QuestionnaireView, VideosView } from "./ClientDetailSections";
+import TrainingCalendarAdmin from "./TrainingCalendarAdmin";
 
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
-  const detail = await getClientDetail(params.id);
+  const [detail, sessions] = await Promise.all([
+    getClientDetail(params.id),
+    getClientSessions(params.id),
+  ]);
   if (!detail) notFound();
 
   const { profile, expeditionTitle, questionnaire, videos } = detail;
@@ -24,8 +29,8 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
       </p>
 
       <section className="mb-12">
-        <h2 className="font-display text-lg uppercase text-snow mb-4">План тренировок</h2>
-        <TrainingPlanEditor clientId={profile.id} initialPlan={profile.training_plan ?? ""} />
+        <h2 className="font-display text-lg uppercase text-snow mb-4">Календарь тренировок</h2>
+        <TrainingCalendarAdmin clientId={profile.id} initialSessions={sessions} />
       </section>
 
       <section className="mb-12">

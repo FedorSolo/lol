@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Save, Trash2 } from "lucide-react";
-import { saveTrainingPlan, deleteClientVideo } from "../actions";
+import { deleteClientVideo } from "../actions";
 
 export interface QuestionnaireRow {
   emergency_contact_name: string | null;
@@ -62,50 +62,6 @@ export function QuestionnaireView({ data }: { data: QuestionnaireRow | null }) {
         </div>
       ))}
     </dl>
-  );
-}
-
-export function TrainingPlanEditor({ clientId, initialPlan }: { clientId: string; initialPlan: string }) {
-  const [plan, setPlan] = useState(initialPlan);
-  const [saving, setSaving] = useState(false);
-  const [savedMsg, setSavedMsg] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  async function handleSave() {
-    setSaving(true);
-    setErrorMsg(null);
-    const result = await saveTrainingPlan(clientId, plan);
-    setSaving(false);
-    if (!result.ok) {
-      setErrorMsg(result.error);
-      return;
-    }
-    setSavedMsg(true);
-  }
-
-  return (
-    <div>
-      <textarea
-        rows={8}
-        value={plan}
-        onChange={(e) => {
-          setPlan(e.target.value);
-          setSavedMsg(false);
-        }}
-        placeholder="Например:&#10;Неделя 1-2: кардио 3х в неделю по 40 минут&#10;Неделя 3-4: + силовая тренировка ног 2х в неделю&#10;..."
-        className="w-full bg-transparent border border-white/20 px-3 py-2 text-snow text-sm focus:border-glacier-light outline-none transition-colors resize-y"
-      />
-      {errorMsg && <p className="text-xs text-red-400 mt-2">{errorMsg}</p>}
-      {savedMsg && <p className="text-xs text-glacier-light mt-2">Сохранено — клиент увидит это в своём кабинете.</p>}
-      <button
-        onClick={handleSave}
-        disabled={saving}
-        className="mt-3 inline-flex items-center gap-2 bg-snow text-obsidian px-4 py-2 text-xs hover:bg-glacier-light transition-colors disabled:opacity-60"
-      >
-        <Save className="w-3.5 h-3.5" />
-        {saving ? "Сохранение…" : "Сохранить план"}
-      </button>
-    </div>
   );
 }
 
