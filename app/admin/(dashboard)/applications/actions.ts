@@ -5,6 +5,8 @@ import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { ApplicationStatus } from "@/lib/supabase/database.types";
 import type { ActionResult, ActionResultWithData } from "@/lib/action-result";
 import { generatePassword } from "@/lib/generate-password";
+import { sendClientInviteEmail } from "@/lib/email";
+import { SITE_URL } from "@/lib/site-url";
 
 export async function updateApplicationStatus(
   id: string,
@@ -25,7 +27,7 @@ export async function getInvitedEmails(): Promise<string[]> {
 
 export async function inviteClient(
   applicationId: string
-): Promise<ActionResultWithData<{ email: string; password: string }>> {
+): Promise<ActionResultWithData<{ email: string; password: string; emailSent: boolean; emailError?: string }>> {
   const supabase = createAdminSupabaseClient();
 
   const { data: application, error: appError } = await supabase
@@ -45,6 +47,7 @@ export async function inviteClient(
   if (existing) return { ok: false, error: "Этот клиент уже приглашён" };
 
   const password = generatePassword();
+  const fullName = `${application.first_name} ${application.last_name}`.trim();
 
   const { data: authResult, error: authError } = await supabase.auth.admin.createUser({
     email: application.email,
@@ -59,7 +62,7 @@ export async function inviteClient(
   const { error: profileError } = await supabase.from("client_profiles").insert({
     id: authResult.user.id,
     email: application.email,
-    full_name: `${application.first_name} ${application.last_name}`.trim(),
+    full_name: fullName,
     phone: application.whatsapp ?? application.telegram ?? null,
     expedition_id: application.expedition_id,
     application_id: application.id,
@@ -72,6 +75,22 @@ export async function inviteClient(
     return { ok: false, error: profileError.message };
   }
 
+  const emailResult = await sendClientInviteEmail({
+    to: application.email,
+    fullName,
+    email: application.email,
+    password,
+    loginUrl: `${SITE_URL}/account/login`,
+  });
+
   revalidatePath("/admin/applications");
-  return { ok: true, data: { email: application.email, password } };
+  return {
+    ok: true,
+    data: {
+      email: application.email,
+      password,
+      emailSent: emailResult.sent,
+      emailError: emailResult.error,
+    },
+  };
 }
