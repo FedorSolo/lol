@@ -462,6 +462,30 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["client_profiles"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      expedition_updates: {
+        Row: {
+          id: string;
+          expedition_id: string;
+          title: string;
+          body: string;
+          is_published: boolean;
+          published_at: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          expedition_id: string;
+          title: string;
+          body: string;
+          is_published?: boolean;
+          published_at?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["expedition_updates"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

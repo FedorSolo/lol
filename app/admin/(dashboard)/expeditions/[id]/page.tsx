@@ -4,6 +4,7 @@ import {
   getItineraryDays,
   getInclusions,
   getExclusions,
+  getExpeditionUpdates,
   saveInclusion,
   deleteInclusion,
   saveExclusion,
@@ -12,15 +13,17 @@ import {
 import ExpeditionForm from "../ExpeditionForm";
 import ItineraryManager from "../ItineraryManager";
 import SimpleListManager from "../SimpleListManager";
+import UpdatesManager from "../UpdatesManager";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function EditExpeditionPage({ params }: { params: { id: string } }) {
-  const [levels, data, itineraryRows, inclusionRows, exclusionRows] = await Promise.all([
+  const [levels, data, itineraryRows, inclusionRows, exclusionRows, updateRows] = await Promise.all([
     getDifficultyLevels(),
     getExpeditionById(params.id),
     getItineraryDays(params.id),
     getInclusions(params.id),
     getExclusions(params.id),
+    getExpeditionUpdates(params.id),
   ]);
 
   if (!data) notFound();
@@ -57,6 +60,16 @@ export default async function EditExpeditionPage({ params }: { params: { id: str
       es: { text: row.i18n.find((r) => r.locale === "es")?.text ?? "" },
       en: { text: row.i18n.find((r) => r.locale === "en")?.text ?? "" },
     } as Record<Locale, { text: string }>,
+  }));
+
+  const updates = updateRows.map((row) => ({
+    id: row.id,
+    expedition_id: row.expedition_id,
+    title: row.title,
+    body: row.body,
+    is_published: row.is_published,
+    published_at: row.published_at.slice(0, 10),
+    sort_order: row.sort_order,
   }));
 
   return (
@@ -99,6 +112,16 @@ export default async function EditExpeditionPage({ params }: { params: { id: str
           save={saveExclusion}
           remove={deleteExclusion}
         />
+      </div>
+      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
+        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-2">
+          Новости для клиентов
+        </h2>
+        <p className="text-mist text-sm mb-5">
+          Видны только тем клиентам, у кого в профиле привязана эта экспедиция — в их личном
+          кабинете, на странице «Новости».
+        </p>
+        <UpdatesManager expeditionId={params.id} initialUpdates={updates} />
       </div>
     </div>
   );

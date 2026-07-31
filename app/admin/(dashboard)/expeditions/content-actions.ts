@@ -87,7 +87,68 @@ export async function deleteItineraryDay(id: string): Promise<ActionResult> {
   return { ok: true };
 }
 
-// ---------- Inclusions (что входит) ----------
+// ---------- Updates (новости для клиентов этой экспедиции) ----------
+
+export async function getExpeditionUpdates(expeditionId: string) {
+  const supabase = createAdminSupabaseClient();
+  const { data } = await supabase
+    .from("expedition_updates")
+    .select("*")
+    .eq("expedition_id", expeditionId)
+    .order("published_at", { ascending: false });
+  return data ?? [];
+}
+
+export interface ExpeditionUpdateFormData {
+  id?: string;
+  expedition_id: string;
+  title: string;
+  body: string;
+  is_published: boolean;
+  published_at: string; // yyyy-mm-dd
+  sort_order: number;
+}
+
+export async function saveExpeditionUpdate(
+  form: ExpeditionUpdateFormData
+): Promise<ActionResultWithData<{ id: string }>> {
+  const supabase = createAdminSupabaseClient();
+
+  const payload = {
+    expedition_id: form.expedition_id,
+    title: form.title,
+    body: form.body,
+    is_published: form.is_published,
+    published_at: form.published_at || new Date().toISOString(),
+    sort_order: form.sort_order,
+  };
+
+  let id = form.id;
+  if (id) {
+    const { error } = await supabase.from("expedition_updates").update(payload).eq("id", id);
+    if (error) return { ok: false, error: error.message };
+  } else {
+    const { data, error } = await supabase
+      .from("expedition_updates")
+      .insert(payload)
+      .select("id")
+      .single();
+    if (error) return { ok: false, error: error.message };
+    id = data.id;
+  }
+
+  revalidateExpedition();
+  revalidatePath("/account/news", "page");
+  return { ok: true, data: { id } };
+}
+
+export async function deleteExpeditionUpdate(id: string): Promise<ActionResult> {
+  const supabase = createAdminSupabaseClient();
+  const { error } = await supabase.from("expedition_updates").delete().eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  revalidateExpedition();
+  return { ok: true };
+}
 
 export async function getInclusions(expeditionId: string) {
   const supabase = createAdminSupabaseClient();
