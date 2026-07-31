@@ -24,6 +24,7 @@ export interface SessionFormData {
   distance_km: string;
   elevation_gain_m: string;
   description: string;
+  video_url: string;
 }
 
 export async function saveSession(
@@ -40,6 +41,7 @@ export async function saveSession(
     distance_km: form.distance_km ? Number(form.distance_km) : null,
     elevation_gain_m: form.elevation_gain_m ? Number(form.elevation_gain_m) : null,
     description: form.description || null,
+    video_url: form.video_url || null,
   };
 
   let id = form.id;

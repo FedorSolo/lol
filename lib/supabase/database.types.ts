@@ -529,6 +529,7 @@ export interface Database {
           description: string | null;
           is_completed: boolean;
           garmin_link: string | null;
+          video_url: string | null;
           created_at: string;
         };
         Insert: {
@@ -543,6 +544,7 @@ export interface Database {
           description?: string | null;
           is_completed?: boolean;
           garmin_link?: string | null;
+          video_url?: string | null;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["training_sessions"]["Insert"]>;

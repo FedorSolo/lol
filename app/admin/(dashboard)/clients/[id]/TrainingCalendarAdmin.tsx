@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Save, Trash2, Link as LinkIcon } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary } from "@/components/TrainingCalendarGrid";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { saveSession, deleteSession, type SessionFormData } from "./sessions-actions";
 
 export interface SessionRow {
@@ -16,6 +17,7 @@ export interface SessionRow {
   description: string | null;
   is_completed: boolean;
   garmin_link: string | null;
+  video_url: string | null;
 }
 
 const SESSION_TYPES = [
@@ -37,6 +39,7 @@ function blankForm(clientId: string, date: string): SessionFormData {
     distance_km: "",
     elevation_gain_m: "",
     description: "",
+    video_url: "",
   };
 }
 
@@ -83,6 +86,7 @@ export default function TrainingCalendarAdmin({
             distance_km: found.distance_km?.toString() ?? "",
             elevation_gain_m: found.elevation_gain_m?.toString() ?? "",
             description: found.description ?? "",
+            video_url: found.video_url ?? "",
           }
         : blankForm(clientId, date)
     );
@@ -110,6 +114,7 @@ export default function TrainingCalendarAdmin({
       description: form.description || null,
       is_completed: existing?.is_completed ?? false,
       garmin_link: existing?.garmin_link ?? null,
+      video_url: form.video_url || null,
     };
     setSessions((prev) => [...prev.filter((s) => s.session_date !== form.session_date), savedSession]);
     setForm((f) => (f ? { ...f, id: result.data.id } : f));
@@ -196,6 +201,20 @@ export default function TrainingCalendarAdmin({
                   value={form.description}
                   onChange={(e) => setForm((f) => f && { ...f, description: e.target.value })}
                 />
+              </div>
+              <div>
+                <label className={labelClass}>Видео с примером упражнения (ссылка на YouTube)</label>
+                <input
+                  className={inputClass}
+                  value={form.video_url}
+                  onChange={(e) => setForm((f) => f && { ...f, video_url: e.target.value })}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                />
+                {form.video_url && (
+                  <div className="mt-2">
+                    <YouTubeEmbed url={form.video_url} title={form.title || "Пример упражнения"} />
+                  </div>
+                )}
               </div>
             </div>
 

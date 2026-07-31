@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Check, Clock, Ruler, TrendingUp, Link as LinkIcon, Save } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary, typeLabel } from "@/components/TrainingCalendarGrid";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { toggleSessionCompleted, updateGarminLink } from "./actions";
 
 export interface ClientSessionRow {
@@ -16,6 +17,7 @@ export interface ClientSessionRow {
   description: string | null;
   is_completed: boolean;
   garmin_link: string | null;
+  video_url: string | null;
 }
 
 export default function TrainingCalendarClient({ sessions: initialSessions }: { sessions: ClientSessionRow[] }) {
@@ -117,6 +119,12 @@ export default function TrainingCalendarClient({ sessions: initialSessions }: { 
 
             {selected.description && (
               <p className="text-mist text-sm leading-relaxed whitespace-pre-line mb-5">{selected.description}</p>
+            )}
+
+            {selected.video_url && (
+              <div className="mb-5">
+                <YouTubeEmbed url={selected.video_url} title={selected.title} />
+              </div>
             )}
 
             <button
