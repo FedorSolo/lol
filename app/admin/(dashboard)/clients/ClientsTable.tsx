@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Pencil, Trash2, Save, X } from "lucide-react";
 import { updateClient, deleteClient, type ClientEditData } from "./actions";
 import { resendClientInvite } from "../applications/actions";
@@ -189,7 +190,11 @@ export default function ClientsTable({
               />
             ) : (
               <tr key={client.id} className="border-b border-white/5 text-snow align-top">
-                <td className="px-5 py-3">{client.full_name}</td>
+                <td className="px-5 py-3">
+                  <Link href={`/admin/clients/${client.id}`} className="hover:text-glacier-light">
+                    {client.full_name}
+                  </Link>
+                </td>
                 <td className="px-5 py-3 text-xs text-mist">
                   <div>{client.email}</div>
                   {client.phone && <div>{client.phone}</div>}

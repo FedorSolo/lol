@@ -448,6 +448,7 @@ export interface Database {
           phone: string | null;
           expedition_id: string | null;
           application_id: string | null;
+          training_plan: string | null;
           created_at: string;
         };
         Insert: {
@@ -457,9 +458,62 @@ export interface Database {
           phone?: string | null;
           expedition_id?: string | null;
           application_id?: string | null;
+          training_plan?: string | null;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["client_profiles"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
+      client_questionnaire_responses: {
+        Row: {
+          client_id: string;
+          emergency_contact_name: string | null;
+          emergency_contact_phone: string | null;
+          height_cm: number | null;
+          weight_kg: number | null;
+          resting_heart_rate: number | null;
+          chronic_conditions: string | null;
+          current_medications: string | null;
+          allergies: string | null;
+          recent_training_summary: string | null;
+          longest_altitude_reached_m: number | null;
+          additional_notes: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          client_id: string;
+          emergency_contact_name?: string | null;
+          emergency_contact_phone?: string | null;
+          height_cm?: number | null;
+          weight_kg?: number | null;
+          resting_heart_rate?: number | null;
+          chronic_conditions?: string | null;
+          current_medications?: string | null;
+          allergies?: string | null;
+          recent_training_summary?: string | null;
+          longest_altitude_reached_m?: number | null;
+          additional_notes?: string | null;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["client_questionnaire_responses"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
+      client_training_videos: {
+        Row: {
+          id: string;
+          client_id: string;
+          storage_path: string;
+          note: string | null;
+          uploaded_at: string;
+        };
+        Insert: {
+          id?: string;
+          client_id: string;
+          storage_path: string;
+          note?: string | null;
+          uploaded_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["client_training_videos"]["Insert"]>;
         Relationships: NoRelationships;
       };
       expedition_updates: {

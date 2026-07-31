@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mountain, User, Compass, Newspaper, LogOut } from "lucide-react";
+import { Mountain, User, Compass, Newspaper, Dumbbell, LogOut } from "lucide-react";
 import { requireClient, clientSignOutAction } from "../auth-actions";
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
@@ -21,6 +21,10 @@ export default async function AccountLayout({ children }: { children: React.Reac
             <Link href="/account/trip" className="hover:text-snow flex items-center gap-1.5">
               <Compass className="w-4 h-4" strokeWidth={1.5} />
               Моя экспедиция
+            </Link>
+            <Link href="/account/training" className="hover:text-snow flex items-center gap-1.5">
+              <Dumbbell className="w-4 h-4" strokeWidth={1.5} />
+              Тренировки
             </Link>
             <Link href="/account/news" className="hover:text-snow flex items-center gap-1.5">
               <Newspaper className="w-4 h-4" strokeWidth={1.5} />
