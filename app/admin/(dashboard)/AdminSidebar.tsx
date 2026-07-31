@@ -33,6 +33,7 @@ const CONTENT_SUB_ROUTES = [
   "/admin/difficulty-levels",
   "/admin/photos",
   "/admin/stories",
+  "/admin/articles",
   "/admin/team",
   "/admin/testimonials",
   "/admin/faq",

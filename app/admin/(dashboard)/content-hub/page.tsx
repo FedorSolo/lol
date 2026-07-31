@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PenLine, BarChart3, Image as ImageIcon, FileText, Users, HelpCircle, Star } from "lucide-react";
+import { PenLine, BarChart3, Image as ImageIcon, FileText, Users, HelpCircle, Star, Newspaper } from "lucide-react";
 
 const sections = [
   {
@@ -25,6 +25,12 @@ const sections = [
     label: "Истории экспедиций",
     description: "Фотоистории прошедших восхождений",
     icon: FileText,
+  },
+  {
+    href: "/admin/articles",
+    label: "Статьи",
+    description: "Блог — подготовка, снаряжение, статьи о горах",
+    icon: Newspaper,
   },
   {
     href: "/admin/team",

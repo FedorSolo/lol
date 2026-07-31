@@ -50,6 +50,11 @@ export default function Navbar() {
               {t("gallery")}
             </Link>
           </li>
+          <li>
+            <Link href="/blog" className="hover:text-snow transition-colors">
+              {t("blog")}
+            </Link>
+          </li>
         </ul>
 
         <div className="hidden md:flex items-center gap-6">
@@ -94,6 +99,11 @@ export default function Navbar() {
               <li>
                 <Link href="/stories" onClick={() => setOpen(false)} className="hover:text-snow">
                   {t("gallery")}
+                </Link>
+              </li>
+              <li>
+                <Link href="/blog" onClick={() => setOpen(false)} className="hover:text-snow">
+                  {t("blog")}
                 </Link>
               </li>
               <li>

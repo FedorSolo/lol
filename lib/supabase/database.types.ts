@@ -392,6 +392,54 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["testimonials_i18n"]["Insert"]>;
         Relationships: NoRelationships;
       };
+      articles: {
+        Row: {
+          id: string;
+          slug: string;
+          cover_storage_path: string | null;
+          author_name: string | null;
+          is_published: boolean;
+          published_at: string | null;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          cover_storage_path?: string | null;
+          author_name?: string | null;
+          is_published?: boolean;
+          published_at?: string | null;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["articles"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
+      articles_i18n: {
+        Row: {
+          article_id: string;
+          locale: Locale;
+          title: string;
+          excerpt: string | null;
+          content: string;
+          meta_title: string | null;
+          meta_description: string | null;
+        };
+        Insert: {
+          article_id: string;
+          locale: Locale;
+          title: string;
+          excerpt?: string | null;
+          content?: string;
+          meta_title?: string | null;
+          meta_description?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["articles_i18n"]["Insert"]>;
+        Relationships: NoRelationships;
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
