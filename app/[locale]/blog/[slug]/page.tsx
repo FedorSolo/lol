@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
@@ -10,6 +12,29 @@ import { getArticleBySlug, getAllPublishedArticleSlugs } from "@/lib/articles-da
 import { coverImageFor } from "@/lib/expeditions-shared";
 import { buildHreflangAlternates, SITE_URL } from "@/lib/site-url";
 import type { Locale } from "@/lib/supabase/database.types";
+
+// Allows <iframe> (for pasted YouTube/Vimeo embed codes) on top of the
+// default safe HTML tag list. Content only ever comes from the admin
+// panel (never from public visitors), so this isn't a public XSS surface
+// — sanitizing is still worthwhile defense in depth against a compromised
+// admin session or a copy-pasted embed code with unexpected attributes.
+const MARKDOWN_HTML_SCHEMA = {
+  ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames ?? []), "iframe"],
+  attributes: {
+    ...defaultSchema.attributes,
+    iframe: [
+      "src",
+      "width",
+      "height",
+      "frameBorder",
+      "allow",
+      "allowFullScreen",
+      "title",
+      "referrerPolicy",
+    ],
+  },
+};
 
 export async function generateStaticParams() {
   const slugs = await getAllPublishedArticleSlugs();
@@ -108,6 +133,7 @@ export default async function ArticlePage({
 
       <article className="max-w-3xl mx-auto px-6 md:px-10 py-16">
         <ReactMarkdown
+          rehypePlugins={[rehypeRaw, [rehypeSanitize, MARKDOWN_HTML_SCHEMA]]}
           components={{
             h1: (props) => <h2 className="font-display font-bold uppercase text-2xl text-snow mt-10 mb-4" {...props} />,
             h2: (props) => <h2 className="font-display font-bold uppercase text-2xl text-snow mt-10 mb-4" {...props} />,
@@ -120,6 +146,11 @@ export default async function ArticlePage({
               <blockquote className="border-l-2 border-glacier-light pl-4 italic text-snow my-6" {...props} />
             ),
             img: (props) => <img className="w-full my-6" loading="lazy" {...props} />,
+            iframe: (props) => (
+              <span className="block relative w-full my-6 aspect-video">
+                <iframe {...props} className="absolute inset-0 w-full h-full" />
+              </span>
+            ),
             strong: (props) => <strong className="text-snow font-semibold" {...props} />,
           }}
         >
