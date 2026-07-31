@@ -118,7 +118,7 @@ export default function Contact({
               </div>
               <div>
                 <label htmlFor="whatsapp" className={labelClass}>{t("whatsapp")}</label>
-                <input id="whatsapp" name="whatsapp" type="tel" placeholder="+7 999 000-00-00" className={inputClass} />
+                <input id="whatsapp" name="whatsapp" required type="tel" placeholder="+7 999 000-00-00" className={inputClass} />
               </div>
 
               <div>
