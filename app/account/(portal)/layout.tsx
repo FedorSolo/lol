@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Mountain, User, Compass, LogOut } from "lucide-react";
-import { requireClient, clientSignOutAction } from "./auth-actions";
+import { requireClient, clientSignOutAction } from "../auth-actions";
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
   const profile = await requireClient();

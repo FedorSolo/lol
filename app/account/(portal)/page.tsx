@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Compass, ArrowRight } from "lucide-react";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { requireClient } from "./auth-actions";
+import { requireClient } from "../auth-actions";
 import ProfileForm from "./ProfileForm";
 
 export default async function AccountDashboardPage() {
