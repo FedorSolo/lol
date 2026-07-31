@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { UserPlus, Copy, X, CheckCircle2 } from "lucide-react";
+import { UserPlus, Copy, X, CheckCircle2, Mail, AlertTriangle } from "lucide-react";
 import { inviteClient } from "./actions";
 
 export default function InviteClientButton({ applicationId }: { applicationId: string }) {
   const [loading, setLoading] = useState(false);
-  const [credentials, setCredentials] = useState<{ email: string; password: string } | null>(null);
+  const [credentials, setCredentials] = useState<{
+    email: string;
+    password: string;
+    emailSent: boolean;
+    emailError?: string;
+  } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   async function handleInvite() {
@@ -51,9 +56,22 @@ export default function InviteClientButton({ applicationId }: { applicationId: s
             </button>
             <CheckCircle2 className="w-8 h-8 text-glacier-light mb-4" strokeWidth={1.5} />
             <h3 className="font-display text-lg uppercase text-snow mb-2">Клиент приглашён</h3>
+
+            {credentials.emailSent ? (
+              <p className="text-glacier-light text-xs mb-4 flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5" />
+                Письмо с данными для входа отправлено на {credentials.email}
+              </p>
+            ) : (
+              <p className="text-amber-400 text-xs mb-4 flex items-start gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                Письмо не отправилось{credentials.emailError ? ` (${credentials.emailError})` : ""} —
+                отправьте данные ниже клиенту вручную.
+              </p>
+            )}
+
             <p className="text-mist text-xs mb-4">
-              Отправьте эти данные клиенту вручную (WhatsApp, email) — они показываются только
-              один раз.
+              Данные показываются только один раз — на всякий случай скопируйте их тоже.
             </p>
             <div className="border border-white/10 p-3 mb-4 text-sm">
               <div className="text-mist text-xs uppercase mb-1">Логин (email)</div>
