@@ -3,7 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Mountain, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-obsidian flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2 justify-center mb-10">
-          <Mountain className="w-6 h-6 text-glacier-light" strokeWidth={1.5} />
+          <img src="/logo-mark.png" alt="" className="w-7 h-7 object-contain" />
           <span className="font-display text-2xl text-snow tracking-wide">CumbrePeak Admin</span>
         </div>
 

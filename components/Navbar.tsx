@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Menu, X, Mountain } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -33,7 +33,7 @@ export default function Navbar() {
     >
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between">
         <Link href="/#top" className="flex items-center gap-2 font-display text-2xl tracking-wide">
-          <Mountain className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
+          <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
           <span className="text-snow">{t("brand")}</span>
         </Link>
 

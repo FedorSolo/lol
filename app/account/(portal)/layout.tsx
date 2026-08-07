@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mountain, User, Compass, Newspaper, Dumbbell, LogOut } from "lucide-react";
+import { User, Compass, Newspaper, Dumbbell, LogOut } from "lucide-react";
 import { requireClient, clientSignOutAction } from "../auth-actions";
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
       <header className="border-b border-white/10">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/account" className="flex items-center gap-2 font-display text-lg text-snow tracking-wide">
-            <Mountain className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
+            <img src="/logo-mark.png" alt="" className="w-5 h-5 object-contain" />
             CumbrePeak
           </Link>
           <nav className="flex items-center gap-6 text-sm text-mist">

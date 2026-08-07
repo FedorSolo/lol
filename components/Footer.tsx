@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Mountain, Instagram, Facebook, MessageCircle, Mail } from "lucide-react";
+import { Instagram, Facebook, MessageCircle, Mail } from "lucide-react";
 import { getSiteTheme } from "@/lib/theme-data";
 
 export default async function Footer() {
@@ -24,7 +24,7 @@ export default async function Footer() {
     <footer className="bg-obsidian border-t border-white/10 py-12">
       <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <a href="#top" className="flex items-center gap-2 font-display text-2xl text-snow">
-          <Mountain className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
+          <img src="/logo-mark.png" alt="" className="w-6 h-6 object-contain" />
           {tNav("brand")}
         </a>
 
