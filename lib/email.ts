@@ -1,11 +1,10 @@
 import "server-only";
 import { Resend } from "resend";
 
-// Resend's shared testing domain — works immediately with no setup, no
-// custom domain required. Once cumbrepeak.com is verified in Resend
-// (Resend dashboard -> Domains), switch this to something like
-// "CumbrePeak <info@cumbrepeak.com>".
-const FROM_ADDRESS = "CumbrePeak <onboarding@resend.dev>";
+// cumbrepeak.com is verified in Resend (SPF/DKIM/DMARC records added in
+// DonWeb) — no more "testing emails only go to your own address"
+// restriction, emails can now go to any recipient.
+const FROM_ADDRESS = "CumbrePeak <info@cumbrepeak.com>";
 
 function getResendClient(): Resend | null {
   const apiKey = process.env.RESEND_API_KEY;
