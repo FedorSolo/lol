@@ -21,7 +21,7 @@ export async function generateMetadata({
     en: "photos from Aconcagua climbs and other Andes summits",
   };
   return {
-    title: `${t("pageTitle")} — ${suffix[locale] ?? suffix.en} | CUMBRE`,
+    title: `${t("pageTitle")} — ${suffix[locale] ?? suffix.en} | CumbrePeak`,
     description: t("pageSubtitle"),
     alternates: { languages: buildHreflangAlternates("/stories") },
   };

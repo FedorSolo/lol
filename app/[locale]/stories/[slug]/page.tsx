@@ -26,7 +26,7 @@ export async function generateMetadata({
   if (!story) return {};
 
   return {
-    title: `${story.title}${story.year ? ` ${story.year}` : ""} | CUMBRE`,
+    title: `${story.title}${story.year ? ` ${story.year}` : ""} | CumbrePeak`,
     description: story.description ?? undefined,
     alternates: { languages: buildHreflangAlternates(`/stories/${slug}`) },
     openGraph: {
@@ -57,7 +57,7 @@ export default async function StoryDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "CUMBRE", item: `${SITE_URL}/${locale}` },
+      { "@type": "ListItem", position: 1, name: "CumbrePeak", item: `${SITE_URL}/${locale}` },
       { "@type": "ListItem", position: 2, name: t("pageTitle"), item: `${SITE_URL}/${locale}/stories` },
       { "@type": "ListItem", position: 3, name: story.title, item: `${SITE_URL}/${locale}/stories/${slug}` },
     ],

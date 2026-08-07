@@ -48,7 +48,7 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
   const sidebarContent = (
     <>
       <div className="px-6 py-6 border-b border-white/10 flex items-center justify-between">
-        <span className="font-display text-xl text-snow tracking-wide">CUMBRE ADMIN</span>
+        <span className="font-display text-xl text-snow tracking-wide">CumbrePeak Admin</span>
         <button
           className="md:hidden text-mist hover:text-snow"
           onClick={() => setOpen(false)}
@@ -100,7 +100,7 @@ export default function AdminSidebar({ userEmail }: { userEmail: string }) {
     <>
       {/* Mobile top bar */}
       <div className="md:hidden flex items-center justify-between px-4 h-14 border-b border-white/10 bg-obsidian sticky top-0 z-30">
-        <span className="font-display text-lg text-snow tracking-wide">CUMBRE ADMIN</span>
+        <span className="font-display text-lg text-snow tracking-wide">CumbrePeak Admin</span>
         <button
           onClick={() => setOpen(true)}
           aria-label="Открыть меню"

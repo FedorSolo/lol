@@ -2,10 +2,10 @@ import "server-only";
 import { Resend } from "resend";
 
 // Resend's shared testing domain — works immediately with no setup, no
-// custom domain required. Once the site has its own domain (not
-// *.vercel.app), switch this to something like "CUMBRE <info@cumbre.com>"
-// after verifying that domain in the Resend dashboard.
-const FROM_ADDRESS = "CUMBRE <onboarding@resend.dev>";
+// custom domain required. Once cumbrepeak.com is verified in Resend
+// (Resend dashboard -> Domains), switch this to something like
+// "CumbrePeak <info@cumbrepeak.com>".
+const FROM_ADDRESS = "CumbrePeak <onboarding@resend.dev>";
 
 function getResendClient(): Resend | null {
   const apiKey = process.env.RESEND_API_KEY;
@@ -36,9 +36,9 @@ export async function sendClientInviteEmail({
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a;">
-      <h1 style="font-size: 20px; letter-spacing: 1px; text-transform: uppercase;">CUMBRE</h1>
+      <h1 style="font-size: 20px; letter-spacing: 1px; text-transform: uppercase;">CumbrePeak</h1>
       <p>Здравствуйте, ${escapeHtml(fullName)}!</p>
-      <p>Для вас создан личный кабинет участника экспедиции CUMBRE. В нём — программа тренировок,
+      <p>Для вас создан личный кабинет участника экспедиции CumbrePeak. В нём — программа тренировок,
       информация по маршруту, снаряжению и новости по вашей экспедиции.</p>
       <table style="border-collapse: collapse; margin: 20px 0;">
         <tr>
@@ -67,7 +67,7 @@ export async function sendClientInviteEmail({
     const result = await resend.emails.send({
       from: FROM_ADDRESS,
       to,
-      subject: "Ваш личный кабинет CUMBRE — данные для входа",
+      subject: "Ваш личный кабинет CumbrePeak — данные для входа",
       html,
     });
 

@@ -35,7 +35,7 @@ export default function ClientLoginPage() {
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2 justify-center mb-3">
           <Mountain className="w-6 h-6 text-glacier-light" strokeWidth={1.5} />
-          <span className="font-display text-2xl text-snow tracking-wide">CUMBRE</span>
+          <span className="font-display text-2xl text-snow tracking-wide">CumbrePeak</span>
         </div>
         <p className="text-center text-mist text-sm mb-10">Личный кабинет участника экспедиции</p>
 
@@ -80,7 +80,7 @@ export default function ClientLoginPage() {
           </button>
 
           <p className="text-center text-xs text-mist mt-4">
-            Данные для входа вы получили от команды CUMBRE после подтверждения участия в
+            Данные для входа вы получили от команды CumbrePeak после подтверждения участия в
             экспедиции.
           </p>
         </form>

@@ -19,7 +19,7 @@ export default async function NewsPage() {
   return (
     <div>
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-2">Новости</h1>
-      <p className="text-mist text-sm mb-10">Обновления по вашей экспедиции от команды CUMBRE.</p>
+      <p className="text-mist text-sm mb-10">Обновления по вашей экспедиции от команды CumbrePeak.</p>
 
       {updates.length === 0 ? (
         <div className="border border-white/10 py-16 text-center text-mist flex flex-col items-center gap-3">

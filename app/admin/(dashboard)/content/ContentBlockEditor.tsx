@@ -24,12 +24,18 @@ export interface ArrayFieldConfig {
   itemFields: FieldConfig[];
 }
 
+export interface StringArrayFieldConfig {
+  key: string;
+  label: string;
+}
+
 export default function ContentBlockEditor({
   settingsKey,
   title,
   description,
   scalarFields,
   arrayField,
+  stringArrayFields,
   initialValues,
 }: {
   settingsKey: SiteSettingsKey;
@@ -37,6 +43,7 @@ export default function ContentBlockEditor({
   description?: string;
   scalarFields: FieldConfig[];
   arrayField?: ArrayFieldConfig;
+  stringArrayFields?: StringArrayFieldConfig[];
   initialValues: Record<Locale, Record<string, any>>;
 }) {
   const [values, setValues] = useState(initialValues);
@@ -79,6 +86,30 @@ export default function ContentBlockEditor({
       const items = [...(v[locale][arrayField.key] ?? [])];
       items.splice(index, 1);
       return { ...v, [locale]: { ...v[locale], [arrayField.key]: items } };
+    });
+  }
+
+  function updateStringArrayItem(fieldKey: string, index: number, val: string) {
+    setValues((v) => {
+      const items = [...((v[locale][fieldKey] as string[]) ?? [])];
+      items[index] = val;
+      return { ...v, [locale]: { ...v[locale], [fieldKey]: items } };
+    });
+    setSavedMsg(false);
+  }
+
+  function addStringArrayItem(fieldKey: string) {
+    setValues((v) => ({
+      ...v,
+      [locale]: { ...v[locale], [fieldKey]: [...(((v[locale][fieldKey] as string[]) ?? [])), ""] },
+    }));
+  }
+
+  function removeStringArrayItem(fieldKey: string, index: number) {
+    setValues((v) => {
+      const items = [...((v[locale][fieldKey] as string[]) ?? [])];
+      items.splice(index, 1);
+      return { ...v, [locale]: { ...v[locale], [fieldKey]: items } };
     });
   }
 
@@ -200,6 +231,36 @@ export default function ContentBlockEditor({
           </button>
         </div>
       )}
+
+      {stringArrayFields?.map((field) => (
+        <div key={field.key} className="mt-6">
+          <label className={labelClass}>{field.label}</label>
+          <div className="flex flex-col gap-2 mt-2">
+            {((values[locale]?.[field.key] as string[]) ?? []).map((val: string, i: number) => (
+              <div key={i} className="flex items-center gap-2">
+                <input
+                  className={inputClass}
+                  value={val}
+                  onChange={(e) => updateStringArrayItem(field.key, i, e.target.value)}
+                />
+                <button
+                  onClick={() => removeStringArrayItem(field.key, i)}
+                  className="shrink-0 text-mist hover:text-red-400 p-1"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => addStringArrayItem(field.key)}
+            className="mt-3 inline-flex items-center gap-2 border border-white/20 text-snow px-3 py-1.5 text-xs hover:border-glacier-light transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Добавить пункт
+          </button>
+        </div>
+      ))}
 
       {errorMsg && <p className="text-xs text-red-400 mt-4">{errorMsg}</p>}
       {savedMsg && <p className="text-xs text-glacier-light mt-4">Сохранено</p>}

@@ -3,6 +3,8 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
 import WhyDifferent from "@/components/WhyDifferent";
+import Levels from "@/components/Levels";
+import TrainingProgram from "@/components/TrainingProgram";
 import Expeditions from "@/components/Expeditions";
 import Timeline from "@/components/Timeline";
 import Team from "@/components/Team";
@@ -10,6 +12,7 @@ import Audience from "@/components/Audience";
 import ApplicationProcess from "@/components/ApplicationProcess";
 import FAQ from "@/components/FAQ";
 import Testimonials from "@/components/Testimonials";
+import PhilosophyExtended from "@/components/PhilosophyExtended";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
@@ -72,7 +75,7 @@ export default async function Home({
       ? {
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "CUMBRE",
+          name: "CumbrePeak",
           review: testimonialsForSchema.map((r) => ({
             "@type": "Review",
             reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },
@@ -90,12 +93,15 @@ export default async function Home({
       <Hero content={content.hero} posterUrl={theme.heroPosterUrl} />
       <Philosophy content={content.philosophy} />
       <WhyDifferent content={content.why} photoUrl={theme.whyPhotoUrl} />
+      <Levels content={content.levels} />
+      <TrainingProgram content={content.trainingProgram} />
       <Expeditions expeditions={expeditions} levels={levels} />
       <Timeline content={content.timeline} />
       <Team members={teamMembers} />
       <Testimonials items={testimonials} />
       <Audience content={content.audience} />
       <ApplicationProcess content={content.process} />
+      <PhilosophyExtended content={content.philosophyExtended} />
       <FAQ items={faqItems} />
       <Contact expeditions={expeditions} backgroundPhotoUrl={theme.contactPhotoUrl} />
       <Footer />

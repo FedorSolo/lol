@@ -7,9 +7,12 @@ import type {
   HeroContent,
   PhilosophyContent,
   WhyContent,
+  LevelsContent,
+  TrainingProgramContent,
   TimelineContent,
   AudienceContent,
   ProcessContent,
+  PhilosophyExtendedContent,
 } from "./site-content-shared";
 
 async function fetchRaw(locale: Locale): Promise<Record<string, unknown>> {
@@ -21,14 +24,28 @@ async function fetchRaw(locale: Locale): Promise<Record<string, unknown>> {
 }
 
 export async function getHomepageContent(locale: Locale): Promise<HomepageContent> {
-  const [raw, tHero, tPhilosophy, tWhy, tTimeline, tAudience, tProcess] = await Promise.all([
+  const [
+    raw,
+    tHero,
+    tPhilosophy,
+    tWhy,
+    tLevels,
+    tTrainingProgram,
+    tTimeline,
+    tAudience,
+    tProcess,
+    tPhilosophyExtended,
+  ] = await Promise.all([
     fetchRaw(locale),
     getTranslations({ locale, namespace: "hero" }),
     getTranslations({ locale, namespace: "philosophy" }),
     getTranslations({ locale, namespace: "why" }),
+    getTranslations({ locale, namespace: "levels" }),
+    getTranslations({ locale, namespace: "trainingProgram" }),
     getTranslations({ locale, namespace: "timeline" }),
     getTranslations({ locale, namespace: "audience" }),
     getTranslations({ locale, namespace: "process" }),
+    getTranslations({ locale, namespace: "philosophyExtended" }),
   ]);
 
   const hero =
@@ -68,6 +85,27 @@ export async function getHomepageContent(locale: Locale): Promise<HomepageConten
         comparisonRows: tWhy.raw("comparisonRows"),
       };
 
+  const levels =
+    (raw.home_levels as LevelsContent) ??
+    ({
+      eyebrow: tLevels("eyebrow"),
+      title: tLevels("title"),
+      levels: tLevels.raw("levels"),
+    } satisfies LevelsContent);
+
+  const trainingProgram =
+    (raw.home_training_program as TrainingProgramContent) ??
+    ({
+      title1: tTrainingProgram("title1"),
+      title2: tTrainingProgram("title2"),
+      intro: tTrainingProgram("intro"),
+      skills: tTrainingProgram.raw("skills"),
+      onlineTitle: tTrainingProgram("onlineTitle"),
+      onlineIntro: tTrainingProgram("onlineIntro"),
+      onlineItems: tTrainingProgram.raw("onlineItems"),
+      closing: tTrainingProgram("closing"),
+    } satisfies TrainingProgramContent);
+
   const timeline =
     (raw.home_timeline as TimelineContent) ??
     ({
@@ -96,5 +134,12 @@ export async function getHomepageContent(locale: Locale): Promise<HomepageConten
       trustNote: tProcess("trustNote"),
     } satisfies ProcessContent);
 
-  return { hero, philosophy, why, timeline, audience, process };
+  const philosophyExtended =
+    (raw.home_philosophy_extended as PhilosophyExtendedContent) ??
+    ({
+      title: tPhilosophyExtended("title"),
+      paragraphs: tPhilosophyExtended.raw("paragraphs"),
+    } satisfies PhilosophyExtendedContent);
+
+  return { hero, philosophy, why, levels, trainingProgram, timeline, audience, process, philosophyExtended };
 }

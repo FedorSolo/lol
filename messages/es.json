@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "Tours de montaña y expediciones en los Andes — Aconcagua, Ojos del Salado, Lanín | CUMBRE",
-    "description": "Expediciones de montaña en los Andes con preparación física completa: ascenso al Aconcagua, Ojos del Salado, Lanín. 8–10 semanas de entrenamiento, guía de montaña con licencia, control médico, grupos pequeños. Postulá en CUMBRE.",
-    "ogTitle": "CUMBRE — Expediciones en los Andes con preparación completa",
+    "title": "Tours de montaña y expediciones en los Andes — Aconcagua, Ojos del Salado, Lanín | CumbrePeak",
+    "description": "Expediciones de montaña en los Andes con preparación física completa: ascenso al Aconcagua, Ojos del Salado, Lanín. 8–10 semanas de entrenamiento, guía de montaña con licencia, control médico, grupos pequeños. Postulá en CumbrePeak.",
+    "ogTitle": "CumbrePeak — Expediciones en los Andes con preparación completa",
     "ogDescription": "Ascenso al Aconcagua y otras cumbres de los Andes con 8 semanas de preparación física y un guía de montaña con licencia."
   },
   "nav": {
-    "brand": "CUMBRE",
+    "brand": "CumbrePeak",
     "why": "Por qué nosotros",
     "expeditions": "Expediciones",
     "timeline": "Preparación",
@@ -67,7 +67,7 @@
       }
     ],
     "comparisonTitle": "Agencia habitual",
-    "comparisonTitleUs": "CUMBRE",
+    "comparisonTitleUs": "CumbrePeak",
     "comparisonRows": [
       {
         "label": "Preparación antes del viaje",
@@ -501,10 +501,65 @@
   },
   "blog": {
     "pageTitle": "Blog",
-    "pageSubtitle": "Preparación, equipo, historias de montaña — del equipo de CUMBRE.",
+    "pageSubtitle": "Preparación, equipo, historias de montaña — del equipo de CumbrePeak.",
     "empty": "Pronto habrá artículos disponibles aquí.",
     "backLink": "Todos los artículos",
     "readMore": "Leer artículo",
     "byAuthor": "Autor"
+  },
+  "levels": {
+    "eyebrow": "Tres niveles. Un mismo camino.",
+    "title": "Elegí tu cumbre",
+    "levels": [
+      {
+        "number": "01",
+        "subtitle": "Nivel 1",
+        "title": "Primer descubrimiento",
+        "text": "Tu primer contacto con la montaña.\nSin experiencia de montañismo.\nSin exigencias extremas.\nAprenderás a moverte por senderos de montaña, conocerás la naturaleza de los Andes, sentirás la fuerza de la altura y descubrirás que sos capaz de más de lo que pensabas.\nEste es el comienzo de un gran camino."
+      },
+      {
+        "number": "02",
+        "subtitle": "Nivel 2",
+        "title": "El verdadero desafío",
+        "text": "El siguiente paso para quienes están listos para ir más allá.\nMás altura.\nMás responsabilidad.\nMás exigencia física y psicológica.\nEs aquí donde nace la confianza en uno mismo.\nDejás de dudar.\nEmpezás a confiar en vos."
+      },
+      {
+        "number": "03",
+        "subtitle": "Nivel 3",
+        "title": "Expedición",
+        "text": "Las cumbres más altas de Sudamérica.\nAscensos de varios días.\nVida en campamentos base.\nAclimatación.\nCondiciones climáticas extremas.\nY el objetivo principal: el Aconcagua.\nCasi siete mil metros sobre el nivel del mar.\nPero incluso esa cumbre es solo el símbolo del camino que la persona recorre por dentro."
+      }
+    ]
+  },
+  "trainingProgram": {
+    "title1": "No preparamos solo la ruta.",
+    "title2": "Preparamos personas.",
+    "intro": "Cada participante recibe un programa de preparación diseñado específicamente para la expedición elegida.\nSegún la dificultad de la ruta, te ayudamos a desarrollar:",
+    "skills": [
+      "resistencia general",
+      "fuerza",
+      "tolerancia al esfuerzo prolongado",
+      "técnica de movimiento en montaña"
+    ],
+    "onlineTitle": "Preparación online",
+    "onlineIntro": "Varios meses antes de la expedición ya formás parte del equipo.\nEl programa incluye:",
+    "onlineItems": [
+      "evaluación individual de tu condición física",
+      "plan de entrenamiento adaptado a tu nivel",
+      "seguimiento regular de un entrenador",
+      "recomendaciones de equipamiento",
+      "preparación para la altura y las caminatas largas",
+      "chat privado con el resto del equipo de la expedición"
+    ],
+    "closing": "Al llegar a la montaña ya conocerás a tus futuros compañeros de equipo y sentirás confianza en tus propias capacidades.\n\nNuestro objetivo es que disfrutes el viaje, no que simplemente luches contra el cansancio."
+  },
+  "philosophyExtended": {
+    "title": "Nuestra filosofía",
+    "paragraphs": [
+      "El mundo es enorme.\nPero los descubrimientos más grandes ocurren dentro de cada persona.",
+      "Creemos que el verdadero crecimiento empieza donde termina la zona de confort.",
+      "La altura, el viento, el frío, los kilómetros, el cansancio y los paisajes increíbles son solo herramientas que te ayudan a ver quién sos de verdad.",
+      "Por eso cada una de nuestras expediciones no es solo un viaje.\nEs una historia personal."
+    ]
   }
 }

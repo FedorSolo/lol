@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "Mountain Tours & Andes Expeditions — Aconcagua, Ojos del Salado, Lanín | CUMBRE",
-    "description": "Guided mountain expeditions in the Andes with full physical preparation: climb Aconcagua, Ojos del Salado, Lanín. 8–10 weeks of training, a licensed mountain guide, medical monitoring, small groups. Apply at CUMBRE.",
-    "ogTitle": "CUMBRE — Andes expeditions with full preparation",
+    "title": "Mountain Tours & Andes Expeditions — Aconcagua, Ojos del Salado, Lanín | CumbrePeak",
+    "description": "Guided mountain expeditions in the Andes with full physical preparation: climb Aconcagua, Ojos del Salado, Lanín. 8–10 weeks of training, a licensed mountain guide, medical monitoring, small groups. Apply at CumbrePeak.",
+    "ogTitle": "CumbrePeak — Andes expeditions with full preparation",
     "ogDescription": "Climb Aconcagua and other Andes summits with 8 weeks of physical preparation and a licensed mountain guide."
   },
   "nav": {
-    "brand": "CUMBRE",
+    "brand": "CumbrePeak",
     "why": "Why us",
     "expeditions": "Expeditions",
     "timeline": "Preparation",
@@ -67,7 +67,7 @@
       }
     ],
     "comparisonTitle": "Typical agency",
-    "comparisonTitleUs": "CUMBRE",
+    "comparisonTitleUs": "CumbrePeak",
     "comparisonRows": [
       {
         "label": "Pre-departure preparation",
@@ -501,10 +501,65 @@
   },
   "blog": {
     "pageTitle": "Blog",
-    "pageSubtitle": "Preparation, gear, stories from the mountains — from the CUMBRE team.",
+    "pageSubtitle": "Preparation, gear, stories from the mountains — from the CumbrePeak team.",
     "empty": "Articles will appear here soon.",
     "backLink": "All articles",
     "readMore": "Read article",
     "byAuthor": "Author"
+  },
+  "levels": {
+    "eyebrow": "Three levels. One path.",
+    "title": "Choose your summit",
+    "levels": [
+      {
+        "number": "01",
+        "subtitle": "Level 1",
+        "title": "First discovery",
+        "text": "Your first encounter with the mountains.\nNo mountaineering experience needed.\nNo extreme exertion.\nYou'll learn to move on mountain trails, get to know the nature of the Andes, feel the power of altitude, and realize you're capable of more than you thought.\nThis is the start of a much longer path."
+      },
+      {
+        "number": "02",
+        "subtitle": "Level 2",
+        "title": "The real challenge",
+        "text": "The next step for those ready to go further.\nMore altitude.\nMore responsibility.\nMore physical and psychological demands.\nThis is where real self-confidence is born.\nYou stop doubting.\nYou start trusting yourself."
+      },
+      {
+        "number": "03",
+        "subtitle": "Level 3",
+        "title": "Expedition",
+        "text": "The highest peaks in South America.\nMulti-day ascents.\nLife in base camps.\nAcclimatization.\nHarsh weather conditions.\nAnd the main goal — Aconcagua.\nNearly seven thousand meters above sea level.\nBut even that summit is just a symbol of the journey a person makes within themselves."
+      }
+    ]
+  },
+  "trainingProgram": {
+    "title1": "We don't just prepare the route.",
+    "title2": "We prepare people.",
+    "intro": "Every participant receives a preparation program built specifically for their chosen expedition.\nDepending on the route's difficulty, we help you develop:",
+    "skills": [
+      "overall endurance",
+      "strength",
+      "resilience to sustained effort",
+      "mountain movement skills"
+    ],
+    "onlineTitle": "Online preparation",
+    "onlineIntro": "Months before the expedition, you already become part of the team.\nThe program includes:",
+    "onlineItems": [
+      "an individual fitness assessment",
+      "a training plan adapted to your level",
+      "regular feedback from a coach",
+      "equipment recommendations",
+      "preparation for altitude and long stretches on foot",
+      "a private chat with your expedition teammates"
+    ],
+    "closing": "By the time you meet in the mountains, you'll already know your future teammates and feel confident in your own abilities.\n\nOur goal is for you to enjoy the journey, not just fight through exhaustion."
+  },
+  "philosophyExtended": {
+    "title": "Our philosophy",
+    "paragraphs": [
+      "The world is vast.\nBut the biggest discoveries happen inside a person.",
+      "We believe real growth begins where the comfort zone ends.",
+      "Altitude, wind, cold, the miles, the exhaustion, and the incredible landscapes are just tools that help you see who you really are.",
+      "That's why every one of our expeditions isn't just a trip.\nIt's a personal story."
+    ]
   }
 }
