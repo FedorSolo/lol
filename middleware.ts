@@ -17,7 +17,13 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|images/|sitemap.xml|robots.txt|manifest.webmanifest).*)",
-  ],
+  // Excludes:
+  //  - Next.js internals (_next/static, _next/image)
+  //  - any request for a static file by extension (icons, images, robots.txt,
+  //    sitemap.xml, manifest, fonts, etc.) — this is deliberately broad so a
+  //    new file dropped into /public never needs a middleware update to be
+  //    reachable (this bit us twice already with sitemap.xml/robots.txt and
+  //    a logo image getting 404'd by the locale router)
+  //  - /admin and /account, handled separately above
+  matcher: ["/((?!_next/static|_next/image|.*\\.[\\w]+$).*)"],
 };
