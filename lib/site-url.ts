@@ -1,6 +1,6 @@
 import { routing } from "@/i18n/routing";
 
-export const SITE_URL = "https://peakhorizont.vercel.app";
+export const SITE_URL = "https://cumbrepeak.com";
 
 /**
  * Builds the `alternates.languages` object Next.js needs to emit
