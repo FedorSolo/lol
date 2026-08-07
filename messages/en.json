@@ -13,7 +13,8 @@
     "faq": "FAQ",
     "apply": "Apply",
     "gallery": "Gallery",
-    "blog": "Blog"
+    "blog": "Blog",
+    "levels": "Levels"
   },
   "hero": {
     "eyebrow": "Andes Expedition Institute",
@@ -551,7 +552,8 @@
       "preparation for altitude and long stretches on foot",
       "a private chat with your expedition teammates"
     ],
-    "closing": "By the time you meet in the mountains, you'll already know your future teammates and feel confident in your own abilities.\n\nOur goal is for you to enjoy the journey, not just fight through exhaustion."
+    "closing": "By the time you meet in the mountains, you'll already know your future teammates and feel confident in your own abilities.\n\nOur goal is for you to enjoy the journey, not just fight through exhaustion.",
+    "linkLabel": "More about preparation"
   },
   "philosophyExtended": {
     "title": "Our philosophy",

@@ -13,7 +13,8 @@
     "faq": "Preguntas",
     "apply": "Postular",
     "gallery": "Galería",
-    "blog": "Blog"
+    "blog": "Blog",
+    "levels": "Niveles"
   },
   "hero": {
     "eyebrow": "Instituto de Expediciones de los Andes",
@@ -551,7 +552,8 @@
       "preparación para la altura y las caminatas largas",
       "chat privado con el resto del equipo de la expedición"
     ],
-    "closing": "Al llegar a la montaña ya conocerás a tus futuros compañeros de equipo y sentirás confianza en tus propias capacidades.\n\nNuestro objetivo es que disfrutes el viaje, no que simplemente luches contra el cansancio."
+    "closing": "Al llegar a la montaña ya conocerás a tus futuros compañeros de equipo y sentirás confianza en tus propias capacidades.\n\nNuestro objetivo es que disfrutes el viaje, no que simplemente luches contra el cansancio.",
+    "linkLabel": "Más sobre la preparación"
   },
   "philosophyExtended": {
     "title": "Nuestra filosofía",

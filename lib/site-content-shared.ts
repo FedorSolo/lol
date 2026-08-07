@@ -89,6 +89,7 @@ export interface TrainingProgramContent {
   onlineIntro: string;
   onlineItems: string[];
   closing: string;
+  linkLabel?: string;
 }
 
 export interface PhilosophyExtendedContent {

@@ -5,7 +5,7 @@ import type { LevelsContent } from "@/lib/site-content-shared";
 
 export default function Levels({ content }: { content: LevelsContent }) {
   return (
-    <section className="bg-ash py-28 md:py-36">
+    <section id="levels" className="bg-ash py-28 md:py-36">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="text-center mb-16">
           <p className="font-mono text-xs tracking-widest2 uppercase text-glacier-light mb-4">
