@@ -93,18 +93,20 @@ export async function getHomepageContent(locale: Locale): Promise<HomepageConten
       levels: tLevels.raw("levels"),
     } satisfies LevelsContent);
 
-  const trainingProgram =
-    (raw.home_training_program as TrainingProgramContent) ??
-    ({
-      title1: tTrainingProgram("title1"),
-      title2: tTrainingProgram("title2"),
-      intro: tTrainingProgram("intro"),
-      skills: tTrainingProgram.raw("skills"),
-      onlineTitle: tTrainingProgram("onlineTitle"),
-      onlineIntro: tTrainingProgram("onlineIntro"),
-      onlineItems: tTrainingProgram.raw("onlineItems"),
-      closing: tTrainingProgram("closing"),
-    } satisfies TrainingProgramContent);
+  const trainingProgramSaved = raw.home_training_program as TrainingProgramContent | undefined;
+  const trainingProgram: TrainingProgramContent = trainingProgramSaved
+    ? { ...trainingProgramSaved, linkLabel: trainingProgramSaved.linkLabel ?? tTrainingProgram("linkLabel") }
+    : {
+        title1: tTrainingProgram("title1"),
+        title2: tTrainingProgram("title2"),
+        intro: tTrainingProgram("intro"),
+        skills: tTrainingProgram.raw("skills"),
+        onlineTitle: tTrainingProgram("onlineTitle"),
+        onlineIntro: tTrainingProgram("onlineIntro"),
+        onlineItems: tTrainingProgram.raw("onlineItems"),
+        closing: tTrainingProgram("closing"),
+        linkLabel: tTrainingProgram("linkLabel"),
+      };
 
   const timeline =
     (raw.home_timeline as TimelineContent) ??
