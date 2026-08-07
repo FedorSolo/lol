@@ -67,6 +67,44 @@ export default async function ContentPage() {
         />
 
         <ContentBlockEditor
+          settingsKey="home_levels"
+          title="«Три уровня. Один путь.»"
+          scalarFields={[
+            { key: "eyebrow", label: "Надпись над заголовком" },
+            { key: "title", label: "Заголовок" },
+          ]}
+          arrayField={{
+            key: "levels",
+            label: "Уровни (обычно 3)",
+            itemFields: [
+              { key: "number", label: "Номер (например «01»)" },
+              { key: "subtitle", label: "Подпись (например «Level 1»)" },
+              { key: "title", label: "Заголовок уровня" },
+              { key: "text", label: "Описание уровня", type: "textarea" },
+            ],
+          }}
+          initialValues={{ ru: ru.levels, es: es.levels, en: en.levels } as any}
+        />
+
+        <ContentBlockEditor
+          settingsKey="home_training_program"
+          title="Программа подготовки"
+          scalarFields={[
+            { key: "title1", label: "Заголовок, строка 1" },
+            { key: "title2", label: "Заголовок, строка 2 (выделена цветом)" },
+            { key: "intro", label: "Вступительный текст", type: "textarea" },
+            { key: "onlineTitle", label: "Заголовок блока «Онлайн-подготовка»" },
+            { key: "onlineIntro", label: "Текст перед списком онлайн-подготовки", type: "textarea" },
+            { key: "closing", label: "Заключительный текст", type: "textarea" },
+          ]}
+          stringArrayFields={[
+            { key: "skills", label: "Что мы помогаем развить (список)" },
+            { key: "onlineItems", label: "Что входит в онлайн-подготовку (список)" },
+          ]}
+          initialValues={{ ru: ru.trainingProgram, es: es.trainingProgram, en: en.trainingProgram } as any}
+        />
+
+        <ContentBlockEditor
           settingsKey="home_timeline"
           title="Как устроена подготовка"
           scalarFields={[
@@ -123,6 +161,16 @@ export default async function ContentPage() {
             ],
           }}
           initialValues={{ ru: ru.process, es: es.process, en: en.process } as any}
+        />
+
+        <ContentBlockEditor
+          settingsKey="home_philosophy_extended"
+          title="«Наша философия» (в конце страницы)"
+          scalarFields={[{ key: "title", label: "Надпись над текстом" }]}
+          stringArrayFields={[{ key: "paragraphs", label: "Абзацы (каждый — отдельным пунктом)" }]}
+          initialValues={
+            { ru: ru.philosophyExtended, es: es.philosophyExtended, en: en.philosophyExtended } as any
+          }
         />
       </div>
     </div>
