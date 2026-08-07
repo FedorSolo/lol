@@ -337,7 +337,7 @@ export default function ExpeditionForm({
             <input
               value={form.i18n[activeLocale].meta_title}
               onChange={(e) => updateI18n(activeLocale, "meta_title", e.target.value)}
-              placeholder="Восхождение на Аконкагуа — экспедиция с полной подготовкой | CUMBRE"
+              placeholder="Восхождение на Аконкагуа — экспедиция с полной подготовкой | CumbrePeak"
               className={inputClass}
             />
           </div>

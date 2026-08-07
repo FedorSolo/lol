@@ -72,7 +72,7 @@ export default async function Home({
       ? {
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "CUMBRE",
+          name: "CumbrePeak",
           review: testimonialsForSchema.map((r) => ({
             "@type": "Review",
             reviewRating: { "@type": "Rating", ratingValue: r.rating, bestRating: 5 },

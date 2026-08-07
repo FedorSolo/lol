@@ -31,18 +31,18 @@ export async function generateStaticParams() {
 }
 
 const FALLBACK_TITLE: Record<Locale, (t: string) => string> = {
-  ru: (t) => `${t} — восхождение с полной подготовкой | CUMBRE`,
-  es: (t) => `${t} — ascenso con preparación completa | CUMBRE`,
-  en: (t) => `${t} — climb with full preparation | CUMBRE`,
+  ru: (t) => `${t} — восхождение с полной подготовкой | CumbrePeak`,
+  es: (t) => `${t} — ascenso con preparación completa | CumbrePeak`,
+  en: (t) => `${t} — climb with full preparation | CumbrePeak`,
 };
 
 const FALLBACK_DESCRIPTION: Record<Locale, (t: string, alt: string) => string> = {
   ru: (t, alt) =>
-    `Экспедиция на ${t}${alt ? ` (${alt})` : ""}: 8–10 недель физической подготовки, лицензированный горный гид, контроль здоровья и малые группы. Программа, требования и заявка на сайте CUMBRE.`,
+    `Экспедиция на ${t}${alt ? ` (${alt})` : ""}: 8–10 недель физической подготовки, лицензированный горный гид, контроль здоровья и малые группы. Программа, требования и заявка на сайте CumbrePeak.`,
   es: (t, alt) =>
-    `Expedición a ${t}${alt ? ` (${alt})` : ""}: 8–10 semanas de preparación física, guía de montaña con licencia, control médico y grupos pequeños. Programa, requisitos y postulación en CUMBRE.`,
+    `Expedición a ${t}${alt ? ` (${alt})` : ""}: 8–10 semanas de preparación física, guía de montaña con licencia, control médico y grupos pequeños. Programa, requisitos y postulación en CumbrePeak.`,
   en: (t, alt) =>
-    `${t} expedition${alt ? ` (${alt})` : ""}: 8–10 weeks of physical preparation, a licensed mountain guide, medical monitoring, and small groups. Program, requirements, and application at CUMBRE.`,
+    `${t} expedition${alt ? ` (${alt})` : ""}: 8–10 weeks of physical preparation, a licensed mountain guide, medical monitoring, and small groups. Program, requirements, and application at CumbrePeak.`,
 };
 
 export async function generateMetadata({
@@ -126,7 +126,7 @@ export default async function ExpeditionDetailPage({
     description: expedition.shortDescription ?? expedition.heroText ?? undefined,
     image: expedition.coverUrl ?? cover,
     url: pageUrl,
-    provider: { "@type": "Organization", name: "CUMBRE", url: SITE_URL },
+    provider: { "@type": "Organization", name: "CumbrePeak", url: SITE_URL },
     ...(expedition.priceFrom != null && {
       offers: {
         "@type": "Offer",
@@ -151,7 +151,7 @@ export default async function ExpeditionDetailPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "CUMBRE", item: `${SITE_URL}/${locale}` },
+      { "@type": "ListItem", position: 1, name: "CumbrePeak", item: `${SITE_URL}/${locale}` },
       { "@type": "ListItem", position: 2, name: expedition.title, item: pageUrl },
     ],
   };

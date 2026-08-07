@@ -24,7 +24,7 @@ export default async function AccountDashboardPage() {
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-2">
         Здравствуйте, {profile.full_name.split(" ")[0]}
       </h1>
-      <p className="text-mist text-sm mb-10">Личный кабинет участника экспедиции CUMBRE.</p>
+      <p className="text-mist text-sm mb-10">Личный кабинет участника экспедиции CumbrePeak.</p>
 
       {expeditionTitle && (
         <Link

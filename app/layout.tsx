@@ -57,7 +57,7 @@ export default async function RootLayout({
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "CUMBRE",
+    name: "CumbrePeak",
     url: SITE_URL,
     ...(theme.contactEmail && { email: theme.contactEmail }),
     ...(theme.contactPhone && { telephone: theme.contactPhone }),

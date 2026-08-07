@@ -11,7 +11,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/account" className="flex items-center gap-2 font-display text-lg text-snow tracking-wide">
             <Mountain className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
-            CUMBRE
+            CumbrePeak
           </Link>
           <nav className="flex items-center gap-6 text-sm text-mist">
             <Link href="/account" className="hover:text-snow flex items-center gap-1.5">

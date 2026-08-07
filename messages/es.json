@@ -1,12 +1,12 @@
 {
   "meta": {
-    "title": "Tours de montaña y expediciones en los Andes — Aconcagua, Ojos del Salado, Lanín | CUMBRE",
-    "description": "Expediciones de montaña en los Andes con preparación física completa: ascenso al Aconcagua, Ojos del Salado, Lanín. 8–10 semanas de entrenamiento, guía de montaña con licencia, control médico, grupos pequeños. Postulá en CUMBRE.",
-    "ogTitle": "CUMBRE — Expediciones en los Andes con preparación completa",
+    "title": "Tours de montaña y expediciones en los Andes — Aconcagua, Ojos del Salado, Lanín | CumbrePeak",
+    "description": "Expediciones de montaña en los Andes con preparación física completa: ascenso al Aconcagua, Ojos del Salado, Lanín. 8–10 semanas de entrenamiento, guía de montaña con licencia, control médico, grupos pequeños. Postulá en CumbrePeak.",
+    "ogTitle": "CumbrePeak — Expediciones en los Andes con preparación completa",
     "ogDescription": "Ascenso al Aconcagua y otras cumbres de los Andes con 8 semanas de preparación física y un guía de montaña con licencia."
   },
   "nav": {
-    "brand": "CUMBRE",
+    "brand": "CumbrePeak",
     "why": "Por qué nosotros",
     "expeditions": "Expediciones",
     "timeline": "Preparación",
@@ -67,7 +67,7 @@
       }
     ],
     "comparisonTitle": "Agencia habitual",
-    "comparisonTitleUs": "CUMBRE",
+    "comparisonTitleUs": "CumbrePeak",
     "comparisonRows": [
       {
         "label": "Preparación antes del viaje",
@@ -501,7 +501,7 @@
   },
   "blog": {
     "pageTitle": "Blog",
-    "pageSubtitle": "Preparación, equipo, historias de montaña — del equipo de CUMBRE.",
+    "pageSubtitle": "Preparación, equipo, historias de montaña — del equipo de CumbrePeak.",
     "empty": "Pronto habrá artículos disponibles aquí.",
     "backLink": "Todos los artículos",
     "readMore": "Leer artículo",

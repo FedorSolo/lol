@@ -50,7 +50,7 @@ export async function generateMetadata({
   const article = await getArticleBySlug(slug, locale as Locale);
   if (!article) return {};
 
-  const title = article.metaTitle || `${article.title} | CUMBRE`;
+  const title = article.metaTitle || `${article.title} | CumbrePeak`;
   const description = article.metaDescription || article.excerpt || undefined;
 
   return {
@@ -91,14 +91,14 @@ export default async function ArticlePage({
     url: pageUrl,
     ...(article.publishedAt && { datePublished: article.publishedAt }),
     ...(article.authorName && { author: { "@type": "Person", name: article.authorName } }),
-    publisher: { "@type": "Organization", name: "CUMBRE", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "CumbrePeak", url: SITE_URL },
   };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "CUMBRE", item: `${SITE_URL}/${locale}` },
+      { "@type": "ListItem", position: 1, name: "CumbrePeak", item: `${SITE_URL}/${locale}` },
       { "@type": "ListItem", position: 2, name: t("pageTitle"), item: `${SITE_URL}/${locale}/blog` },
       { "@type": "ListItem", position: 3, name: article.title, item: pageUrl },
     ],

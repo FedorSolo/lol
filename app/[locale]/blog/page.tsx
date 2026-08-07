@@ -16,7 +16,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "blog" });
   return {
-    title: `${t("pageTitle")} — CUMBRE`,
+    title: `${t("pageTitle")} — CumbrePeak`,
     description: t("pageSubtitle"),
     alternates: { languages: buildHreflangAlternates("/blog") },
   };

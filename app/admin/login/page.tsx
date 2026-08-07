@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="flex items-center gap-2 justify-center mb-10">
           <Mountain className="w-6 h-6 text-glacier-light" strokeWidth={1.5} />
-          <span className="font-display text-2xl text-snow tracking-wide">CUMBRE ADMIN</span>
+          <span className="font-display text-2xl text-snow tracking-wide">CumbrePeak Admin</span>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

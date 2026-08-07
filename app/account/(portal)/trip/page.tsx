@@ -14,7 +14,7 @@ export default async function TripPage() {
           Моя экспедиция
         </h1>
         <p className="text-mist text-sm">
-          К вашему профилю пока не привязана экспедиция — свяжитесь с командой CUMBRE.
+          К вашему профилю пока не привязана экспедиция — свяжитесь с командой CumbrePeak.
         </p>
       </div>
     );
