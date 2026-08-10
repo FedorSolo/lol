@@ -239,6 +239,10 @@ export default function ThemeEditor({ initial }: { initial: SiteTheme }) {
         <div className="flex flex-col gap-6 max-w-2xl">
           <div>
             <label className={labelClass}>Заставка (постер) видео на главной</label>
+            <p className="text-xs text-mist mb-2">
+              Поверх текст (заголовок) — выбирайте не слишком светлое фото, иначе текст будет
+              плохо читаться, даже с затемнением.
+            </p>
             <ImageUploadField
               folder="site"
               value={theme.heroPosterUrl}

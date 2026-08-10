@@ -12,7 +12,7 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
     offset: ["start start", "end start"],
   });
 
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.55, 0.92]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   const lines = [content.line1, content.line2, content.line3];
@@ -36,7 +36,7 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
       </div>
       <motion.div
         style={{ opacity: overlayOpacity }}
-        className="absolute inset-0 bg-gradient-to-b from-obsidian/70 via-obsidian/35 to-obsidian"
+        className="absolute inset-0 bg-gradient-to-b from-obsidian/85 via-obsidian/60 to-obsidian"
       />
 
       <motion.div
@@ -48,11 +48,15 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="font-mono text-xs md:text-sm tracking-widest2 text-glacier-light uppercase mb-6"
+          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}
         >
           {content.eyebrow}
         </motion.p>
 
-        <h1 className="font-display font-bold uppercase text-5xl sm:text-6xl md:text-8xl leading-[0.95] text-snow text-balance max-w-4xl">
+        <h1
+          className="font-display font-bold uppercase text-5xl sm:text-6xl md:text-8xl leading-[0.95] text-snow text-balance max-w-4xl"
+          style={{ textShadow: "0 4px 24px rgba(0,0,0,0.7)" }}
+        >
           {lines.map((line, i) => (
             <motion.span
               key={line}
@@ -71,6 +75,7 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9 }}
           className="mt-8 max-w-xl text-mist text-base md:text-lg font-body"
+          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.6)" }}
         >
           {content.subtitle}
         </motion.p>
