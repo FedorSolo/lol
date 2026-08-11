@@ -72,6 +72,7 @@ export interface LevelItem {
   subtitle: string;
   title: string;
   text: string;
+  difficultyLevelId?: string;
 }
 
 export interface LevelsContent {
