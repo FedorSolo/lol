@@ -15,7 +15,8 @@ const LOCALES: { code: Locale; label: string }[] = [
 export interface FieldConfig {
   key: string;
   label: string;
-  type?: "text" | "textarea";
+  type?: "text" | "textarea" | "select";
+  options?: { value: string; label: string }[];
 }
 
 export interface ArrayFieldConfig {
@@ -201,6 +202,20 @@ export default function ContentBlockEditor({
                           value={item[f.key] ?? ""}
                           onChange={(e) => updateArrayItem(i, f.key, e.target.value)}
                         />
+                      ) : f.type === "select" ? (
+                        <select
+                          key={f.key}
+                          className={inputClass}
+                          value={item[f.key] ?? ""}
+                          onChange={(e) => updateArrayItem(i, f.key, e.target.value)}
+                        >
+                          <option value="" className="bg-obsidian">{f.label} — не выбрано</option>
+                          {f.options?.map((o) => (
+                            <option key={o.value} value={o.value} className="bg-obsidian">
+                              {o.label}
+                            </option>
+                          ))}
+                        </select>
                       ) : (
                         <input
                           key={f.key}

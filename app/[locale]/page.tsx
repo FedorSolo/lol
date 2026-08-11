@@ -92,7 +92,7 @@ export default async function Home({
       <Hero content={content.hero} posterUrl={theme.heroPosterUrl} />
       <Philosophy content={content.philosophy} extended={content.philosophyExtended} />
       <WhyDifferent content={content.why} photoUrl={theme.whyPhotoUrl} />
-      <Levels content={content.levels} />
+      <Levels content={content.levels} expeditions={expeditions} />
       <Expeditions expeditions={expeditions} levels={levels} />
       <TrainingProgramTeaser
         content={content.trainingProgram}

@@ -1,4 +1,5 @@
 import { getHomepageContent } from "@/lib/site-content-data";
+import { getDifficultyLevels } from "../expeditions/actions";
 import ContentBlockEditor from "./ContentBlockEditor";
 import type { Locale } from "@/lib/supabase/database.types";
 import BackToContentHub from "../BackToContentHub";
@@ -6,8 +7,16 @@ import BackToContentHub from "../BackToContentHub";
 const LOCALES: Locale[] = ["ru", "es", "en"];
 
 export default async function ContentPage() {
-  const content = await Promise.all(LOCALES.map((l) => getHomepageContent(l)));
+  const [content, difficultyLevels] = await Promise.all([
+    Promise.all(LOCALES.map((l) => getHomepageContent(l))),
+    getDifficultyLevels(),
+  ]);
   const [ru, es, en] = content;
+
+  const difficultyOptions = difficultyLevels.map((level) => ({
+    value: level.id,
+    label: level.i18n.find((i) => i.locale === "ru")?.name ?? level.id,
+  }));
 
   return (
     <div>
@@ -69,6 +78,7 @@ export default async function ContentPage() {
         <ContentBlockEditor
           settingsKey="home_levels"
           title="«Три уровня. Один путь.»"
+          description="Каждый уровень можно связать с реальным «уровнем сложности» — тогда на сайте под описанием уровня покажутся подходящие экспедиции."
           scalarFields={[
             { key: "eyebrow", label: "Надпись над заголовком" },
             { key: "title", label: "Заголовок" },
@@ -81,6 +91,12 @@ export default async function ContentPage() {
               { key: "subtitle", label: "Подпись (например «Level 1»)" },
               { key: "title", label: "Заголовок уровня" },
               { key: "text", label: "Описание уровня", type: "textarea" },
+              {
+                key: "difficultyLevelId",
+                label: "Связанный уровень сложности (для показа экспедиций)",
+                type: "select",
+                options: difficultyOptions,
+              },
             ],
           }}
           initialValues={{ ru: ru.levels, es: es.levels, en: en.levels } as any}
