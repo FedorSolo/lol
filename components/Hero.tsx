@@ -29,7 +29,7 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
           poster={posterUrl}
         >
           <source
-            src="https://assets.mixkit.co/videos/51689/51689-720.mp4"
+            src="https://videos.pexels.com/video-files/29822397/12809486_2560_1440_60fps.mp4"
             type="video/mp4"
           />
         </video>

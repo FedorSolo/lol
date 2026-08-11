@@ -39,9 +39,10 @@ export default function ImageUploadField({
 
   const shapeClass =
     shape === "circle" ? "w-24 h-24 rounded-full" : shape === "wide" ? "w-full h-32" : "w-24 h-24";
+  const isWide = shape === "wide";
 
   return (
-    <div className="flex items-center gap-4">
+    <div className={isWide ? "flex flex-col gap-3" : "flex items-center gap-4"}>
       <div
         className={`${shapeClass} shrink-0 border border-white/20 bg-ash overflow-hidden relative flex items-center justify-center`}
       >
@@ -57,7 +58,7 @@ export default function ImageUploadField({
         )}
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div className={isWide ? "flex items-center gap-3" : "flex flex-col gap-2"}>
         <input
           ref={inputRef}
           type="file"
