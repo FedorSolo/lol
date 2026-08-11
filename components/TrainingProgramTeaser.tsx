@@ -15,7 +15,7 @@ export default function TrainingProgramTeaser({
   const introFirstLine = content.intro.split("\n")[0];
 
   return (
-    <section className="bg-obsidian py-16 md:py-24">
+    <section className="bg-obsidian py-12 md:py-16">
       <div className="max-w-4xl mx-auto px-6 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -19,7 +19,7 @@ export default function FAQ({ items: dbItems }: { items: PublicFaqItem[] }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="bg-snow text-obsidian py-20 md:py-28">
+    <section id="faq" className="bg-snow text-obsidian py-14 md:py-20">
       <div className="max-w-4xl mx-auto px-6 md:px-10">
         <div className="mb-16 text-center">
           <p className="font-mono text-xs tracking-widest2 uppercase text-stone mb-4">

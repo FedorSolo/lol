@@ -36,7 +36,7 @@ export default function WhyDifferent({
   photoUrl: string;
 }) {
   return (
-    <section id="why" className="bg-obsidian py-20 md:py-28">
+    <section id="why" className="bg-obsidian py-14 md:py-20">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-12 gap-10 md:gap-8 mb-16 items-end">
           <div className="md:col-span-7">
