@@ -38,6 +38,11 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
         style={{ opacity: overlayOpacity }}
         className="absolute inset-0 bg-gradient-to-b from-obsidian/85 via-obsidian/60 to-obsidian"
       />
+      {/* Extra darkening specifically behind the text column (left side) —
+          the vertical gradient above isn't always enough on a busy photo/
+          video frame; text needs guaranteed contrast regardless of what's
+          directly behind it. */}
+      <div className="absolute inset-0 bg-gradient-to-r from-obsidian/75 via-obsidian/25 to-transparent" />
 
       <motion.div
         style={{ y: contentY }}
@@ -48,14 +53,14 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="font-mono text-xs md:text-sm tracking-widest2 text-glacier-light uppercase mb-6"
-          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}
+          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9)" }}
         >
           {content.eyebrow}
         </motion.p>
 
         <h1
           className="font-display font-bold uppercase text-5xl sm:text-6xl md:text-8xl leading-[0.95] text-snow text-balance max-w-4xl"
-          style={{ textShadow: "0 4px 24px rgba(0,0,0,0.7)" }}
+          style={{ textShadow: "0 4px 28px rgba(0,0,0,0.85), 0 0 8px rgba(0,0,0,0.7)" }}
         >
           {lines.map((line, i) => (
             <motion.span
@@ -74,8 +79,8 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9 }}
-          className="mt-8 max-w-xl text-mist text-base md:text-lg font-body"
-          style={{ textShadow: "0 2px 10px rgba(0,0,0,0.6)" }}
+          className="mt-8 max-w-xl text-snow/90 text-base md:text-lg font-body"
+          style={{ textShadow: "0 2px 14px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9)" }}
         >
           {content.subtitle}
         </motion.p>
