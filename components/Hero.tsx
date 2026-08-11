@@ -48,6 +48,16 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
         style={{ y: contentY }}
         className="relative z-10 h-full max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-end pb-24 md:pb-28"
       >
+        {/* Soft dark panel behind the text block itself — the gradients
+            above darken the general area, but a video frame can still be
+            unpredictably bright right where the text sits. This panel
+            (blurred edges, no hard border) guarantees contrast no matter
+            what's playing behind it. */}
+        <div
+          className="absolute -inset-x-6 md:-inset-x-10 bottom-0 top-1/4 -z-10 bg-obsidian/55 backdrop-blur-[2px]"
+          style={{ maskImage: "linear-gradient(to top, black 60%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 60%, transparent 100%)" }}
+        />
+
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
