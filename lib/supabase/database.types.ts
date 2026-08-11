@@ -225,6 +225,7 @@ export interface Database {
           years_experience: number | null;
           stat_secondary_value: string | null;
           stat_secondary_label_key: string | null;
+          instagram_url: string | null;
           is_published: boolean;
           sort_order: number;
         };
@@ -234,6 +235,7 @@ export interface Database {
           years_experience?: number | null;
           stat_secondary_value?: string | null;
           stat_secondary_label_key?: string | null;
+          instagram_url?: string | null;
           is_published?: boolean;
           sort_order?: number;
         };

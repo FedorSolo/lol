@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { Instagram } from "lucide-react";
 import type { PublicTeamMember } from "@/lib/team-shared";
 
 // Fallback for the static translated copy (used only if Supabase has no
@@ -33,6 +34,7 @@ export default function Team({ members }: { members: PublicTeamMember[] }) {
           years: m.yearsExperience?.toString() ?? "—",
           statValue: m.statValue ?? "",
           statLabel: m.statLabel ?? "",
+          instagramUrl: m.instagramUrl,
         }))
       : (t.raw("members") as StaticMember[]).map((m, i) => ({
           key: m.name,
@@ -43,10 +45,11 @@ export default function Team({ members }: { members: PublicTeamMember[] }) {
           years: STATIC_YEARS[i],
           statValue: m.statValue,
           statLabel: m.statLabel,
+          instagramUrl: null as string | null,
         }));
 
   return (
-    <section className="bg-obsidian py-28 md:py-36">
+    <section className="bg-obsidian py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-12 gap-10 mb-16">
           <p className="md:col-span-4 font-mono text-xs tracking-widest2 uppercase text-glacier-light">
@@ -86,6 +89,17 @@ export default function Team({ members }: { members: PublicTeamMember[] }) {
               <p className="mt-1 font-mono text-xs uppercase tracking-wide text-glacier-light">
                 {member.role}
               </p>
+              {member.instagramUrl && (
+                <a
+                  href={member.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center justify-center w-8 h-8 border border-white/15 text-mist hover:text-glacier-light hover:border-glacier-light/40 transition-colors"
+                  aria-label={`${member.name} — Instagram`}
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+              )}
               {member.bio && (
                 <p className="mt-5 text-mist text-sm leading-relaxed max-w-sm">{member.bio}</p>
               )}

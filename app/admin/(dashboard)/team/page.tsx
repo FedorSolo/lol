@@ -13,6 +13,7 @@ export default async function TeamPage() {
     years_experience: m.years_experience?.toString() ?? "",
     stat_secondary_value: m.stat_secondary_value ?? "",
     stat_secondary_label_key: m.stat_secondary_label_key ?? "",
+    instagram_url: m.instagram_url ?? "",
     is_published: m.is_published,
     sort_order: m.sort_order,
     i18n: {

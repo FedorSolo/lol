@@ -61,7 +61,7 @@ export default function TeamMemberCard({
           shape="circle"
         />
 
-        <div className="flex-1 min-w-[200px] grid sm:grid-cols-3 gap-4">
+        <div className="flex-1 min-w-[200px] grid sm:grid-cols-4 gap-4">
           <div>
             <label className={labelClass}>Лет опыта</label>
             <input
@@ -87,6 +87,15 @@ export default function TeamMemberCard({
               placeholder="восхождений"
               value={form.stat_secondary_label_key}
               onChange={(e) => setForm((f) => ({ ...f, stat_secondary_label_key: e.target.value }))}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>Instagram (ссылка)</label>
+            <input
+              className={inputClass}
+              placeholder="https://instagram.com/..."
+              value={form.instagram_url}
+              onChange={(e) => setForm((f) => ({ ...f, instagram_url: e.target.value }))}
             />
           </div>
         </div>

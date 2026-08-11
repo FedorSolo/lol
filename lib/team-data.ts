@@ -33,6 +33,7 @@ export async function getPublicTeamMembers(locale: Locale): Promise<PublicTeamMe
         yearsExperience: m.years_experience,
         statValue: m.stat_secondary_value,
         statLabel: m.stat_secondary_label_key,
+        instagramUrl: m.instagram_url,
         name: t.name,
         role: t.role,
         bio: t.bio,
