@@ -48,52 +48,59 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
         style={{ y: contentY }}
         className="relative z-10 h-full max-w-7xl mx-auto px-6 md:px-10 flex flex-col justify-end pb-24 md:pb-28"
       >
-        {/* Soft dark panel behind the text block itself — the gradients
-            above darken the general area, but a video frame can still be
-            unpredictably bright right where the text sits. This panel
-            (blurred edges, no hard border) guarantees contrast no matter
-            what's playing behind it. */}
-        <div
-          className="absolute -inset-x-6 md:-inset-x-10 bottom-0 top-1/4 -z-10 bg-obsidian/55 backdrop-blur-[2px]"
-          style={{ maskImage: "linear-gradient(to top, black 60%, transparent 100%)", WebkitMaskImage: "linear-gradient(to top, black 60%, transparent 100%)" }}
-        />
+        <div className="relative">
+          {/* Soft dark panel sized to exactly this text block (eyebrow +
+              headline + subtitle) via inset on a relative wrapper, rather
+              than a guessed fraction of the viewport — stays correctly
+              sized regardless of how many lines wrap on a given screen.
+              The headline itself already reads fine on any background
+              thanks to its own weight/shadow, so including it here isn't
+              a problem — it just also benefits from the extra contrast. */}
+          <div
+            className="absolute -inset-x-6 md:-inset-x-10 -inset-y-6 md:-inset-y-8 -z-10 bg-obsidian/55 backdrop-blur-[2px] rounded-sm"
+            style={{
+              maskImage: "linear-gradient(to bottom, transparent 0%, black 8%, black 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 8%, black 100%)",
+            }}
+          />
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="font-mono text-xs md:text-sm tracking-widest2 text-glacier-light uppercase mb-6"
-          style={{ textShadow: "0 2px 16px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9)" }}
-        >
-          {content.eyebrow}
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="font-mono text-xs md:text-sm tracking-widest2 text-glacier-light uppercase mb-6"
+            style={{ textShadow: "0 2px 16px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9)" }}
+          >
+            {content.eyebrow}
+          </motion.p>
 
-        <h1
-          className="font-display font-bold uppercase text-5xl sm:text-6xl md:text-8xl leading-[0.95] text-snow text-balance max-w-4xl"
-          style={{ textShadow: "0 4px 28px rgba(0,0,0,0.85), 0 0 8px rgba(0,0,0,0.7)" }}
-        >
-          {lines.map((line, i) => (
-            <motion.span
-              key={line}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 + i * 0.12, ease: "easeOut" }}
-              className="block"
-            >
-              {line}
-            </motion.span>
-          ))}
-        </h1>
+          <h1
+            className="font-display font-bold uppercase text-5xl sm:text-6xl md:text-8xl leading-[0.95] text-snow text-balance max-w-4xl"
+            style={{ textShadow: "0 4px 28px rgba(0,0,0,0.85), 0 0 8px rgba(0,0,0,0.7)" }}
+          >
+            {lines.map((line, i) => (
+              <motion.span
+                key={line}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.3 + i * 0.12, ease: "easeOut" }}
+                className="block"
+              >
+                {line}
+              </motion.span>
+            ))}
+          </h1>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.9 }}
-          className="mt-8 max-w-xl text-snow/90 text-base md:text-lg font-body"
-          style={{ textShadow: "0 2px 14px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9)" }}
-        >
-          {content.subtitle}
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="mt-8 max-w-xl text-snow/90 text-base md:text-lg font-body"
+            style={{ textShadow: "0 2px 14px rgba(0,0,0,0.9), 0 0 4px rgba(0,0,0,0.9)" }}
+          >
+            {content.subtitle}
+          </motion.p>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 10 }}
