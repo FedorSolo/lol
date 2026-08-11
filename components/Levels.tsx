@@ -23,7 +23,7 @@ export default function Levels({
     : [];
 
   return (
-    <section id="levels" className="bg-ash py-20 md:py-28">
+    <section id="levels" className="bg-ash py-14 md:py-20">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="text-center mb-14">
           <p className="font-mono text-xs tracking-widest2 uppercase text-glacier-light mb-4">

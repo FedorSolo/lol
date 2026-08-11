@@ -11,7 +11,7 @@ export default function Philosophy({
   extended: PhilosophyExtendedContent;
 }) {
   return (
-    <section id="philosophy" className="bg-obsidian py-16 md:py-24 border-b border-white/10">
+    <section id="philosophy" className="bg-obsidian py-12 md:py-16 border-b border-white/10">
       <div className="max-w-3xl mx-auto px-6 md:px-10 text-center">
         {extended.title && (
           <motion.p

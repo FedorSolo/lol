@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, MessageCircle } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -48,20 +48,20 @@ export default function NavbarClient({
           <span className="text-snow">{t("brand")}</span>
         </Link>
 
-        <ul className="hidden lg:flex items-center gap-8 font-body text-sm text-mist">
+        <ul className="hidden lg:flex items-center font-body text-sm text-mist divide-x divide-white/15">
           {links.map((l) => (
-            <li key={l.href}>
+            <li key={l.href} className="px-4 first:pl-0">
               <Link href={l.href} className="hover:text-snow transition-colors">
                 {l.label}
               </Link>
             </li>
           ))}
-          <li>
+          <li className="px-4">
             <Link href="/stories" className="hover:text-snow transition-colors">
               {t("gallery")}
             </Link>
           </li>
-          <li>
+          <li className="pl-4">
             <Link href="/blog" className="hover:text-snow transition-colors">
               {t("blog")}
             </Link>
@@ -69,6 +69,13 @@ export default function NavbarClient({
         </ul>
 
         <div className="hidden lg:flex items-center gap-5">
+          <LanguageSwitcher />
+          <Link
+            href="/#contact"
+            className="inline-flex items-center border border-glacier-light/60 text-snow text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors whitespace-nowrap"
+          >
+            {t("apply")}
+          </Link>
           {displayPhone &&
             (waHref ? (
               <a
@@ -78,22 +85,14 @@ export default function NavbarClient({
                 className="inline-flex items-center gap-1.5 text-sm text-mist hover:text-glacier-light transition-colors whitespace-nowrap"
                 title="Написать в WhatsApp"
               >
-                <Phone className="w-3.5 h-3.5" />
+                <MessageCircle className="w-4 h-4" />
                 {displayPhone}
               </a>
             ) : (
               <span className="inline-flex items-center gap-1.5 text-sm text-mist whitespace-nowrap">
-                <Phone className="w-3.5 h-3.5" />
                 {displayPhone}
               </span>
             ))}
-          <LanguageSwitcher />
-          <Link
-            href="/#contact"
-            className="inline-flex items-center border border-glacier-light/60 text-snow text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors whitespace-nowrap"
-          >
-            {t("apply")}
-          </Link>
         </div>
 
         <div className="flex items-center gap-4 lg:hidden">
@@ -139,12 +138,11 @@ export default function NavbarClient({
                 <li>
                   {waHref ? (
                     <a href={waHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-snow">
-                      <Phone className="w-4 h-4" />
+                      <MessageCircle className="w-4 h-4" />
                       {displayPhone}
                     </a>
                   ) : (
                     <span className="inline-flex items-center gap-1.5">
-                      <Phone className="w-4 h-4" />
                       {displayPhone}
                     </span>
                   )}
