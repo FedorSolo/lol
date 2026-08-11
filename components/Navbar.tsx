@@ -28,10 +28,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
-        scrolled
-          ? "bg-obsidian/85 backdrop-blur-md border-b border-white/10"
-          : "bg-gradient-to-b from-obsidian/70 via-obsidian/40 to-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 bg-obsidian transition-shadow duration-500 ${
+        scrolled ? "border-b border-white/10 shadow-lg shadow-obsidian/50" : "border-b border-white/5"
       }`}
     >
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between">
@@ -40,10 +38,7 @@ export default function Navbar() {
           <span className="text-snow">{t("brand")}</span>
         </Link>
 
-        <ul
-          className="hidden md:flex items-center gap-9 font-body text-sm text-mist"
-          style={{ textShadow: "0 1px 8px rgba(0,0,0,0.7)" }}
-        >
+        <ul className="hidden md:flex items-center gap-9 font-body text-sm text-mist">
           {links.map((l) => (
             <li key={l.href}>
               <Link href={l.href} className="hover:text-snow transition-colors">
