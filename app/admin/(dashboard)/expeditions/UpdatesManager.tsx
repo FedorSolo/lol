@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Trash2, Save } from "lucide-react";
+import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import { Plus, Trash2 } from "lucide-react";
 import {
   saveExpeditionUpdate,
   deleteExpeditionUpdate,
   type ExpeditionUpdateFormData,
 } from "./content-actions";
+import type { RowHandle, ManagerHandle } from "./save-handle-types";
 
 function blankUpdate(expeditionId: string): ExpeditionUpdateFormData {
   return {
@@ -19,34 +20,31 @@ function blankUpdate(expeditionId: string): ExpeditionUpdateFormData {
   };
 }
 
-function UpdateCard({
-  update,
-  onSaved,
-  onRemoved,
-}: {
-  update: ExpeditionUpdateFormData;
-  onSaved: () => void;
-  onRemoved: () => void;
-}) {
+const UpdateCard = forwardRef<
+  RowHandle,
+  { update: ExpeditionUpdateFormData; onRemoved: () => void }
+>(function UpdateCard({ update, onRemoved }, ref) {
   const [form, setForm] = useState(update);
-  const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    save: async () => {
+      // Skip genuinely empty draft rows silently instead of erroring —
+      // "Сохранить всё" shouldn't block on an update card nobody filled in.
+      if (!form.title && !form.body) return { ok: true };
+      setErrorMsg(null);
+      const result = await saveExpeditionUpdate(form);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return { ok: false, error: `Новость «${form.title || "без названия"}»: ${result.error}` };
+      }
+      setForm((f) => ({ ...f, id: result.data.id }));
+      return { ok: true };
+    },
+  }));
 
   const inputClass =
     "w-full bg-transparent border border-white/20 px-3 py-2 text-snow text-sm focus:border-glacier-light outline-none transition-colors";
-
-  async function handleSave() {
-    setSaving(true);
-    setErrorMsg(null);
-    const result = await saveExpeditionUpdate(form);
-    setSaving(false);
-    if (!result.ok) {
-      setErrorMsg(result.error);
-      return;
-    }
-    setForm((f) => ({ ...f, id: result.data.id }));
-    onSaved();
-  }
 
   async function handleDelete() {
     if (!form.id) {
@@ -102,42 +100,52 @@ function UpdateCard({
       {errorMsg && <p className="text-xs text-red-400 mt-2">{errorMsg}</p>}
 
       <div className="flex items-center gap-3 mt-3">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="inline-flex items-center gap-1.5 bg-snow text-obsidian px-3 py-1.5 text-xs hover:bg-glacier-light transition-colors disabled:opacity-60"
-        >
-          <Save className="w-3.5 h-3.5" />
-          {saving ? "…" : "Сохранить"}
-        </button>
-        <button onClick={handleDelete} className="text-mist hover:text-red-400">
+        <button onClick={handleDelete} className="text-mist hover:text-red-400" title="Удалить новость">
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
     </div>
   );
-}
+});
 
-export default function UpdatesManager({
-  expeditionId,
-  initialUpdates,
-}: {
-  expeditionId: string;
-  initialUpdates: ExpeditionUpdateFormData[];
-}) {
+const UpdatesManager = forwardRef<
+  ManagerHandle,
+  { expeditionId: string; initialUpdates: ExpeditionUpdateFormData[] }
+>(function UpdatesManager({ expeditionId, initialUpdates }, ref) {
   const [updates, setUpdates] = useState(initialUpdates);
+  const rowRefs = useRef<Map<string, RowHandle>>(new Map());
+
+  useImperativeHandle(ref, () => ({
+    saveAll: async () => {
+      const errors: string[] = [];
+      for (const handle of rowRefs.current.values()) {
+        const result = await handle.save();
+        if (!result.ok && result.error) errors.push(result.error);
+      }
+      return { ok: errors.length === 0, errors };
+    },
+  }));
 
   return (
     <div>
       <div className="flex flex-col gap-4">
-        {updates.map((u, i) => (
-          <UpdateCard
-            key={u.id ?? `new-${i}`}
-            update={u}
-            onSaved={() => {}}
-            onRemoved={() => setUpdates((d) => d.filter((_, idx) => idx !== i))}
-          />
-        ))}
+        {updates.map((u, i) => {
+          const key = u.id ?? `new-${i}`;
+          return (
+            <UpdateCard
+              key={key}
+              ref={(el) => {
+                if (el) rowRefs.current.set(key, el);
+                else rowRefs.current.delete(key);
+              }}
+              update={u}
+              onRemoved={() => {
+                rowRefs.current.delete(key);
+                setUpdates((d) => d.filter((_, idx) => idx !== i));
+              }}
+            />
+          );
+        })}
       </div>
       <button
         onClick={() => setUpdates((d) => [blankUpdate(expeditionId), ...d])}
@@ -148,4 +156,6 @@ export default function UpdatesManager({
       </button>
     </div>
   );
-}
+});
+
+export default UpdatesManager;

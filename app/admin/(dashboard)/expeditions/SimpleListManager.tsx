@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Trash2, Save } from "lucide-react";
+import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import { Plus, Trash2 } from "lucide-react";
 import type { Locale } from "@/lib/supabase/database.types";
 import type { ActionResult, ActionResultWithData } from "@/lib/action-result";
+import type { RowHandle, ManagerHandle } from "./save-handle-types";
 
 interface ItemFormData {
   id?: string;
@@ -30,36 +31,34 @@ function blankItem(expeditionId: string, sortOrder: number): ItemFormData {
   };
 }
 
-function ItemRow({
-  item,
-  onSave,
-  onDelete,
-  onRemoved,
-}: {
-  item: ItemFormData;
-  onSave: (form: ItemFormData) => Promise<ActionResultWithData<{ id: string }>>;
-  onDelete: (id: string) => Promise<ActionResult>;
-  onRemoved: () => void;
-}) {
+const ItemRow = forwardRef<
+  RowHandle,
+  {
+    item: ItemFormData;
+    onSave: (form: ItemFormData) => Promise<ActionResultWithData<{ id: string }>>;
+    onDelete: (id: string) => Promise<ActionResult>;
+    onRemoved: () => void;
+  }
+>(function ItemRow({ item, onSave, onDelete, onRemoved }, ref) {
   const [form, setForm] = useState(item);
   const [locale, setLocale] = useState<Locale>("ru");
-  const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    save: async () => {
+      setErrorMsg(null);
+      const result = await onSave(form);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return { ok: false, error: result.error };
+      }
+      setForm((f) => ({ ...f, id: result.data.id }));
+      return { ok: true };
+    },
+  }));
 
   const inputClass =
     "flex-1 bg-transparent border border-white/20 px-3 py-2 text-snow text-sm focus:border-glacier-light outline-none transition-colors";
-
-  async function handleSave() {
-    setSaving(true);
-    setErrorMsg(null);
-    const result = await onSave(form);
-    setSaving(false);
-    if (!result.ok) {
-      setErrorMsg(result.error);
-      return;
-    }
-    setForm((f) => ({ ...f, id: result.data.id }));
-  }
 
   async function handleDelete() {
     if (!form.id) {
@@ -98,14 +97,6 @@ function ItemRow({
             setForm((f) => ({ ...f, i18n: { ...f.i18n, [locale]: { text: e.target.value } } }))
           }
         />
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="shrink-0 p-2 bg-snow text-obsidian hover:bg-glacier-light transition-colors disabled:opacity-60"
-          title="Сохранить"
-        >
-          <Save className="w-3.5 h-3.5" />
-        </button>
         <button onClick={handleDelete} className="shrink-0 text-mist hover:text-red-400 p-2" title="Удалить">
           <Trash2 className="w-3.5 h-3.5" />
         </button>
@@ -113,35 +104,54 @@ function ItemRow({
       {errorMsg && <p className="text-xs text-red-400 mt-2">{errorMsg}</p>}
     </div>
   );
-}
+});
 
-export default function SimpleListManager({
-  expeditionId,
-  initialItems,
-  addLabel,
-  save,
-  remove,
-}: {
-  expeditionId: string;
-  initialItems: ItemFormData[];
-  addLabel: string;
-  save: (form: ItemFormData) => Promise<ActionResultWithData<{ id: string }>>;
-  remove: (id: string) => Promise<ActionResult>;
-}) {
+const SimpleListManager = forwardRef<
+  ManagerHandle,
+  {
+    expeditionId: string;
+    initialItems: ItemFormData[];
+    addLabel: string;
+    save: (form: ItemFormData) => Promise<ActionResultWithData<{ id: string }>>;
+    remove: (id: string) => Promise<ActionResult>;
+  }
+>(function SimpleListManager({ expeditionId, initialItems, addLabel, save, remove }, ref) {
   const [items, setItems] = useState(initialItems);
+  const rowRefs = useRef<Map<string, RowHandle>>(new Map());
+
+  useImperativeHandle(ref, () => ({
+    saveAll: async () => {
+      const errors: string[] = [];
+      for (const handle of rowRefs.current.values()) {
+        const result = await handle.save();
+        if (!result.ok && result.error) errors.push(result.error);
+      }
+      return { ok: errors.length === 0, errors };
+    },
+  }));
 
   return (
     <div>
       <div className="flex flex-col gap-3">
-        {items.map((item, i) => (
-          <ItemRow
-            key={item.id ?? `new-${i}`}
-            item={item}
-            onSave={save}
-            onDelete={remove}
-            onRemoved={() => setItems((d) => d.filter((_, idx) => idx !== i))}
-          />
-        ))}
+        {items.map((item, i) => {
+          const key = item.id ?? `new-${i}`;
+          return (
+            <ItemRow
+              key={key}
+              ref={(el) => {
+                if (el) rowRefs.current.set(key, el);
+                else rowRefs.current.delete(key);
+              }}
+              item={item}
+              onSave={save}
+              onDelete={remove}
+              onRemoved={() => {
+                rowRefs.current.delete(key);
+                setItems((d) => d.filter((_, idx) => idx !== i));
+              }}
+            />
+          );
+        })}
       </div>
       <button
         onClick={() => setItems((d) => [...d, blankItem(expeditionId, d.length)])}
@@ -152,4 +162,6 @@ export default function SimpleListManager({
       </button>
     </div>
   );
-}
+});
+
+export default SimpleListManager;

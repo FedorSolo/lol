@@ -6,16 +6,8 @@ import {
   getExclusions,
   getExpeditionUpdates,
   getEquipment,
-  saveInclusion,
-  deleteInclusion,
-  saveExclusion,
-  deleteExclusion,
 } from "../content-actions";
-import ExpeditionForm from "../ExpeditionForm";
-import ItineraryManager from "../ItineraryManager";
-import SimpleListManager from "../SimpleListManager";
-import UpdatesManager from "../UpdatesManager";
-import EquipmentManager from "../EquipmentManager";
+import ExpeditionEditor from "./ExpeditionEditor";
 import type { Locale } from "@/lib/supabase/database.types";
 
 export default async function EditExpeditionPage({ params }: { params: { id: string } }) {
@@ -94,60 +86,16 @@ export default async function EditExpeditionPage({ params }: { params: { id: str
       <h1 className="font-display text-3xl uppercase text-snow tracking-wide mb-8">
         Редактировать экспедицию
       </h1>
-      <ExpeditionForm levels={levels} initial={data as any} />
-
-      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
-        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-2">
-          Программа по дням
-        </h2>
-        <p className="text-mist text-sm mb-5">
-          Появится на детальной странице экспедиции вместо тестовых данных, как только добавите
-          хотя бы один день.
-        </p>
-        <ItineraryManager expeditionId={params.id} initialDays={itineraryDays} />
-      </div>
-
-      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
-        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-5">Что входит</h2>
-        <SimpleListManager
-          expeditionId={params.id}
-          initialItems={inclusions}
-          addLabel="Добавить пункт"
-          save={saveInclusion}
-          remove={deleteInclusion}
-        />
-      </div>
-
-      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
-        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-5">
-          Что не входит
-        </h2>
-        <SimpleListManager
-          expeditionId={params.id}
-          initialItems={exclusions}
-          addLabel="Добавить пункт"
-          save={saveExclusion}
-          remove={deleteExclusion}
-        />
-      </div>
-      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
-        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-2">Снаряжение</h2>
-        <p className="text-mist text-sm mb-5">
-          Показывается на публичной странице экспедиции, а клиентам в личном кабинете — как чек-лист
-          с галочками.
-        </p>
-        <EquipmentManager expeditionId={params.id} initialItems={equipment} />
-      </div>
-      <div className="max-w-3xl mt-16 pt-10 border-t border-white/10">
-        <h2 className="font-display text-xl uppercase text-snow tracking-wide mb-2">
-          Новости для клиентов
-        </h2>
-        <p className="text-mist text-sm mb-5">
-          Видны только тем клиентам, у кого в профиле привязана эта экспедиция — в их личном
-          кабинете, на странице «Новости».
-        </p>
-        <UpdatesManager expeditionId={params.id} initialUpdates={updates} />
-      </div>
+      <ExpeditionEditor
+        expeditionId={params.id}
+        levels={levels}
+        initial={data as any}
+        itineraryDays={itineraryDays}
+        inclusions={inclusions}
+        exclusions={exclusions}
+        equipment={equipment}
+        updates={updates}
+      />
     </div>
   );
 }
