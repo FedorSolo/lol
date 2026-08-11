@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, forwardRef, useImperativeHandle } from "react";
 import { useRouter } from "next/navigation";
 import { upsertExpedition, type ExpeditionFormData } from "./actions";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { RowHandle } from "./save-handle-types";
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "ru", label: "Русский" },
@@ -27,10 +28,7 @@ const emptyI18n = {
   meta_description: "",
 };
 
-export default function ExpeditionForm({
-  initial,
-  levels,
-}: {
+interface ExpeditionFormProps {
   initial?: {
     expedition: Record<string, any>;
     i18n: Record<
@@ -48,7 +46,18 @@ export default function ExpeditionForm({
     >;
   };
   levels: DifficultyLevel[];
-}) {
+  // Standalone (default): used on "Новая экспедиция" — shows its own
+  // Save/Cancel buttons and redirects to the new expedition's edit page
+  // on success. Embedded (standalone=false): used inside ExpeditionEditor
+  // on the edit page — no visible buttons, save() is triggered via ref
+  // by the single page-level "Сохранить всё" button instead.
+  standalone?: boolean;
+}
+
+const ExpeditionForm = forwardRef<RowHandle, ExpeditionFormProps>(function ExpeditionForm(
+  { initial, levels, standalone = true },
+  ref
+) {
   const router = useRouter();
   const [activeLocale, setActiveLocale] = useState<Locale>("ru");
   const [saving, setSaving] = useState(false);
@@ -108,16 +117,27 @@ export default function ExpeditionForm({
     },
   });
 
+  useImperativeHandle(ref, () => ({
+    save: async () => {
+      setErrorMsg(null);
+      const result = await upsertExpedition(form);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return { ok: false, error: `Основные поля: ${result.error}` };
+      }
+      return { ok: true };
+    },
+  }));
+
   function updateField<K extends keyof ExpeditionFormData>(key: K, value: ExpeditionFormData[K]) {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
-  function updateI18n(locale: Locale, key: keyof (typeof emptyI18n), value: string) {
+  function updateI18n(locale: Locale, key: keyof typeof emptyI18n, value: string) {
     setForm((f) => ({ ...f, i18n: { ...f.i18n, [locale]: { ...f.i18n[locale], [key]: value } } }));
   }
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function handleStandaloneSave() {
     setSaving(true);
     setErrorMsg(null);
     const result = await upsertExpedition(form);
@@ -126,7 +146,7 @@ export default function ExpeditionForm({
       setSaving(false);
       return;
     }
-    router.push("/admin/expeditions");
+    router.push(`/admin/expeditions/${result.data.id}`);
     router.refresh();
   }
 
@@ -135,7 +155,7 @@ export default function ExpeditionForm({
   const labelClass = "block text-xs uppercase tracking-wide text-mist mb-2";
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl">
+    <div className="max-w-3xl">
       <section className="grid sm:grid-cols-2 gap-5 mb-10">
         <div>
           <label className={labelClass}>
@@ -356,22 +376,27 @@ export default function ExpeditionForm({
 
       {errorMsg && <p className="mt-6 text-sm text-red-400">{errorMsg}</p>}
 
-      <div className="mt-10 flex gap-4">
-        <button
-          type="submit"
-          disabled={saving}
-          className="bg-snow text-obsidian px-6 py-3 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors disabled:opacity-60"
-        >
-          {saving ? "Сохранение…" : "Сохранить"}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.push("/admin/expeditions")}
-          className="border border-white/20 text-snow px-6 py-3 text-sm hover:border-glacier-light transition-colors"
-        >
-          Отмена
-        </button>
-      </div>
-    </form>
+      {standalone && (
+        <div className="mt-10 flex gap-4">
+          <button
+            type="button"
+            onClick={handleStandaloneSave}
+            disabled={saving}
+            className="bg-snow text-obsidian px-6 py-3 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors disabled:opacity-60"
+          >
+            {saving ? "Сохранение…" : "Сохранить"}
+          </button>
+          <button
+            type="button"
+            onClick={() => router.push("/admin/expeditions")}
+            className="border border-white/20 text-snow px-6 py-3 text-sm hover:border-glacier-light transition-colors"
+          >
+            Отмена
+          </button>
+        </div>
+      )}
+    </div>
   );
-}
+});
+
+export default ExpeditionForm;

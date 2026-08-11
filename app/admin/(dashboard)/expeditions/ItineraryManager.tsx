@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Trash2, Save } from "lucide-react";
+import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import { Plus, Trash2 } from "lucide-react";
 import {
   saveItineraryDay,
   deleteItineraryDay,
   type ItineraryDayFormData,
 } from "./content-actions";
 import type { Locale } from "@/lib/supabase/database.types";
+import type { RowHandle, ManagerHandle } from "./save-handle-types";
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "ru", label: "RU" },
@@ -28,35 +29,29 @@ function blankDay(expeditionId: string, dayNumber: number): ItineraryDayFormData
   };
 }
 
-function DayCard({
-  day,
-  onSaved,
-  onRemoved,
-}: {
-  day: ItineraryDayFormData;
-  onSaved: (id: string) => void;
-  onRemoved: () => void;
-}) {
+const DayCard = forwardRef<
+  RowHandle,
+  { day: ItineraryDayFormData; onRemoved: () => void }
+>(function DayCard({ day, onRemoved }, ref) {
   const [form, setForm] = useState(day);
   const [locale, setLocale] = useState<Locale>("ru");
-  const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useImperativeHandle(ref, () => ({
+    save: async () => {
+      setErrorMsg(null);
+      const result = await saveItineraryDay(form);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return { ok: false, error: `День ${form.day_number}: ${result.error}` };
+      }
+      setForm((f) => ({ ...f, id: result.data.id }));
+      return { ok: true };
+    },
+  }));
 
   const inputClass =
     "w-full bg-transparent border border-white/20 px-3 py-2 text-snow text-sm focus:border-glacier-light outline-none transition-colors";
-
-  async function handleSave() {
-    setSaving(true);
-    setErrorMsg(null);
-    const result = await saveItineraryDay(form);
-    setSaving(false);
-    if (!result.ok) {
-      setErrorMsg(result.error);
-      return;
-    }
-    setForm((f) => ({ ...f, id: result.data.id }));
-    onSaved(result.data.id);
-  }
 
   async function handleDelete() {
     if (!form.id) {
@@ -124,30 +119,31 @@ function DayCard({
       {errorMsg && <p className="text-xs text-red-400 mt-2">{errorMsg}</p>}
 
       <div className="flex items-center gap-3 mt-3">
-        <button
-          onClick={handleSave}
-          disabled={saving}
-          className="inline-flex items-center gap-1.5 bg-snow text-obsidian px-3 py-1.5 text-xs hover:bg-glacier-light transition-colors disabled:opacity-60"
-        >
-          <Save className="w-3.5 h-3.5" />
-          {saving ? "…" : "Сохранить"}
-        </button>
-        <button onClick={handleDelete} className="text-mist hover:text-red-400">
+        <button onClick={handleDelete} className="text-mist hover:text-red-400" title="Удалить день">
           <Trash2 className="w-4 h-4" />
         </button>
       </div>
     </div>
   );
-}
+});
 
-export default function ItineraryManager({
-  expeditionId,
-  initialDays,
-}: {
-  expeditionId: string;
-  initialDays: ItineraryDayFormData[];
-}) {
+const ItineraryManager = forwardRef<
+  ManagerHandle,
+  { expeditionId: string; initialDays: ItineraryDayFormData[] }
+>(function ItineraryManager({ expeditionId, initialDays }, ref) {
   const [days, setDays] = useState(initialDays);
+  const rowRefs = useRef<Map<string, RowHandle>>(new Map());
+
+  useImperativeHandle(ref, () => ({
+    saveAll: async () => {
+      const errors: string[] = [];
+      for (const handle of rowRefs.current.values()) {
+        const result = await handle.save();
+        if (!result.ok && result.error) errors.push(result.error);
+      }
+      return { ok: errors.length === 0, errors };
+    },
+  }));
 
   function addDay() {
     const nextNumber = days.length > 0 ? Math.max(...days.map((d) => d.day_number)) + 1 : 1;
@@ -157,14 +153,23 @@ export default function ItineraryManager({
   return (
     <div>
       <div className="flex flex-col gap-4">
-        {days.map((day, i) => (
-          <DayCard
-            key={day.id ?? `new-${i}`}
-            day={day}
-            onSaved={() => {}}
-            onRemoved={() => setDays((d) => d.filter((_, idx) => idx !== i))}
-          />
-        ))}
+        {days.map((day, i) => {
+          const key = day.id ?? `new-${i}`;
+          return (
+            <DayCard
+              key={key}
+              ref={(el) => {
+                if (el) rowRefs.current.set(key, el);
+                else rowRefs.current.delete(key);
+              }}
+              day={day}
+              onRemoved={() => {
+                rowRefs.current.delete(key);
+                setDays((d) => d.filter((_, idx) => idx !== i));
+              }}
+            />
+          );
+        })}
       </div>
       <button
         onClick={addDay}
@@ -175,4 +180,6 @@ export default function ItineraryManager({
       </button>
     </div>
   );
-}
+});
+
+export default ItineraryManager;
