@@ -24,6 +24,7 @@ export interface TeamMemberFormData {
   years_experience: string;
   stat_secondary_value: string;
   stat_secondary_label_key: string;
+  instagram_url: string;
   is_published: boolean;
   sort_order: number;
   i18n: Record<Locale, { name: string; role: string; bio: string }>;
@@ -39,6 +40,7 @@ export async function saveTeamMember(
     years_experience: form.years_experience ? Number(form.years_experience) : null,
     stat_secondary_value: form.stat_secondary_value || null,
     stat_secondary_label_key: form.stat_secondary_label_key || null,
+    instagram_url: form.instagram_url || null,
     is_published: form.is_published,
     sort_order: form.sort_order,
   };

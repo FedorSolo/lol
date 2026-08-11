@@ -6,7 +6,7 @@ import type { TrainingProgramContent } from "@/lib/site-content-shared";
 
 export default function TrainingProgram({ content }: { content: TrainingProgramContent }) {
   return (
-    <section className="bg-obsidian py-28 md:py-36">
+    <section className="bg-obsidian py-20 md:py-28">
       <div className="max-w-5xl mx-auto px-6 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

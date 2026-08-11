@@ -23,7 +23,7 @@ export default function Expeditions({
     : expeditions;
 
   return (
-    <section id="expeditions" className="bg-ash py-28 md:py-36">
+    <section id="expeditions" className="bg-ash py-20 md:py-28">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
         <div className="grid md:grid-cols-12 gap-10 mb-10">
           <p className="md:col-span-4 font-mono text-xs tracking-widest2 uppercase text-glacier-light">

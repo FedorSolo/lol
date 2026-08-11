@@ -11,7 +11,7 @@ export default function Philosophy({
   extended: PhilosophyExtendedContent;
 }) {
   return (
-    <section id="philosophy" className="bg-obsidian py-24 md:py-32 border-b border-white/10">
+    <section id="philosophy" className="bg-obsidian py-16 md:py-24 border-b border-white/10">
       <div className="max-w-3xl mx-auto px-6 md:px-10 text-center">
         {extended.title && (
           <motion.p
@@ -30,7 +30,7 @@ export default function Philosophy({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="font-display font-bold uppercase text-3xl sm:text-4xl md:text-5xl leading-tight text-snow text-balance mb-10"
+          className="font-display font-bold uppercase text-3xl sm:text-4xl md:text-5xl leading-snug text-snow text-balance mb-10"
         >
           {content.line1}
           <br />

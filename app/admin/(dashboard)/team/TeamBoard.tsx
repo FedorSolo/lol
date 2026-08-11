@@ -15,6 +15,7 @@ function blankMember(sortOrder: number): TeamMemberFormData {
     years_experience: "",
     stat_secondary_value: "",
     stat_secondary_label_key: "",
+    instagram_url: "",
     is_published: true,
     sort_order: sortOrder,
     i18n: { ru: { ...emptyI18n }, es: { ...emptyI18n }, en: { ...emptyI18n } } as Record<

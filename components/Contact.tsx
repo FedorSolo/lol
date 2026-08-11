@@ -68,7 +68,7 @@ export default function Contact({
   const labelClass = "block text-xs uppercase tracking-wide text-mist mb-2";
 
   return (
-    <section id="contact" className="relative bg-obsidian py-28 md:py-36 overflow-hidden">
+    <section id="contact" className="relative bg-obsidian py-20 md:py-28 overflow-hidden">
       <div className="absolute inset-0 opacity-25">
         <img
           src={backgroundPhotoUrl}

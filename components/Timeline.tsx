@@ -8,7 +8,7 @@ const NUMBERS = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
 
 export default function Timeline({ content }: { content: TimelineContent }) {
   return (
-    <section id="timeline" className="bg-snow text-obsidian py-28 md:py-36">
+    <section id="timeline" className="bg-snow text-obsidian py-20 md:py-28">
       <div className="max-w-4xl mx-auto px-6 md:px-10">
         <div className="mb-20 text-center">
           <p className="font-mono text-xs tracking-widest2 uppercase text-stone mb-4">
