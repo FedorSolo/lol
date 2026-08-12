@@ -72,7 +72,7 @@ export default function NavbarClient({
           <LanguageSwitcher />
           <Link
             href="/#contact"
-            className="inline-flex items-center border border-glacier-light/60 text-snow text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors whitespace-nowrap"
+            className="inline-flex items-center border border-glacier-light/60 text-snow rounded-md text-sm px-5 py-2.5 tracking-wide hover:bg-glacier-light hover:text-obsidian transition-colors whitespace-nowrap"
           >
             {t("apply")}
           </Link>
@@ -152,7 +152,7 @@ export default function NavbarClient({
                 <Link
                   href="/#contact"
                   onClick={() => setOpen(false)}
-                  className="inline-block mt-2 border border-glacier-light/60 text-snow px-5 py-2.5"
+                  className="inline-block mt-2 border border-glacier-light/60 text-snow rounded-md px-5 py-2.5"
                 >
                   {t("apply")}
                 </Link>
