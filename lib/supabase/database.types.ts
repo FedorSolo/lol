@@ -59,6 +59,7 @@ export interface Database {
           price_from: number | null;
           currency: string;
           best_season: string | null;
+          group_chat_url: string | null;
           is_published: boolean;
           sort_order: number;
           created_at: string;
@@ -76,6 +77,7 @@ export interface Database {
           price_from?: number | null;
           currency?: string;
           best_season?: string | null;
+          group_chat_url?: string | null;
           is_published?: boolean;
           sort_order?: number;
           created_at?: string;
