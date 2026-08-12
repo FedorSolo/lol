@@ -38,6 +38,7 @@ function blankForm(clientId: string, date: string): SessionFormData {
     distance_km: "",
     elevation_gain_m: "",
     description: "",
+    notify_client: true,
   };
 }
 
@@ -56,6 +57,7 @@ export default function TrainingCalendarAdmin({
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [emailStatus, setEmailStatus] = useState<{ sent: boolean; error?: string } | null>(null);
 
   const sessionsByDate: Record<string, CalendarSessionSummary> = {};
   for (const s of sessions) {
@@ -73,6 +75,7 @@ export default function TrainingCalendarAdmin({
   function selectDate(date: string) {
     setSelectedDate(date);
     setErrorMsg(null);
+    setEmailStatus(null);
     const found = sessions.find((s) => s.session_date === date);
     setForm(
       found
@@ -86,6 +89,7 @@ export default function TrainingCalendarAdmin({
             distance_km: found.distance_km?.toString() ?? "",
             elevation_gain_m: found.elevation_gain_m?.toString() ?? "",
             description: found.description ?? "",
+            notify_client: true,
           }
         : blankForm(clientId, date)
     );
@@ -95,11 +99,16 @@ export default function TrainingCalendarAdmin({
     if (!form) return;
     setSaving(true);
     setErrorMsg(null);
+    setEmailStatus(null);
     const result = await saveSession(form);
     setSaving(false);
     if (!result.ok) {
       setErrorMsg(result.error);
       return;
+    }
+
+    if (result.data.emailSent !== undefined) {
+      setEmailStatus({ sent: result.data.emailSent, error: result.data.emailError });
     }
 
     const savedSession: SessionRow = {
@@ -200,9 +209,27 @@ export default function TrainingCalendarAdmin({
                   onChange={(e) => setForm((f) => f && { ...f, description: e.target.value })}
                 />
               </div>
+              {!form.id && (
+                <label className="flex items-center gap-2 text-sm text-snow">
+                  <input
+                    type="checkbox"
+                    checked={form.notify_client ?? true}
+                    onChange={(e) => setForm((f) => f && { ...f, notify_client: e.target.checked })}
+                    className="w-4 h-4"
+                  />
+                  Уведомить клиента письмом (с кнопкой «Добавить в Google Календарь»)
+                </label>
+              )}
             </div>
 
             {errorMsg && <p className="text-xs text-red-400 mt-3">{errorMsg}</p>}
+            {emailStatus && (
+              <p className={`text-xs mt-3 ${emailStatus.sent ? "text-glacier-light" : "text-amber-400"}`}>
+                {emailStatus.sent
+                  ? "Письмо клиенту отправлено."
+                  : `Письмо не отправилось${emailStatus.error ? ` (${emailStatus.error})` : ""}.`}
+              </p>
+            )}
 
             {existing?.garmin_link && (
               <a

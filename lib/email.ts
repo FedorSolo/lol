@@ -82,6 +82,83 @@ export async function sendClientInviteEmail({
   }
 }
 
+export async function sendTrainingSessionEmail({
+  to,
+  fullName,
+  title,
+  dateStr,
+  typeLabel,
+  description,
+  calendarLink,
+  portalUrl,
+}: {
+  to: string;
+  fullName: string;
+  title: string;
+  dateStr: string;
+  typeLabel: string;
+  description: string | null;
+  calendarLink: string;
+  portalUrl: string;
+}): Promise<{ sent: boolean; error?: string }> {
+  const resend = getResendClient();
+  if (!resend) {
+    return { sent: false, error: "RESEND_API_KEY не настроен" };
+  }
+
+  const formattedDate = new Date(dateStr).toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; color: #1a1a1a;">
+      <h1 style="font-size: 20px; letter-spacing: 1px; text-transform: uppercase;">CumbrePeak</h1>
+      <p>Здравствуйте, ${escapeHtml(fullName)}!</p>
+      <p>Вам добавлена новая тренировка в календаре подготовки:</p>
+      <table style="border-collapse: collapse; margin: 20px 0;">
+        <tr>
+          <td style="padding: 6px 12px 6px 0; color: #666;">Дата</td>
+          <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(formattedDate)}</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 12px 6px 0; color: #666;">Тип</td>
+          <td style="padding: 6px 0;">${escapeHtml(typeLabel)}</td>
+        </tr>
+        <tr>
+          <td style="padding: 6px 12px 6px 0; color: #666;">Название</td>
+          <td style="padding: 6px 0; font-weight: bold;">${escapeHtml(title)}</td>
+        </tr>
+      </table>
+      ${description ? `<p style="color: #444;">${escapeHtml(description)}</p>` : ""}
+      <p style="margin-top: 24px;">
+        <a href="${calendarLink}" style="display: inline-block; background: #4285F4; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 2px; margin-right: 10px;">
+          Добавить в Google Календарь
+        </a>
+      </p>
+      <p>
+        <a href="${portalUrl}" style="display: inline-block; background: #0A0C0F; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 2px;">
+          Открыть в личном кабинете
+        </a>
+      </p>
+    </div>
+  `;
+
+  try {
+    const result = await resend.emails.send({
+      from: FROM_ADDRESS,
+      to,
+      subject: `Новая тренировка: ${title} — ${formattedDate}`,
+      html,
+    });
+    if (result.error) return { sent: false, error: result.error.message };
+    return { sent: true };
+  } catch (err) {
+    return { sent: false, error: err instanceof Error ? err.message : "Неизвестная ошибка отправки" };
+  }
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
