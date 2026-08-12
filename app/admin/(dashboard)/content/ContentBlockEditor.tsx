@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Save, Trash2, RotateCcw } from "lucide-react";
+import { useState, forwardRef, useImperativeHandle } from "react";
+import { Plus, Trash2, RotateCcw } from "lucide-react";
 import { saveSiteSetting, resetSiteSetting } from "./actions";
 import type { Locale } from "@/lib/supabase/database.types";
 import type { SiteSettingsKey } from "@/lib/site-content-shared";
+import type { RowHandle } from "../expeditions/save-handle-types";
 
 const LOCALES: { code: Locale; label: string }[] = [
   { code: "ru", label: "Русский" },
@@ -30,36 +31,43 @@ export interface StringArrayFieldConfig {
   label: string;
 }
 
-export default function ContentBlockEditor({
-  settingsKey,
-  title,
-  description,
-  scalarFields,
-  arrayField,
-  stringArrayFields,
-  initialValues,
-}: {
-  settingsKey: SiteSettingsKey;
-  title: string;
-  description?: string;
-  scalarFields: FieldConfig[];
-  arrayField?: ArrayFieldConfig;
-  stringArrayFields?: StringArrayFieldConfig[];
-  initialValues: Record<Locale, Record<string, any>>;
-}) {
+const ContentBlockEditor = forwardRef<
+  RowHandle,
+  {
+    settingsKey: SiteSettingsKey;
+    title: string;
+    description?: string;
+    scalarFields: FieldConfig[];
+    arrayField?: ArrayFieldConfig;
+    stringArrayFields?: StringArrayFieldConfig[];
+    initialValues: Record<Locale, Record<string, any>>;
+  }
+>(function ContentBlockEditor(
+  { settingsKey, title, description, scalarFields, arrayField, stringArrayFields, initialValues },
+  ref
+) {
   const [values, setValues] = useState(initialValues);
   const [locale, setLocale] = useState<Locale>("ru");
-  const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [savedMsg, setSavedMsg] = useState(false);
 
   const inputClass =
     "w-full bg-transparent border border-white/20 px-3 py-2 text-snow text-sm focus:border-glacier-light outline-none transition-colors";
   const labelClass = "block text-xs uppercase tracking-wide text-mist mb-1.5";
 
+  useImperativeHandle(ref, () => ({
+    save: async () => {
+      setErrorMsg(null);
+      const result = await saveSiteSetting(settingsKey, values);
+      if (!result.ok) {
+        setErrorMsg(result.error);
+        return { ok: false, error: `«${title}»: ${result.error}` };
+      }
+      return { ok: true };
+    },
+  }));
+
   function updateScalar(key: string, val: string) {
     setValues((v) => ({ ...v, [locale]: { ...v[locale], [key]: val } }));
-    setSavedMsg(false);
   }
 
   function updateArrayItem(index: number, fieldKey: string, val: string) {
@@ -69,7 +77,6 @@ export default function ContentBlockEditor({
       items[index] = { ...items[index], [fieldKey]: val };
       return { ...v, [locale]: { ...v[locale], [arrayField.key]: items } };
     });
-    setSavedMsg(false);
   }
 
   function addArrayItem() {
@@ -96,7 +103,6 @@ export default function ContentBlockEditor({
       items[index] = val;
       return { ...v, [locale]: { ...v[locale], [fieldKey]: items } };
     });
-    setSavedMsg(false);
   }
 
   function addStringArrayItem(fieldKey: string) {
@@ -112,18 +118,6 @@ export default function ContentBlockEditor({
       items.splice(index, 1);
       return { ...v, [locale]: { ...v[locale], [fieldKey]: items } };
     });
-  }
-
-  async function handleSave() {
-    setSaving(true);
-    setErrorMsg(null);
-    const result = await saveSiteSetting(settingsKey, values);
-    setSaving(false);
-    if (!result.ok) {
-      setErrorMsg(result.error);
-      return;
-    }
-    setSavedMsg(true);
   }
 
   async function handleReset() {
@@ -278,16 +272,8 @@ export default function ContentBlockEditor({
       ))}
 
       {errorMsg && <p className="text-xs text-red-400 mt-4">{errorMsg}</p>}
-      {savedMsg && <p className="text-xs text-glacier-light mt-4">Сохранено</p>}
-
-      <button
-        onClick={handleSave}
-        disabled={saving}
-        className="mt-6 inline-flex items-center gap-2 bg-snow text-obsidian px-4 py-2 text-xs hover:bg-glacier-light transition-colors disabled:opacity-60"
-      >
-        <Save className="w-3.5 h-3.5" />
-        {saving ? "Сохранение…" : "Сохранить"}
-      </button>
     </div>
   );
-}
+});
+
+export default ContentBlockEditor;
