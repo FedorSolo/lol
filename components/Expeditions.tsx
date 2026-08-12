@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Mountain, Gauge, CalendarDays, Users2, ArrowUpRight } from "lucide-react";
+import { Mountain, Gauge, CalendarDays, Users2, ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { PublicExpedition, PublicDifficultyLevel } from "@/lib/expeditions-shared";
 import { coverImageFor } from "@/lib/expeditions-shared";
@@ -75,25 +75,18 @@ export default function Expeditions({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
-                className="group relative overflow-hidden bg-obsidian border border-white/10 flex flex-col"
+                className="group relative overflow-hidden bg-obsidian border border-white/10 rounded-xl flex flex-col"
               >
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={exp.coverUrl ?? coverImageFor(i)}
-                    alt={exp.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent" />
+                <PhotoCarousel photos={exp.photoUrls} fallbackIndex={i} alt={exp.title}>
                   {exp.priceFrom != null && (
-                    <div className="absolute top-4 right-4 bg-obsidian/70 backdrop-blur-sm border border-white/10 px-3 py-1.5 font-mono text-xs text-snow">
+                    <div className="absolute top-4 right-4 z-10 bg-obsidian/70 backdrop-blur-sm border border-white/10 px-3 py-1.5 font-mono text-xs text-snow">
                       {exp.currency === "USD" ? "$" : exp.currency} {exp.priceFrom.toLocaleString("ru-RU")}
                     </div>
                   )}
-                  <h3 className="absolute bottom-4 left-5 font-display font-bold uppercase text-3xl text-snow">
+                  <h3 className="absolute bottom-4 left-5 z-10 font-display font-bold uppercase text-3xl text-snow pointer-events-none">
                     {exp.title}
                   </h3>
-                </div>
+                </PhotoCarousel>
 
                 <div className="p-6 flex flex-col flex-1">
                   {exp.shortDescription && (
@@ -155,5 +148,80 @@ export default function Expeditions({
         )}
       </div>
     </section>
+  );
+}
+
+function PhotoCarousel({
+  photos,
+  fallbackIndex,
+  alt,
+  children,
+}: {
+  photos: string[];
+  fallbackIndex: number;
+  alt: string;
+  children?: ReactNode;
+}) {
+  const slides = photos.length > 0 ? photos : [coverImageFor(fallbackIndex)];
+  const [index, setIndex] = useState(0);
+
+  function go(delta: number, e: MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIndex((i) => (i + delta + slides.length) % slides.length);
+  }
+
+  return (
+    <div className="relative h-64 overflow-hidden">
+      {slides.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt={alt}
+          loading="lazy"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            i === index ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
+        />
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent" />
+
+      {slides.length > 1 && (
+        <>
+          <button
+            onClick={(e) => go(-1, e)}
+            aria-label="Предыдущее фото"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-obsidian/60 text-snow opacity-0 group-hover:opacity-100 hover:bg-obsidian/80 transition-opacity rounded-full"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={(e) => go(1, e)}
+            aria-label="Следующее фото"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 flex items-center justify-center bg-obsidian/60 text-snow opacity-0 group-hover:opacity-100 hover:bg-obsidian/80 transition-opacity rounded-full"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIndex(i);
+                }}
+                aria-label={`Фото ${i + 1}`}
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                  i === index ? "bg-snow" : "bg-snow/30"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {children}
+    </div>
   );
 }

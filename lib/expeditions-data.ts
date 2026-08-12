@@ -35,16 +35,23 @@ export async function getPublishedExpeditions(locale: Locale): Promise<PublicExp
           .eq("locale", locale)
       : { data: [] as { level_id: string; name: string }[] };
 
-  const { data: coverPhotos } = await supabase
+  const { data: allPhotos } = await supabase
     .from("expedition_photos")
     .select("*")
     .in("expedition_id", ids)
-    .eq("is_cover", true);
+    .order("sort_order");
 
   return expeditions.map((exp) => {
     const t = i18n?.find((row) => row.expedition_id === exp.id);
     const level = levelNames?.find((row) => row.level_id === exp.difficulty_level_id);
-    const cover = coverPhotos?.find((row) => row.expedition_id === exp.id);
+    const photos = (allPhotos ?? []).filter((row) => row.expedition_id === exp.id);
+    const cover = photos.find((row) => row.is_cover) ?? photos[0];
+    // Cover first, then the rest in sort order, deduped — used to build a
+    // small photo carousel on the homepage expedition cards.
+    const photoUrls = [
+      ...(cover ? [cover.storage_path] : []),
+      ...photos.filter((p) => p.id !== cover?.id).map((p) => p.storage_path),
+    ];
 
     return {
       id: exp.id,
@@ -61,6 +68,7 @@ export async function getPublishedExpeditions(locale: Locale): Promise<PublicExp
       difficultyLevelId: exp.difficulty_level_id,
       difficultyName: level?.name ?? null,
       coverUrl: cover?.storage_path ?? null,
+      photoUrls,
     };
   });
 }
@@ -228,6 +236,7 @@ export async function getExpeditionBySlug(
     difficultyLevelId: exp.difficulty_level_id,
     difficultyName: levelName,
     coverUrl: cover?.storage_path ?? null,
+    photoUrls: (gallery ?? []).map((p) => p.storage_path),
     galleryUrls: (gallery ?? []).map((p) => p.storage_path),
     heroText: t?.hero_text ?? null,
     fitnessRequirements: t?.fitness_requirements ?? null,

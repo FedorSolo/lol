@@ -54,7 +54,7 @@ export default function WhyDifferent({
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="md:col-span-5 h-56 md:h-72 overflow-hidden border border-white/10"
+            className="md:col-span-5 h-56 md:h-72 overflow-hidden border border-white/10 rounded-xl"
           >
             <img
               src={photoUrl}
@@ -93,18 +93,20 @@ export default function WhyDifferent({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.6 }}
-            className="mt-20 border border-white/10"
+            className="mt-20 border border-white/10 rounded-xl overflow-hidden"
           >
             <div className="grid grid-cols-2 border-b border-white/10">
-              <div className="px-5 py-4 md:px-8 md:py-5">
+              <div className="px-5 py-4 md:px-8 md:py-5 flex items-center justify-between gap-3">
                 <span className="font-mono text-[11px] uppercase tracking-widest2 text-mist">
                   {content.comparisonTitle}
                 </span>
+                <X className="w-7 h-7 md:w-8 md:h-8 text-red-500/70 shrink-0" strokeWidth={2} />
               </div>
-              <div className="px-5 py-4 md:px-8 md:py-5 bg-glacier/10 border-l border-white/10">
+              <div className="px-5 py-4 md:px-8 md:py-5 bg-glacier/10 border-l border-white/10 flex items-center justify-between gap-3">
                 <span className="font-display font-bold uppercase tracking-wide text-glacier-light">
                   {content.comparisonTitleUs}
                 </span>
+                <Check className="w-7 h-7 md:w-8 md:h-8 text-emerald-500/80 shrink-0" strokeWidth={2.5} />
               </div>
             </div>
 
@@ -116,7 +118,7 @@ export default function WhyDifferent({
                 }`}
               >
                 <div className="px-5 py-4 md:px-8 md:py-5 flex items-start gap-3">
-                  <X className="w-4 h-4 text-mist/60 shrink-0 mt-0.5" strokeWidth={1.5} />
+                  <X className="w-4 h-4 text-red-500/80 shrink-0 mt-0.5" strokeWidth={2} />
                   <div>
                     <div className="text-xs text-mist/70 uppercase tracking-wide mb-1">
                       {row.label}
@@ -125,7 +127,7 @@ export default function WhyDifferent({
                   </div>
                 </div>
                 <div className="px-5 py-4 md:px-8 md:py-5 bg-glacier/5 border-l border-white/10 flex items-start gap-3">
-                  <Check className="w-4 h-4 text-glacier-light shrink-0 mt-0.5" strokeWidth={2} />
+                  <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" strokeWidth={2.5} />
                   <div>
                     <div className="text-xs text-mist/70 uppercase tracking-wide mb-1 md:hidden">
                       {row.label}
