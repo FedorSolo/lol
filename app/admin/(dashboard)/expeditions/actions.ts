@@ -77,6 +77,7 @@ export interface ExpeditionFormData {
   price_from: string;
   currency: string;
   best_season: string;
+  group_chat_url: string;
   is_published: boolean;
   sort_order: string;
   i18n: Record<
@@ -113,6 +114,7 @@ export async function upsertExpedition(
     price_from: form.price_from ? Number(form.price_from) : null,
     currency: form.currency || "USD",
     best_season: form.best_season || null,
+    group_chat_url: form.group_chat_url || null,
     is_published: form.is_published,
     sort_order: form.sort_order ? Number(form.sort_order) : 0,
   };

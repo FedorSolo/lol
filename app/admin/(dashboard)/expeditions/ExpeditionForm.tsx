@@ -75,6 +75,7 @@ const ExpeditionForm = forwardRef<RowHandle, ExpeditionFormProps>(function Exped
     price_from: initial?.expedition.price_from?.toString() ?? "",
     currency: initial?.expedition.currency ?? "USD",
     best_season: initial?.expedition.best_season ?? "",
+    group_chat_url: initial?.expedition.group_chat_url ?? "",
     is_published: initial?.expedition.is_published ?? false,
     sort_order: initial?.expedition.sort_order?.toString() ?? "0",
     i18n: {
@@ -217,6 +218,16 @@ const ExpeditionForm = forwardRef<RowHandle, ExpeditionFormProps>(function Exped
             value={form.best_season}
             onChange={(e) => updateField("best_season", e.target.value)}
             placeholder="Декабрь – февраль"
+            className={inputClass}
+          />
+        </div>
+
+        <div>
+          <label className={labelClass}>Групповой чат (WhatsApp/Telegram) — видно клиентам этой экспедиции</label>
+          <input
+            value={form.group_chat_url}
+            onChange={(e) => updateField("group_chat_url", e.target.value)}
+            placeholder="https://chat.whatsapp.com/... или https://t.me/..."
             className={inputClass}
           />
         </div>

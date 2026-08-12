@@ -68,6 +68,7 @@ export async function getPublishedExpeditions(locale: Locale): Promise<PublicExp
 export interface FullPublicExpedition extends PublicExpedition {
   galleryUrls: string[];
   heroText: string | null;
+  groupChatUrl: string | null;
   fitnessRequirements: string | null;
   experienceRequirements: string | null;
   preparationText: string | null;
@@ -220,6 +221,7 @@ export async function getExpeditionBySlug(
     altitudeM: exp.altitude_m,
     durationDays: exp.duration_days,
     bestSeason: exp.best_season,
+    groupChatUrl: exp.group_chat_url,
     priceFrom: exp.price_from,
     currency: exp.currency,
     groupSizeMax: exp.group_size_max,

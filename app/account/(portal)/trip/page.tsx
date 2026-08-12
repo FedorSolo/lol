@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { getExpeditionBySlug } from "@/lib/expeditions-data";
 import { requireClient } from "../../auth-actions";
-import { Mountain, Gauge, CalendarDays, Users2, Check, X } from "lucide-react";
+import { Mountain, Gauge, CalendarDays, Users2, Check, X, MessageCircle, ArrowRight } from "lucide-react";
 import EquipmentChecklist from "./EquipmentChecklist";
 
 export default async function TripPage() {
@@ -82,6 +82,24 @@ export default async function TripPage() {
           <div className="text-[11px] text-mist uppercase">Сезон</div>
         </div>
       </div>
+
+      {expedition.groupChatUrl && (
+        <a
+          href={expedition.groupChatUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-12 flex items-center justify-between border border-glacier-light/40 bg-glacier/10 hover:bg-glacier/15 transition-colors p-5"
+        >
+          <div className="flex items-center gap-3">
+            <MessageCircle className="w-5 h-5 text-glacier-light" strokeWidth={1.5} />
+            <div>
+              <div className="text-snow text-sm font-medium">Групповой чат экспедиции</div>
+              <div className="text-mist text-xs">Общайтесь с остальными участниками и гидом</div>
+            </div>
+          </div>
+          <ArrowRight className="w-4 h-4 text-glacier-light" />
+        </a>
+      )}
 
       {expedition.preparationText && (
         <section className="mb-10">
