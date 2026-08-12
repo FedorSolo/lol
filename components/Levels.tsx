@@ -41,7 +41,7 @@ export default function Levels({
             <button
               key={level.title}
               onClick={() => setActiveIndex(i)}
-              className={`px-5 py-2.5 text-sm border transition-colors ${
+              className={`px-5 py-2.5 text-sm border rounded-full transition-colors ${
                 i === activeIndex
                   ? "border-glacier-light text-snow bg-glacier/10"
                   : "border-white/15 text-mist hover:border-white/30 hover:text-snow"
@@ -79,7 +79,7 @@ export default function Levels({
                   <Link
                     key={exp.id}
                     href={`/expeditions/${exp.slug}`}
-                    className="group border border-white/10 flex flex-col hover:border-glacier-light/40 transition-colors bg-obsidian"
+                    className="group border border-white/10 rounded-xl flex flex-col hover:border-glacier-light/40 transition-colors bg-obsidian overflow-hidden"
                   >
                     <div className="relative h-44 overflow-hidden">
                       <img

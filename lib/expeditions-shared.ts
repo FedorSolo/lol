@@ -19,6 +19,7 @@ export interface PublicExpedition {
   difficultyLevelId: string | null;
   difficultyName: string | null;
   coverUrl: string | null;
+  photoUrls: string[];
 }
 
 export interface PublicDifficultyLevel {
