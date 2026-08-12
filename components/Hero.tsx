@@ -53,7 +53,7 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block bg-violet-700 px-3 py-1.5 font-mono text-xs md:text-sm tracking-widest2 text-snow uppercase mb-6"
+            className="inline-block bg-[#533e8e] px-3 py-1.5 font-mono text-xs md:text-sm tracking-widest2 text-snow uppercase mb-6"
           >
             {content.eyebrow}
           </motion.p>
@@ -79,7 +79,7 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="inline-block bg-violet-700 px-4 py-3 mt-8 max-w-xl text-snow text-base md:text-lg font-body"
+            className="inline-block bg-[#533e8e] px-4 py-3 mt-8 max-w-xl text-snow text-base md:text-lg font-body"
           >
             {content.subtitle}
           </motion.p>
