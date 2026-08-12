@@ -55,6 +55,7 @@ export interface SessionFormData {
   distance_km: string;
   elevation_gain_m: string;
   description: string;
+  equipment_needed: string;
   notify_client?: boolean;
 }
 
@@ -73,6 +74,7 @@ export async function saveSession(
     distance_km: form.distance_km ? Number(form.distance_km) : null,
     elevation_gain_m: form.elevation_gain_m ? Number(form.elevation_gain_m) : null,
     description: form.description || null,
+    equipment_needed: form.equipment_needed || null,
   };
 
   let id = form.id;
@@ -111,6 +113,7 @@ export async function saveSession(
         dateStr: form.session_date,
         typeLabel: SESSION_TYPE_LABELS[form.session_type] ?? "Тренировка",
         description: form.description || null,
+        equipmentNeeded: form.equipment_needed || null,
         calendarLink: googleCalendarLink({
           title: form.title,
           dateStr: form.session_date,

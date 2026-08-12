@@ -15,6 +15,7 @@ export interface SessionRow {
   distance_km: number | null;
   elevation_gain_m: number | null;
   description: string | null;
+  equipment_needed: string | null;
   is_completed: boolean;
   garmin_link: string | null;
 }
@@ -38,6 +39,7 @@ function blankForm(clientId: string, date: string): SessionFormData {
     distance_km: "",
     elevation_gain_m: "",
     description: "",
+    equipment_needed: "",
     notify_client: true,
   };
 }
@@ -89,6 +91,7 @@ export default function TrainingCalendarAdmin({
             distance_km: found.distance_km?.toString() ?? "",
             elevation_gain_m: found.elevation_gain_m?.toString() ?? "",
             description: found.description ?? "",
+            equipment_needed: found.equipment_needed ?? "",
             notify_client: true,
           }
         : blankForm(clientId, date)
@@ -120,6 +123,7 @@ export default function TrainingCalendarAdmin({
       distance_km: form.distance_km ? Number(form.distance_km) : null,
       elevation_gain_m: form.elevation_gain_m ? Number(form.elevation_gain_m) : null,
       description: form.description || null,
+      equipment_needed: form.equipment_needed || null,
       is_completed: existing?.is_completed ?? false,
       garmin_link: existing?.garmin_link ?? null,
     };
@@ -207,6 +211,15 @@ export default function TrainingCalendarAdmin({
                   className={`${inputClass} resize-none`}
                   value={form.description}
                   onChange={(e) => setForm((f) => f && { ...f, description: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Что понадобится (оборудование для этой тренировки)</label>
+                <input
+                  className={inputClass}
+                  placeholder="Резинка, коврик, гантели 5 кг"
+                  value={form.equipment_needed}
+                  onChange={(e) => setForm((f) => f && { ...f, equipment_needed: e.target.value })}
                 />
               </div>
               {!form.id && (
