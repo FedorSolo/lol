@@ -1,6 +1,6 @@
 import { getHomepageContent } from "@/lib/site-content-data";
 import { getDifficultyLevels } from "../expeditions/actions";
-import ContentBlockEditor from "./ContentBlockEditor";
+import ContentEditor from "./ContentEditor";
 import type { Locale } from "@/lib/supabase/database.types";
 import BackToContentHub from "../BackToContentHub";
 
@@ -26,169 +26,12 @@ export default async function ContentPage() {
       </h1>
       <p className="text-mist text-sm max-w-lg mb-10">
         Сейчас показан текущий текст (либо ваш сохранённый, либо стандартный, если ещё не
-        редактировали). Меняете — сохраняете — сайт обновляется. «Сбросить» вернёт блок к
-        исходному тексту на всех трёх языках.
+        редактировали). Меняете что нужно в любом количестве блоков и жмёте одну кнопку «Сохранить
+        всё» внизу экрана. «Сбросить» у отдельного блока вернёт именно его к исходному тексту на
+        всех трёх языках.
       </p>
 
-      <div className="flex flex-col gap-8 max-w-3xl">
-        <ContentBlockEditor
-          settingsKey="home_hero"
-          title="Hero (первый экран)"
-          scalarFields={[
-            { key: "eyebrow", label: "Надпись над заголовком" },
-            { key: "line1", label: "Заголовок, строка 1" },
-            { key: "line2", label: "Заголовок, строка 2" },
-            { key: "line3", label: "Заголовок, строка 3" },
-            { key: "subtitle", label: "Подзаголовок", type: "textarea" },
-            { key: "applyButton", label: "Текст кнопки «Подать заявку»" },
-            { key: "viewButton", label: "Текст кнопки «Смотреть экспедиции»" },
-          ]}
-          initialValues={{ ru: ru.hero, es: es.hero, en: en.hero } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_philosophy"
-          title="Философия"
-          scalarFields={[
-            { key: "line1", label: "Строка 1" },
-            { key: "line2", label: "Строка 2 (выделена цветом)" },
-          ]}
-          initialValues={{ ru: ru.philosophy, es: es.philosophy, en: en.philosophy } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_why"
-          title="«Почему мы другие»"
-          scalarFields={[
-            { key: "eyebrow", label: "Надпись над заголовком" },
-            { key: "title1", label: "Заголовок, строка 1" },
-            { key: "title2", label: "Заголовок, строка 2" },
-          ]}
-          arrayField={{
-            key: "items",
-            label: "Карточки (иконки заданы в коде по порядку, лучше не менять число ниже 8)",
-            itemFields: [
-              { key: "title", label: "Заголовок карточки" },
-              { key: "text", label: "Текст карточки", type: "textarea" },
-            ],
-          }}
-          initialValues={{ ru: ru.why, es: es.why, en: en.why } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_levels"
-          title="«Три уровня. Один путь.»"
-          description="Каждый уровень можно связать с реальным «уровнем сложности» — тогда на сайте под описанием уровня покажутся подходящие экспедиции."
-          scalarFields={[
-            { key: "eyebrow", label: "Надпись над заголовком" },
-            { key: "title", label: "Заголовок" },
-          ]}
-          arrayField={{
-            key: "levels",
-            label: "Уровни (обычно 3)",
-            itemFields: [
-              { key: "number", label: "Номер (например «01»)" },
-              { key: "subtitle", label: "Подпись (например «Level 1»)" },
-              { key: "title", label: "Заголовок уровня" },
-              { key: "text", label: "Описание уровня", type: "textarea" },
-              {
-                key: "difficultyLevelId",
-                label: "Связанный уровень сложности (для показа экспедиций)",
-                type: "select",
-                options: difficultyOptions,
-              },
-            ],
-          }}
-          initialValues={{ ru: ru.levels, es: es.levels, en: en.levels } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_training_program"
-          title="Программа подготовки"
-          scalarFields={[
-            { key: "title1", label: "Заголовок, строка 1" },
-            { key: "title2", label: "Заголовок, строка 2 (выделена цветом)" },
-            { key: "intro", label: "Вступительный текст", type: "textarea" },
-            { key: "onlineTitle", label: "Заголовок блока «Онлайн-подготовка»" },
-            { key: "onlineIntro", label: "Текст перед списком онлайн-подготовки", type: "textarea" },
-            { key: "closing", label: "Заключительный текст", type: "textarea" },
-          ]}
-          stringArrayFields={[
-            { key: "skills", label: "Что мы помогаем развить (список)" },
-            { key: "onlineItems", label: "Что входит в онлайн-подготовку (список)" },
-          ]}
-          initialValues={{ ru: ru.trainingProgram, es: es.trainingProgram, en: en.trainingProgram } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_timeline"
-          title="Как устроена подготовка"
-          scalarFields={[
-            { key: "eyebrow", label: "Надпись над заголовком" },
-            { key: "title1", label: "Заголовок, строка 1" },
-            { key: "title2", label: "Заголовок, строка 2" },
-          ]}
-          arrayField={{
-            key: "steps",
-            label: "Шаги",
-            itemFields: [
-              { key: "label", label: "Метка (например «Неделя 1»)" },
-              { key: "title", label: "Заголовок шага" },
-              { key: "text", label: "Описание шага", type: "textarea" },
-            ],
-          }}
-          initialValues={{ ru: ru.timeline, es: es.timeline, en: en.timeline } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_audience"
-          title="«Кому это подходит»"
-          scalarFields={[
-            { key: "eyebrow", label: "Надпись над заголовком" },
-            { key: "title1", label: "Заголовок, строка 1" },
-            { key: "title2", label: "Заголовок, строка 2" },
-          ]}
-          arrayField={{
-            key: "items",
-            label: "Карточки (иконки заданы в коде по порядку, лучше не менять число ниже 6)",
-            itemFields: [
-              { key: "title", label: "Заголовок карточки" },
-              { key: "text", label: "Текст карточки", type: "textarea" },
-            ],
-          }}
-          initialValues={{ ru: ru.audience, es: es.audience, en: en.audience } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_process"
-          title="Процесс отбора"
-          scalarFields={[
-            { key: "eyebrow", label: "Надпись над заголовком" },
-            { key: "title1", label: "Заголовок, строка 1" },
-            { key: "title2", label: "Заголовок, строка 2" },
-            { key: "trustNote", label: "Текст о праве отклонить заявку", type: "textarea" },
-          ]}
-          arrayField={{
-            key: "steps",
-            label: "Шаги (нумерация — автоматически по порядку)",
-            itemFields: [
-              { key: "title", label: "Заголовок шага" },
-              { key: "text", label: "Описание шага", type: "textarea" },
-            ],
-          }}
-          initialValues={{ ru: ru.process, es: es.process, en: en.process } as any}
-        />
-
-        <ContentBlockEditor
-          settingsKey="home_philosophy_extended"
-          title="«Наша философия» (в конце страницы)"
-          scalarFields={[{ key: "title", label: "Надпись над текстом" }]}
-          stringArrayFields={[{ key: "paragraphs", label: "Абзацы (каждый — отдельным пунктом)" }]}
-          initialValues={
-            { ru: ru.philosophyExtended, es: es.philosophyExtended, en: en.philosophyExtended } as any
-          }
-        />
-      </div>
+      <ContentEditor ru={ru as any} es={es as any} en={en as any} difficultyOptions={difficultyOptions} />
     </div>
   );
 }
