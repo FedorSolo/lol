@@ -232,7 +232,7 @@ export default function Contact({
               <button
                 type="submit"
                 disabled={submitting}
-                className="sm:col-span-2 mt-2 bg-snow text-obsidian px-7 py-4 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors disabled:opacity-60"
+                className="sm:col-span-2 mt-2 bg-snow text-obsidian rounded-md px-7 py-4 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors disabled:opacity-60"
               >
                 {submitting ? "…" : t("submitButton")}
               </button>

@@ -35,7 +35,7 @@ export default function TrainingProgramTeaser({
 
           <Link
             href="/preparation"
-            className="shrink-0 inline-flex items-center gap-2 bg-snow text-obsidian px-6 py-3.5 text-sm tracking-wide hover:bg-glacier-light transition-colors"
+            className="shrink-0 inline-flex items-center gap-2 bg-snow text-obsidian rounded-md px-6 py-3.5 text-sm tracking-wide hover:bg-glacier-light transition-colors"
           >
             {linkLabel}
             <ArrowRight className="w-4 h-4" />

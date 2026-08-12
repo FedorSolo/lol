@@ -40,7 +40,7 @@ export default function Expeditions({
           <div className="flex flex-wrap gap-3 mb-12">
             <button
               onClick={() => setActiveLevel(null)}
-              className={`px-4 py-2 text-xs uppercase tracking-wide border transition-colors ${
+              className={`px-4 py-2 text-xs uppercase tracking-wide border rounded-full transition-colors ${
                 activeLevel === null
                   ? "border-glacier-light text-snow bg-glacier-light/10"
                   : "border-white/20 text-mist hover:text-snow"
@@ -52,7 +52,7 @@ export default function Expeditions({
               <button
                 key={level.id}
                 onClick={() => setActiveLevel(level.id)}
-                className={`px-4 py-2 text-xs uppercase tracking-wide border transition-colors ${
+                className={`px-4 py-2 text-xs uppercase tracking-wide border rounded-full transition-colors ${
                   activeLevel === level.id
                     ? "border-glacier-light text-snow bg-glacier-light/10"
                     : "border-white/20 text-mist hover:text-snow"
@@ -129,13 +129,13 @@ export default function Expeditions({
                   <div className="mt-auto flex gap-3">
                     <Link
                       href={`/expeditions/${exp.slug}`}
-                      className="flex-1 inline-flex items-center justify-center gap-2 border border-white/20 text-snow px-5 py-3 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light transition-colors"
+                      className="flex-1 inline-flex items-center justify-center gap-2 border border-white/20 text-snow rounded-md px-5 py-3 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light transition-colors"
                     >
                       {t("detailsButton")}
                     </Link>
                     <a
                       href="#contact"
-                      className="flex-1 inline-flex items-center justify-center gap-2 bg-snow text-obsidian px-5 py-3 text-sm tracking-wide hover:bg-glacier-light transition-colors"
+                      className="flex-1 inline-flex items-center justify-center gap-2 bg-snow text-obsidian rounded-md px-5 py-3 text-sm tracking-wide hover:bg-glacier-light transition-colors"
                     >
                       {t("applyButton")}
                       <ArrowUpRight className="w-4 h-4" />

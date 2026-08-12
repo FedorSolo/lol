@@ -94,7 +94,7 @@ export default function Team({ members }: { members: PublicTeamMember[] }) {
                   href={member.instagramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center justify-center w-8 h-8 border border-white/15 text-mist hover:text-glacier-light hover:border-glacier-light/40 transition-colors"
+                  className="mt-3 inline-flex items-center justify-center w-8 h-8 rounded-full border border-white/15 text-mist hover:text-glacier-light hover:border-glacier-light/40 transition-colors"
                   aria-label={`${member.name} — Instagram`}
                 >
                   <Instagram className="w-4 h-4" />

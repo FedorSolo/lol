@@ -93,13 +93,13 @@ export default function Hero({ content, posterUrl }: { content: HeroContent; pos
         >
           <a
             href="#contact"
-            className="bg-snow text-obsidian px-7 py-3.5 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors"
+            className="bg-snow text-obsidian rounded-md px-7 py-3.5 text-sm tracking-wide font-medium hover:bg-glacier-light transition-colors"
           >
             {content.applyButton}
           </a>
           <a
             href="#expeditions"
-            className="border border-white/30 text-snow px-7 py-3.5 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light transition-colors"
+            className="border border-white/30 text-snow rounded-md px-7 py-3.5 text-sm tracking-wide hover:border-glacier-light hover:text-glacier-light transition-colors"
           >
             {content.viewButton}
           </a>
