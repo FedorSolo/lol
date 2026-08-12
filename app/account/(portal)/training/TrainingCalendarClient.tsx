@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Clock, Ruler, TrendingUp, Link as LinkIcon, Save, CalendarPlus } from "lucide-react";
+import { Check, Clock, Ruler, TrendingUp, Link as LinkIcon, Save, CalendarPlus, Dumbbell } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary, typeLabel } from "@/components/TrainingCalendarGrid";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { googleCalendarLink } from "@/lib/calendar";
@@ -16,6 +16,7 @@ export interface ClientSessionRow {
   distance_km: number | null;
   elevation_gain_m: number | null;
   description: string | null;
+  equipment_needed: string | null;
   is_completed: boolean;
   garmin_link: string | null;
 }
@@ -131,6 +132,16 @@ export default function TrainingCalendarClient({
 
             {selected.description && (
               <p className="text-mist text-sm leading-relaxed whitespace-pre-line mb-5">{selected.description}</p>
+            )}
+
+            {selected.equipment_needed && (
+              <div className="mb-5 flex items-start gap-2 border border-white/10 bg-ash/50 px-3 py-2.5">
+                <Dumbbell className="w-4 h-4 text-glacier-light shrink-0 mt-0.5" />
+                <div>
+                  <div className="text-xs uppercase text-mist tracking-wide mb-0.5">Понадобится</div>
+                  <div className="text-snow text-sm">{selected.equipment_needed}</div>
+                </div>
+              </div>
             )}
 
             {(videosBySession[selected.id] ?? []).length > 0 && (

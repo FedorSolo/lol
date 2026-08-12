@@ -89,6 +89,7 @@ export async function sendTrainingSessionEmail({
   dateStr,
   typeLabel,
   description,
+  equipmentNeeded,
   calendarLink,
   portalUrl,
 }: {
@@ -98,6 +99,7 @@ export async function sendTrainingSessionEmail({
   dateStr: string;
   typeLabel: string;
   description: string | null;
+  equipmentNeeded?: string | null;
   calendarLink: string;
   portalUrl: string;
 }): Promise<{ sent: boolean; error?: string }> {
@@ -132,6 +134,11 @@ export async function sendTrainingSessionEmail({
         </tr>
       </table>
       ${description ? `<p style="color: #444;">${escapeHtml(description)}</p>` : ""}
+      ${
+        equipmentNeeded
+          ? `<p style="color: #444;"><strong>Понадобится:</strong> ${escapeHtml(equipmentNeeded)}</p>`
+          : ""
+      }
       <p style="margin-top: 24px;">
         <a href="${calendarLink}" style="display: inline-block; background: #4285F4; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 2px; margin-right: 10px;">
           Добавить в Google Календарь

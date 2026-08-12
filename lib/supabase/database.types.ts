@@ -531,6 +531,7 @@ export interface Database {
           distance_km: number | null;
           elevation_gain_m: number | null;
           description: string | null;
+          equipment_needed: string | null;
           is_completed: boolean;
           garmin_link: string | null;
           video_url: string | null;
@@ -546,6 +547,7 @@ export interface Database {
           distance_km?: number | null;
           elevation_gain_m?: number | null;
           description?: string | null;
+          equipment_needed?: string | null;
           is_completed?: boolean;
           garmin_link?: string | null;
           video_url?: string | null;
