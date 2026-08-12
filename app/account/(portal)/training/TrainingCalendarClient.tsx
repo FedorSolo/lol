@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Clock, Ruler, TrendingUp, Link as LinkIcon, Save } from "lucide-react";
+import { Check, Clock, Ruler, TrendingUp, Link as LinkIcon, Save, CalendarPlus } from "lucide-react";
 import TrainingCalendarGrid, { type CalendarSessionSummary, typeLabel } from "@/components/TrainingCalendarGrid";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { googleCalendarLink } from "@/lib/calendar";
 import { toggleSessionCompleted, updateGarminLink } from "./actions";
 
 export interface ClientSessionRow {
@@ -143,18 +144,34 @@ export default function TrainingCalendarClient({
               </div>
             )}
 
-            <button
-              onClick={handleToggle}
-              disabled={toggling}
-              className={`inline-flex items-center gap-2 px-4 py-2 text-sm transition-colors disabled:opacity-60 ${
-                selected.is_completed
-                  ? "border border-glacier-light text-glacier-light"
-                  : "bg-snow text-obsidian hover:bg-glacier-light"
-              }`}
-            >
-              <Check className="w-4 h-4" />
-              {selected.is_completed ? "Выполнено" : "Отметить выполненным"}
-            </button>
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                onClick={handleToggle}
+                disabled={toggling}
+                className={`inline-flex items-center gap-2 px-4 py-2 text-sm transition-colors disabled:opacity-60 ${
+                  selected.is_completed
+                    ? "border border-glacier-light text-glacier-light"
+                    : "bg-snow text-obsidian hover:bg-glacier-light"
+                }`}
+              >
+                <Check className="w-4 h-4" />
+                {selected.is_completed ? "Выполнено" : "Отметить выполненным"}
+              </button>
+
+              <a
+                href={googleCalendarLink({
+                  title: selected.title,
+                  dateStr: selected.session_date,
+                  description: selected.description ?? undefined,
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-mist hover:text-glacier-light border border-white/15 hover:border-glacier-light/40 px-3 py-2 transition-colors"
+              >
+                <CalendarPlus className="w-3.5 h-3.5" />
+                В Google Календарь
+              </a>
+            </div>
 
             <div className="mt-5 pt-5 border-t border-white/10">
               <label className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-mist mb-2">

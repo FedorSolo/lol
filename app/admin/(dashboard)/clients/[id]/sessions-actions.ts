@@ -3,6 +3,18 @@
 import { revalidatePath } from "next/cache";
 import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import type { ActionResult, ActionResultWithData } from "@/lib/action-result";
+import { sendTrainingSessionEmail } from "@/lib/email";
+import { googleCalendarLink } from "@/lib/calendar";
+import { SITE_URL } from "@/lib/site-url";
+
+const SESSION_TYPE_LABELS: Record<string, string> = {
+  cardio: "Кардио",
+  strength: "Силовая",
+  hike: "Поход",
+  altitude: "Высотная",
+  rest: "Отдых",
+  other: "Тренировка",
+};
 
 export async function getClientSessions(clientId: string) {
   const supabase = createAdminSupabaseClient();
@@ -43,12 +55,14 @@ export interface SessionFormData {
   distance_km: string;
   elevation_gain_m: string;
   description: string;
+  notify_client?: boolean;
 }
 
 export async function saveSession(
   form: SessionFormData
-): Promise<ActionResultWithData<{ id: string }>> {
+): Promise<ActionResultWithData<{ id: string; emailSent?: boolean; emailError?: string }>> {
   const supabase = createAdminSupabaseClient();
+  const isNew = !form.id;
 
   const payload = {
     client_id: form.client_id,
@@ -77,7 +91,39 @@ export async function saveSession(
 
   revalidatePath(`/admin/clients/${form.client_id}`);
   revalidatePath("/account/training", "page");
-  return { ok: true, data: { id } };
+
+  // Notify the client by email only when a NEW session is created (not on
+  // every edit) and only if the admin left "Уведомить письмом" checked.
+  let emailSent: boolean | undefined;
+  let emailError: string | undefined;
+  if (isNew && form.notify_client) {
+    const { data: client } = await supabase
+      .from("client_profiles")
+      .select("*")
+      .eq("id", form.client_id)
+      .maybeSingle();
+
+    if (client) {
+      const result = await sendTrainingSessionEmail({
+        to: client.email,
+        fullName: client.full_name,
+        title: form.title,
+        dateStr: form.session_date,
+        typeLabel: SESSION_TYPE_LABELS[form.session_type] ?? "Тренировка",
+        description: form.description || null,
+        calendarLink: googleCalendarLink({
+          title: form.title,
+          dateStr: form.session_date,
+          description: form.description || undefined,
+        }),
+        portalUrl: `${SITE_URL}/account/training`,
+      });
+      emailSent = result.sent;
+      emailError = result.error;
+    }
+  }
+
+  return { ok: true, data: { id, emailSent, emailError } };
 }
 
 export async function getExerciseVideos(sessionId: string) {
