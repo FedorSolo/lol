@@ -1,4 +1,10 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+
+// Same reasoning as the expedition detail page — a safety net for
+// content edited directly in the database rather than through the
+// admin panel (which already revalidates on save).
+export const revalidate = 3600; // 1 hour
+
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
