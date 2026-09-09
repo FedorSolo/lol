@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+
+// Admin-panel edits already call revalidatePath() on save, so this page
+// updates instantly in that case. This export is a safety net for
+// content changed any other way (e.g. a direct SQL edit in Supabase) —
+// without it, this statically generated page would only ever pick up
+// fresh data on the next full deploy.
+export const revalidate = 3600; // 1 hour
+
 import {
   Mountain,
   Gauge,
